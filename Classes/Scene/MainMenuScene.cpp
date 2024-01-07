@@ -2,12 +2,12 @@
 
 USING_NS_CC;
 
-Scene* MainMenuScene::createScene()
+Scene* MainMenu::createScene()
 {
-    return MainMenuScene::create();
+    return MainMenu::create();
 }
 
-bool MainMenuScene::init()
+bool MainMenu::init()
 {
     if (!Scene::init())
     {
@@ -41,6 +41,10 @@ bool MainMenuScene::init()
     this->addChild(menuA);
 
     return true;
+}
+void MainMenu::menuCloseCallback(Ref* pSender)
+{
+    Director::getInstance()->end();
 }
 
 

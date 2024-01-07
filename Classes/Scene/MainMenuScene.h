@@ -1,19 +1,19 @@
 #ifndef __MAIN_MENU_SCENE_H__
 #define __MAIN_MENU_SCENE_H__
 
-#include"cocos2d.h"
-USING_NS_CC;
+#include "cocos2d.h"
 
-class MainMenuScene : public Scene
+
+class MainMenu : public cocos2d::Scene
 {
 public:
-	bool init();
-	static Scene* createScene(); 
-	CREATE_FUNC(MainMenuScene);
-private:
-	Sprite* _background;
+	virtual bool init();
+	static cocos2d::Scene* createScene();
+	CREATE_FUNC(MainMenu);
+	void menuCloseCallback(cocos2d::Ref* pSender);
+	cocos2d::Sprite* _background;
 	std::string _gameName;
-	std::vector<Label*> _options;
+	std::vector<cocos2d::Label*> _options;
 	
 };
 
