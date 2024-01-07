@@ -1,0 +1,122 @@
+C/C++ Structured Log(
+&
+$D:\Project_2\Project2\CMakeLists.txtC
+A
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	עיֵ¦־1ֻ) ¶ִ‚¦־1G
+E
+CD:\Project_2\Project2\cocos2d\cmake\Modules\CocosBuildHelpers.cmake	עיֵ¦־1²s  ֻ®ך-C
+A
+?D:\Project_2\Project2\cocos2d\cmake\Modules\CocosBuildSet.cmake	עיֵ¦־1µ  ֻ®ך-G
+E
+CD:\Project_2\Project2\cocos2d\cmake\Modules\CocosConfigDefine.cmake	עיֵ¦־1­  י“סז-G
+E
+CD:\Project_2\Project2\cocos2d\cmake\Modules\CocosConfigDepend.cmake	עיֵ¦־1ן  י“סז-9
+7
+5D:\Project_2\Project2\cocos2d\cocos\2d\CMakeLists.txt	עיֵ¦־1ך אר“סז-9
+7
+5D:\Project_2\Project2\cocos2d\cocos\3d\CMakeLists.txt	עיֵ¦־1“	 אר“סז-6
+4
+2D:\Project_2\Project2\cocos2d\cocos\CMakeLists.txt	עיֵ¦־1	‡- אר“סז-<
+:
+8D:\Project_2\Project2\cocos2d\cocos\audio\CMakeLists.txt	עיֵ¦־1
+´# אר“סז-;
+9
+7D:\Project_2\Project2\cocos2d\cocos\base\CMakeLists.txt	עיֵ¦־1ּ אר“סז-P
+N
+LD:\Project_2\Project2\cocos2d\cocos\editor-support\cocostudio\CMakeLists.txt	עיֵ¦־1£T אר“סז-;
+9
+7D:\Project_2\Project2\cocos2d\cocos\math\CMakeLists.txt	עיֵ¦־1ˆ אש״ְֱ->
+<
+:D:\Project_2\Project2\cocos2d\cocos\navmesh\CMakeLists.txt	עיֵ¦־1ל אש״ְֱ->
+<
+:D:\Project_2\Project2\cocos2d\cocos\network\CMakeLists.txt	עיֵ¦־1ץ	 אש״ְֱ-@
+>
+<D:\Project_2\Project2\cocos2d\cocos\physics3d\CMakeLists.txt	עיֵ¦־1ר אש״ְֱ->
+<
+:D:\Project_2\Project2\cocos2d\cocos\physics\CMakeLists.txt	עיֵ¦־1¡ אש״ְֱ-?
+=
+;D:\Project_2\Project2\cocos2d\cocos\platform\CMakeLists.txt	עיֵ¦־1מ, אר“סז-G
+E
+CD:\Project_2\Project2\cocos2d\cocos\platform\android\CMakeLists.txt	עיֵ¦־1ֵ  ‎פ¹ֻ-?
+=
+;D:\Project_2\Project2\cocos2d\cocos\renderer\CMakeLists.txt	עיֵ¦־1ֹ! אר“סז-9
+7
+5D:\Project_2\Project2\cocos2d\cocos\ui\CMakeLists.txt	עיֵ¦־1’! אר“סז-;
+9
+7D:\Project_2\Project2\cocos2d\extensions\CMakeLists.txt	עיֵ¦־1ס  אר“סז-?
+=
+;D:\Project_2\Project2\cocos2d\external\Box2D\CMakeLists.txt	עיֵ¦־1Þ נ‹…¶כ-9
+7
+5D:\Project_2\Project2\cocos2d\external\CMakeLists.txt	עיֵ¦־1 . נ‹…¶כ-D
+B
+@D:\Project_2\Project2\cocos2d\external\ConvertUTF\CMakeLists.txt	עיֵ¦־1² נ‹…¶כ-V
+T
+RD:\Project_2\Project2\cocos2d\external\android-specific\cpufeatures\CMakeLists.txt	עיֵ¦־1… נ‹…¶כ-S
+Q
+OD:\Project_2\Project2\cocos2d\external\android-specific\pvmp3dec\CMakeLists.txt	עיֵ¦־1¼ נ‹…¶כ-R
+P
+ND:\Project_2\Project2\cocos2d\external\android-specific\tremolo\CMakeLists.txt	עיֵ¦־1ֲ נ‹…¶כ-@
+>
+<D:\Project_2\Project2\cocos2d\external\bullet\CMakeLists.txt	עיֵ¦־1° נ‹…¶כ-B
+@
+>D:\Project_2\Project2\cocos2d\external\chipmunk\CMakeLists.txt	עיֵ¦־1ֹ נ‹…¶כ-A
+?
+=D:\Project_2\Project2\cocos2d\external\clipper\CMakeLists.txt	עיֵ¦־1– נ‹…¶כ-J
+H
+FD:\Project_2\Project2\cocos2d\external\cmake\CocosExternalConfig.cmake	עיֵ¦־1 ¼	 נ‹…¶כ->
+<
+:D:\Project_2\Project2\cocos2d\external\curl\CMakeLists.txt	עיֵ¦־1!ף נ‹…¶כ-D
+B
+@D:\Project_2\Project2\cocos2d\external\edtaa3func\CMakeLists.txt	עיֵ¦־1" נ‹…¶כ-C
+A
+?D:\Project_2\Project2\cocos2d\external\freetype2\CMakeLists.txt	עיֵ¦־1#ל נ‹…¶כ->
+<
+:D:\Project_2\Project2\cocos2d\external\jpeg\CMakeLists.txt	עיֵ¦־1$ב נ‹…¶כ-=
+;
+9D:\Project_2\Project2\cocos2d\external\md5\CMakeLists.txt	עיֵ¦־1%¿ ְ›…¶כ-A
+?
+=D:\Project_2\Project2\cocos2d\external\openssl\CMakeLists.txt	עיֵ¦־1&ח ְ›…¶כ-=
+;
+9D:\Project_2\Project2\cocos2d\external\png\CMakeLists.txt	עיֵ¦־1'א ְ›…¶כ-B
+@
+>D:\Project_2\Project2\cocos2d\external\poly2tri\CMakeLists.txt	עיֵ¦־1(£ ְ›…¶כ-@
+>
+<D:\Project_2\Project2\cocos2d\external\recast\CMakeLists.txt	עיֵ¦־1)Ý ְ›…¶כ-B
+@
+>D:\Project_2\Project2\cocos2d\external\tinyxml2\CMakeLists.txt	עיֵ¦־1*µ ְ›…¶כ-?
+=
+;D:\Project_2\Project2\cocos2d\external\unzip\CMakeLists.txt	עיֵ¦־1+™ ְ›…¶כ-<
+:
+8D:\Project_2\Project2\cocos2d\external\uv\CMakeLists.txt	עיֵ¦־1,Ý ְ›…¶כ->
+<
+:D:\Project_2\Project2\cocos2d\external\webp\CMakeLists.txt	עיֵ¦־1-ב ְ›…¶כ-D
+B
+@D:\Project_2\Project2\cocos2d\external\websockets\CMakeLists.txt	עיֵ¦־1.Þ ְ›…¶כ-@
+>
+<D:\Project_2\Project2\cocos2d\external\xxhash\CMakeLists.txt	עיֵ¦־1/’ ְ›…¶כ-?
+=
+;D:\Project_2\Project2\cocos2d\external\xxtea\CMakeLists.txt	עיֵ¦־10’ ְ›…¶כ->
+<
+:D:\Project_2\Project2\cocos2d\external\zlib\CMakeLists.txt	עיֵ¦־11ֲ ְ›…¶כ-g
+e
+cD:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\additional_project_files.txt	עיֵ¦־12–ֿ ט½¾¦־1d
+b
+`D:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\android_gradle_build.json	עיֵ¦־13—H ל½¾¦־1i
+g
+eD:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\android_gradle_build_mini.json	עיֵ¦־14ׂC ר¾¾¦־1V
+T
+RD:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\build.ninja	עיֵ¦־15ƒh ‹½¾¦־1Z
+X
+VD:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\build.ninja.txt	עיֵ¦־16_
+]
+[D:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\build_file_index.txt	עיֵ¦־17» ü¾¾¦־1`
+^
+\D:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\compile_commands.json	עיֵ¦־18פ¨_ ‹½¾¦־1d
+b
+`D:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\compile_commands.json.bin	עיֵ¦־19€‎ ‹½¾¦־1j
+h
+fD:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\metadata_generation_command.txt	עיֵ¦־1:‚	 ü¾¾¦־1]
+[
+YD:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\prefab_config.json	עיֵ¦־1;( ü¾¾¦־1b
+`
+^D:\Project_2\Project2\proj.android\app\.cxx\Debug\3pz4mx4w\armeabi-v7a\symbol_folder_index.txt	עיֵ¦־1<] ü¾¾¦־1
