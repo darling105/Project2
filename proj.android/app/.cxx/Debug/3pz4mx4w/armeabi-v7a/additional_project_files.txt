@@ -1,6 +1,7 @@
 D:\Project_2\Project2\Classes\AppDelegate.h
 D:\Project_2\Project2\Classes\HelloWorldScene.h
 D:\Project_2\Project2\Classes\Scene\MainMenuScene.h
+D:\Project_2\Project2\Classes\Scene\SplashScene.h
 D:\Project_2\Project2\cocos2d\cocos\editor-support\cocostudio\SimpleAudioEngine.h
 D:\Project_2\Project2\cocos2d\cocos\editor-support\cocostudio\CCProcessBase.h
 D:\Project_2\Project2\cocos2d\cocos\editor-support\cocostudio\TriggerMng.h

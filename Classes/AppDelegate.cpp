@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "Scene/MainMenuScene.h"
+#include "Scene/SplashScene.h"
 
 
 #if USE_AUDIO_ENGINE
@@ -63,7 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    Scene* scene = MainMenu::createScene();
+    Scene* scene = SplashScene::createScene();
 
     // run
     director->runWithScene(scene);

@@ -2,19 +2,17 @@
 #define __SPLASH_SCENE_H__
 
 #include"cocos2d.h"
-USING_NS_CC;
 
-class SplashScene : public Scene
+class SplashScene : public cocos2d::Scene
 {
-private:
-	Sprite* _background;
-
-public:
-	virtual bool init();
-	static Scene* createScene();
-	CREATE_FUNC(SplashScene);
+private: 
+	cocos2d::Sprite* _background;
 private:
 	void goToMainMenuScene();
+public:
+	virtual bool init();
+	static cocos2d::Scene* createScene();
+	CREATE_FUNC(SplashScene);
 };
 
 #endif // !__SPLASH_SCENE_H__
