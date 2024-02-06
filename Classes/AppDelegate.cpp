@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
-#include "Scene/MainMenuScene.h"
 #include "Scene/SplashScene.h"
 
 
@@ -64,7 +63,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    Scene* scene = SplashScene::createScene();
+    auto scene = SplashScene::create();
 
     // run
     director->runWithScene(scene);

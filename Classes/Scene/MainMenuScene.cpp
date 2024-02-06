@@ -1,4 +1,5 @@
 #include "MainMenuScene.h"
+#include "Scene/GameScene.h"
 
 USING_NS_CC;
 
@@ -25,7 +26,9 @@ bool MainMenu::init()
     MenuItemFont::setFontSize(28);
     auto miFont = MenuItemFont::create("Play", [&](Ref* sender)
         {
-            
+            auto gameScene = GameScene::create();
+            Director::getInstance()->replaceScene(gameScene);
+            log("Game Scene Cliked");
         });
     miFont->setPosition(Vec2(0, 0));
     MenuItems.pushBack(miFont);
@@ -39,6 +42,11 @@ bool MainMenu::init()
     this->addChild(menuA);
 
     return true;
+}
+void MainMenu::goToGameScene()
+{
+    auto gameScene = Scene::create();
+    Director::getInstance()->pushScene(gameScene);
 }
 void MainMenu::menuCloseCallback(Ref* pSender)
 {

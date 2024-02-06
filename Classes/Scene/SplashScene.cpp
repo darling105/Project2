@@ -1,5 +1,5 @@
 #include "SplashScene.h"
-#include "MainMenuScene.h"
+#include "Scene/MainMenuScene.h"
 
 USING_NS_CC;
 
