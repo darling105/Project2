@@ -3,22 +3,19 @@
 
 #include "cocos2d.h"
 
-USING_NS_CC;
 
-class MainMenu : public Scene
+class MainMenu : public cocos2d::Scene
 {
-private:
-	Sprite* _background;
 public:
 	virtual bool init();
-	static Scene* createScene();
+	static cocos2d::Scene* createScene();
 	CREATE_FUNC(MainMenu);
-	std::string _gameName;
-	std::vector<Label*> _options;
-
-private:
+	void menuCloseCallback(cocos2d::Ref* pSender);
 	void goToGameScene();
-	void menuCloseCallback(Ref* pSender);
+	cocos2d::Sprite* _background;
+	std::string _gameName;
+	std::vector<cocos2d::Label*> _options;
+
 };
 
 #endif // !MAIN_MENU_SCENE_H__

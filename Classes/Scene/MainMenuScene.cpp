@@ -17,12 +17,16 @@ bool MainMenu::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto _background = Sprite::create("BackGround/Background.png");
+    auto _background = Sprite::create("BackGround/Background1.png");
     _background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _background->setScale(2.25f);
     this->addChild(_background);
 
     Vector<MenuItem*> MenuItems;
+    auto lblMenuExit = Label::createWithTTF("Exit", "fonts/arial.ttf", 28);
+    auto miExit = MenuItemLabel::create(lblMenuExit, CC_CALLBACK_1(MainMenu::menuCloseCallback, this));
+    miExit->setPosition(Vec2(0, -50));
+    MenuItems.pushBack(miExit);
     MenuItemFont::setFontSize(28);
     auto miFont = MenuItemFont::create("Play", [&](Ref* sender)
         {
@@ -32,9 +36,9 @@ bool MainMenu::init()
         });
     miFont->setPosition(Vec2(0, 0));
     MenuItems.pushBack(miFont);
-    auto miFont2 = MenuItemFont::create("Setting", [&](Ref* sender) 
+    auto miFont2 = MenuItemFont::create("Setting", [&](Ref* sender)
         {
-        
+
         });
     miFont->setPosition(Vec2(0, 50));
     MenuItems.pushBack(miFont2);
@@ -43,16 +47,13 @@ bool MainMenu::init()
 
     return true;
 }
-void MainMenu::goToGameScene()
-{
-    auto gameScene = Scene::create();
-    Director::getInstance()->pushScene(gameScene);
-}
 void MainMenu::menuCloseCallback(Ref* pSender)
 {
     Director::getInstance()->end();
 }
 
-
-
-
+void MainMenu::goToGameScene()
+{
+    auto gameScene = Scene::create();
+    Director::getInstance()->pushScene(gameScene);
+}

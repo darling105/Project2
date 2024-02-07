@@ -13,6 +13,7 @@ private:
 	Sprite* _background;
 private:
 	void goToMainMenuScene();
+	void goToMap1();
 };
 
 #endif //__GAME_SCENE_H__
