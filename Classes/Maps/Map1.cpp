@@ -1,5 +1,6 @@
 #include "Map1.h"
 #include "Scene/GameScene.h"
+#include "MapUtilities/GameMap.h"
 
 Scene* Map1::create()
 {
@@ -36,6 +37,8 @@ bool Map1::init()
 	_background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 	_background->setScale(2.25f);
 	this->addChild(_background);
+	auto map1 = GameMap::create("Map/map1.tmx");
+	this->addChild(map1);
 	return true;
 }
 
