@@ -1,8 +1,8 @@
 #ifndef __CHARACTER_RUN_STATE_H__
 #define __CHARACTER_RUN_STATE_H__
 
-#include "State.h"
-#include "Map/GameMap.h"
+#include "StateMachine/State.h"
+#include "MapUtilities/GameMap.h"
 
 class CharacterRunState : public State
 {

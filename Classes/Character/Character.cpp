@@ -1,9 +1,9 @@
 ﻿#include "Character.h"
-#include "Utilities/AnimationUtils.h"
+#include "AnimationUtilities/AnimationUtils.h"
 #include "DefineBitmask.h"
 #include "PhysicRender/PhysicGround.h"
-#include "Enemy/Enemy.h"
-#include "KeyBoardInput.h"
+//#include "Enemy/Enemy.h"
+//#include "KeyBoardInput.h"
 
 std::vector<Character*> Character::_characters;
 Character* Character::_instance;
@@ -27,15 +27,15 @@ bool Character::init(EntityInfo* info)
 		log("Init Character failed!");
 		return false;
 	}
-	_info = info;
-
-	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "_Idle_Down");
+	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-idle");
 	auto animate = RepeatForever::create(Animate::create(aniIdle));
-	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "_Idle_Down (1)");
+	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
+	_model->setScale(1.5);
 	_model->runAction(animate);
 	this->addChild(_model);
 
-	physicBodyCharacter = PhysicsBody::createBox(_model->getContentSize() / 3, PhysicsMaterial(1, 0, 0));
+	Size newSize(_model->getContentSize().width / 1.15, _model->getContentSize().height * 1.4);
+	physicBodyCharacter = PhysicsBody::createBox(newSize, PhysicsMaterial(1, 0, 1));
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
 	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR);
@@ -69,13 +69,13 @@ bool Character::loadAnimations()
 	Entity::loadAnimations();
 
 	std::vector<std::string> aniNames;
-	aniNames.push_back(_info->_entityName + "_Idle_Down");
-	aniNames.push_back(_info->_entityName + "_Idle_Right");
-	aniNames.push_back(_info->_entityName + "_Jump_Down");
+	aniNames.push_back(_info->_entityName + "-idle");
+	aniNames.push_back(_info->_entityName + "-run");
+	aniNames.push_back(_info->_entityName + "-jump");
 
 	for (auto name : aniNames)
 	{
-		AnimationUtils::loadSpriteFrameCache("Hero/", name);
+		AnimationUtils::loadSpriteFrameCache("Character/", name);
 		AnimationUtils::createAnimation(name, 1.0f);
 	}
 
@@ -100,6 +100,36 @@ Character* Character::getCharacter(int index) {
 	return nullptr;
 }
 
+void Character::jump()
+{
+	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 40);
+}
+
+void Character::moveLeft()
+{
+	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 25);
+}
+
+void Character::moveRight()
+{
+	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 25);
+}
+
+void Character::setLeftButtonDown(bool isPressed)
+{
+	_isLeftButtonDown = isPressed;
+}
+
+void Character::setUpButtonDown(bool isPressed)
+{
+	_isUpButtonDown = isPressed;
+}
+
+void Character::setRightButtonDown(bool isPressed)
+{
+	_isRightButtonDown = isPressed;
+}
+
 int Character::getNumberOfCharacters() {
 	return _characters.size();
 }
@@ -115,7 +145,9 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact) {
 	if (target->getTag() == PhysicGround::TAG_GROUND &&
 		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
 		if (target->getPosition().y < this->getPosition().y)
-			 {
+		{
+			log("onGround");
+			physicBodyCharacter->setVelocity(Vec2::ZERO);
 			_isOnGround = true;
 		}
 		else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
@@ -123,12 +155,12 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact) {
 			physicBodyCharacter->setVelocity(Vec2::ZERO);
 			log("onStair");
 
-			} 
+		}
 		else {
 			physicBodyCharacter->setVelocity(Vec2::ZERO);
 		}
 	}
-	 if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR){
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
 		_isOnStair = true;
 		physicBodyCharacter->setVelocity(Vec2::ZERO);
 		log("onStair");
@@ -146,9 +178,10 @@ void Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	if (nodeA != this && nodeB != this) return;
 	auto target = (nodeA == this) ? nodeB : nodeA;
 	if (target->getTag() == PhysicGround::TAG_GROUND && target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
+		log("OnAir");
 		_isOnGround = false;
 	}
-	else{
+	else {
 		_isOnStair = false;
 	}
 }
@@ -159,42 +192,35 @@ void Character::callbackOnContactSeparate(PhysicsContact& contact) {
 
 void Character::update(float dt) {
 	if (_isOnGround) {
-		//log("Character is on the ground");
-		physicBodyCharacter->setVelocity(Vec2::ZERO);
-		 if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_SPACE)) {
-			this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 80);
-		}
-		 if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_A)) {
-			 this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 40);
-			
-		 }
-		 if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_D)) {
-			 this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 40);
-		 }
-		 //log("toc do:%f", physicBodyCharacter->getVelocity().length());
-	}
-	else if (_isOnStair) {
-		physicBodyCharacter->setVelocity(Vec2::ZERO);
-		if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_W)) {
-			this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 40);
 
-		}
-		if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_S)) {
-			this->getPhysicsBody()->applyImpulse(Vec2(0, -1) * 40);
-		}
+	if (_isUpButtonDown) {
+		//log("Character is on the ground");
+		jump();
+		//log("toc do:%f", physicBodyCharacter->getVelocity().length());
+	}
+	if (_isLeftButtonDown) {
+		_physicsBody->setVelocity(Vec2::ZERO);
+		moveLeft();
+	}
+	if (_isRightButtonDown)
+	{
+		_physicsBody->setVelocity(Vec2::ZERO);
+		moveRight();
+	}
 	}
 	else {
-		this->getPhysicsBody()->setVelocity(Vec2(0, this->getPhysicsBody()->getVelocity().y));
 
-		if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_A)) {
-			this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 40);
+		if (_isLeftButtonDown) {
+			_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
+			moveLeft();
 		}
-		if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_D)) {
-			this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 40);
+		if (_isRightButtonDown)
+		{
+			_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
+			moveRight();
 		}
 	}
 
-	
 }
 
 

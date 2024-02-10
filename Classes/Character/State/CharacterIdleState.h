@@ -1,7 +1,7 @@
 #ifndef __CHARACTER_IDLE_STATE_H__
 #define __CHARACTER_IDLE_STATE_H__
 
-#include "State.h"
+#include "StateMachine/State.h"
 
 
 class CharacterIdleState : public State

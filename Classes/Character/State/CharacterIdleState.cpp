@@ -1,12 +1,12 @@
 #include "CharacterIdleState.h"
-#include "KeyBoardInput.h"
-#include "StateMachine.h"
+//#include "KeyBoardInput.h"
+#include "StateMachine/StateMachine.h"
 
 void CharacterIdleState::enterState(Entity* owner)
 {
 	State::enterState(owner);
 	auto ani = AnimationCache::getInstance()
-		->getAnimation(_owner->getEntityInfo()->_entityName + "_Idle_Down");
+		->getAnimation(_owner->getEntityInfo()->_entityName + "-idle");
 	auto animate = RepeatForever::create(Animate::create(ani));
 	animate->setTag(StateMachine::AnimationTag);
 	_owner->getModel()->runAction(animate);
@@ -14,17 +14,17 @@ void CharacterIdleState::enterState(Entity* owner)
 
 std::string CharacterIdleState::updateState()
 {
-	auto keyboard = KeyboardInput::getInstance();
+	//auto keyboard = KeyboardInput::getInstance();
 
-	if (keyboard->getKey(EventKeyboard::KeyCode::KEY_SPACE))
-	{
-		return "jump";
-	}
+	//if (keyboard->getKey(EventKeyboard::KeyCode::KEY_SPACE))
+	//{
+	//	return "jump";
+	//}
 
-	if (keyboard->getDirection() != Vec2::ZERO)
-	{
-		return "run";
-	}
+	//if (keyboard->getDirection() != Vec2::ZERO)
+	//{
+	//	return "run";
+	//}
 
 	return "idle";
 }

@@ -3,10 +3,22 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "map1.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
+        "TileSet.tsx": {
+            "scaleInDock": 1
+        },
+        "map1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 540.909090909091,
+                "y": 396.969696969697
+            }
+        }
     },
     "last.imagePath": "C:/Users/Leeches/Desktop/Project2/Resources/Image/platformer-pixel-art-cave-2d-tileset/Tiles",
     "map.height": 28,
@@ -14,9 +26,11 @@
     "map.layerDataFormat": null,
     "map.width": 40,
     "openFiles": [
+        "map1.tmx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
+        "map1.tmx"
     ],
     "tileset.lastUsedFormat": "tsx"
 }

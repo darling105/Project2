@@ -1,12 +1,12 @@
 #include "CharacterRunState.h"
-#include "StateMachine.h"
-#include "KeyBoardInput.h"
+#include "StateMachine/StateMachine.h"
+//#include "KeyBoardInput.h"
 
 void CharacterRunState::enterState(Entity* owner)
 {
 	State::enterState(owner);
 	auto ani = AnimationCache::getInstance()
-		->getAnimation(_owner->getEntityInfo()->_entityName + "_Idle_Right");
+		->getAnimation(_owner->getEntityInfo()->_entityName + "-run");
 	auto animate = RepeatForever::create(Animate::create(ani));
 	animate->setTag(StateMachine::AnimationTag);
 	_owner->getModel()->runAction(animate);

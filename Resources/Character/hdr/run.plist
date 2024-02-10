@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./Walk</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{6,-4}</string>
+    <key>spriteSize</key>
+    <string>{224,31}</string>
+    <key>spriteSourceSize</key>
+    <string>{240,40}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{224,31}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{226,33}</string>
+   <key>textureFileName</key>
+   <string>run.png</string>
+  </dict>
+ </dict>
+</plist>

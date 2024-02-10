@@ -1,15 +1,15 @@
 ﻿#include "CharacterJumpState.h"
-#include "StateMachine.h"
+#include "StateMachine/StateMachine.h"
 #include "../Character.h"
 #include "../../Entity/Entity.h"
-#include "KeyBoardInput.h"
+//#include "KeyBoardInput.h"
 
 void CharacterJumpState::enterState(Entity* owner)
 {
     State::enterState(owner);
     log("jump state");
     auto ani = AnimationCache::getInstance()
-        ->getAnimation(owner->getEntityInfo()->_entityName + "_Jump_Down");
+        ->getAnimation(owner->getEntityInfo()->_entityName + "-jump");
     auto animate = RepeatForever::create(Animate::create(ani));
     animate->setTag(StateMachine::AnimationTag);
     owner->getModel()->runAction(animate);
@@ -23,9 +23,9 @@ void CharacterJumpState::enterState(Entity* owner)
 
 std::string CharacterJumpState::updateState()
 {
-    if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_SPACE)) {
+    /*if (KeyboardInput::getInstance()->getKey(EventKeyboard::KeyCode::KEY_SPACE)) {
         _owner->getPhysicsBody()->applyImpulse(Vec2(0, 1000));
-    }
+    }*/
     return "jump";
 }
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./Hero_Jump_Down (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,-8}</string>
+    <key>spriteSize</key>
+    <string>{60,38}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{60,38}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./Hero_Jump_Down (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,1}</string>
+    <key>spriteSize</key>
+    <string>{28,52}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{82,40},{28,52}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./Hero_Jump_Down (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,0}</string>
+    <key>spriteSize</key>
+    <string>{36,49}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{44,40},{36,49}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./Hero_Jump_Down (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,-2}</string>
+    <key>spriteSize</key>
+    <string>{42,46}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{0,40},{42,46}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{112,94}</string>
+   <key>textureFileName</key>
+   <string>Hero_Jump_Down.png</string>
+  </dict>
+ </dict>
+</plist>

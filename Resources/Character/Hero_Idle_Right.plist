@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./Hero_Idle_Right (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-5,-2}</string>
+    <key>spriteSize</key>
+    <string>{52,46}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{52,46},{52,46}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./Hero_Idle_Right (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-5,-3}</string>
+    <key>spriteSize</key>
+    <string>{58,44}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{58,44}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./Hero_Idle_Right (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-5,-2}</string>
+    <key>spriteSize</key>
+    <string>{52,46}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{52,46},{52,46}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./Hero_Idle_Right (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-5,-1}</string>
+    <key>spriteSize</key>
+    <string>{50,48}</string>
+    <key>spriteSourceSize</key>
+    <string>{128,128}</string>
+    <key>textureRect</key>
+    <string>{{0,46},{50,48}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{106,96}</string>
+   <key>textureFileName</key>
+   <string>Hero_Idle_Right.png</string>
+  </dict>
+ </dict>
+</plist>
