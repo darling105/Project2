@@ -41,8 +41,8 @@ bool Character::init(EntityInfo* info)
 	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR);
 	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR);
 	physicBodyCharacter->setRotationEnable(false);
-	physicBodyCharacter->setGravityEnable(true);
-	physicBodyCharacter->setDynamic(true);
+	//physicBodyCharacter->setGravityEnable(true);
+	//physicBodyCharacter->setDynamic(true);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
 

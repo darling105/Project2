@@ -11,13 +11,34 @@
         "TileSet.tsx": {
             "scaleInDock": 1
         },
+        "box.tsx": {
+            "scaleInDock": 1
+        },
+        "danger_site.tsx": {
+            "scaleInDock": 1
+        },
+        "ladder.tsx": {
+            "scaleInDock": 1
+        },
         "map1.tmx": {
-            "scale": 0.33,
+            "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 540.909090909091,
-                "y": 396.969696969697
+                "x": 280,
+                "y": 704
             }
+        },
+        "map1.tmx#TileSet": {
+            "scaleInDock": 1
+        },
+        "mushroom2.tsx": {
+            "scaleInDock": 1
+        },
+        "mushrooms1.tsx": {
+            "scaleInDock": 1
+        },
+        "spike.tsx": {
+            "scaleInDock": 1
         }
     },
     "last.imagePath": "C:/Users/Leeches/Desktop/Project2/Resources/Image/platformer-pixel-art-cave-2d-tileset/Tiles",
