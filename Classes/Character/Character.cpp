@@ -102,7 +102,7 @@ Character* Character::getCharacter(int index) {
 
 void Character::jump()
 {
-	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 40);
+	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 60);
 }
 
 void Character::moveLeft()

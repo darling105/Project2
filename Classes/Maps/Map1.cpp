@@ -27,18 +27,19 @@ bool Map1::init()
         return false;
     }
     auto physicsWorld = this->getPhysicsWorld();
-    this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    /*this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);*/
     this->getPhysicsWorld()->setGravity(Vec2(0, -300));
     physicsWorld->setFixedUpdateRate(10000.0f);
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
     // Tạo menu "Back"
     auto miFont = MenuItemFont::create("Back", [&](Ref* sender) {
-        Director::getInstance()->popScene();
+        auto gameScene = GameScene::create();
+        Director::getInstance()->replaceScene(gameScene);
         log("Back button clicked");
         });
     auto menuA = Menu::create(miFont, nullptr);
-    menuA->setPosition(Vec2(100, 100));
+    menuA->setPosition(Vec2(visibleSize.width / 2 - 1100, visibleSize.height / 2 - 50));
     this->addChild(menuA, 1);
 
     // Thêm Background
