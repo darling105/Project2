@@ -31,7 +31,7 @@ bool PhysicGround::init(TMXObjectGroup* objectGroup) {
 
             auto topGroundNode = Node::create();
             auto physicsTopGround = PhysicsBody::createEdgeSegment(Vec2(topLeft.x + 3.0f, topLeft.y),
-                Vec2(topRight.x - 3.0f, topRight.y), PhysicsMaterial(1, 0, 1));
+                Vec2(topRight.x - 3.0f, topRight.y), PhysicsMaterial(1, 0, 0), 3.0f);
             physicsTopGround->setCategoryBitmask(DefineBitmask::GROUND);
             physicsTopGround->setCollisionBitmask(DefineBitmask::CHARACTER);
             physicsTopGround->setContactTestBitmask(DefineBitmask::CHARACTER);

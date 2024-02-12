@@ -38,7 +38,7 @@ private:
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     void callbackOnContactSeparate(PhysicsContact& contact);
-    bool _isOnGround;
+    bool _isOnGround = false;
     bool _isOnStair;
     void update(float dt) override;
 };

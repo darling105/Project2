@@ -8,8 +8,8 @@ void SplashScene::goToMainMenuScene()
 	this->scheduleOnce([](float dt)
 		{
 			Director::getInstance()->
-				replaceScene(TransitionFade::create(1.0, MainMenu::create()));
-		}, 1.5, "switch_to_scene2");
+				replaceScene(TransitionFade::create(0.1f, MainMenu::create()));
+		}, 0.1, "switch_to_scene2");
 }
 
 Scene* SplashScene::createScene()

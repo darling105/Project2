@@ -32,17 +32,17 @@ bool Character::init(EntityInfo* info)
 	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
 	_model->setScale(1.5);
 	_model->runAction(animate);
-	this->addChild(_model);
+	this->addChild(_model,2);
 
 	Size newSize(_model->getContentSize().width / 1.15, _model->getContentSize().height * 1.4);
-	physicBodyCharacter = PhysicsBody::createBox(newSize, PhysicsMaterial(1, 0, 1));
+	physicBodyCharacter = PhysicsBody::createBox(newSize, PhysicsMaterial(1, 0, 0));
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
-	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR);
-	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR);
+	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND /*| DefineBitmask::STAIR*/);
+	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND /*| DefineBitmask::STAIR*/);
 	physicBodyCharacter->setRotationEnable(false);
-	//physicBodyCharacter->setGravityEnable(true);
-	//physicBodyCharacter->setDynamic(true);
+	physicBodyCharacter->setGravityEnable(true);
+	physicBodyCharacter->setDynamic(true);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
 
@@ -147,24 +147,23 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact) {
 		if (target->getPosition().y < this->getPosition().y)
 		{
 			log("onGround");
-			physicBodyCharacter->setVelocity(Vec2::ZERO);
 			_isOnGround = true;
 		}
-		else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
+		/*else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
 			_isOnStair = true;
 			physicBodyCharacter->setVelocity(Vec2::ZERO);
 			log("onStair");
 
-		}
+		}*/
 		else {
 			physicBodyCharacter->setVelocity(Vec2::ZERO);
 		}
 	}
-	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
+	/*if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
 		_isOnStair = true;
 		physicBodyCharacter->setVelocity(Vec2::ZERO);
 		log("onStair");
-	}
+	}*/
 	return true;
 }
 
@@ -181,9 +180,9 @@ void Character::callbackOnContactSeparate(PhysicsContact& contact) {
 		log("OnAir");
 		_isOnGround = false;
 	}
-	else {
+	/*else {
 		_isOnStair = false;
-	}
+	}*/
 }
 
 
@@ -192,35 +191,36 @@ void Character::callbackOnContactSeparate(PhysicsContact& contact) {
 
 void Character::update(float dt) {
 	if (_isOnGround) {
-
-	if (_isUpButtonDown) {
-		//log("Character is on the ground");
-		jump();
-		//log("toc do:%f", physicBodyCharacter->getVelocity().length());
-	}
-	if (_isLeftButtonDown) {
 		_physicsBody->setVelocity(Vec2::ZERO);
-		moveLeft();
-	}
-	if (_isRightButtonDown)
-	{
-		_physicsBody->setVelocity(Vec2::ZERO);
-		moveRight();
-	}
-	}
-	else {
-
+		//log("tren mat dat");
 		if (_isLeftButtonDown) {
-			_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
 			moveLeft();
 		}
 		if (_isRightButtonDown)
 		{
-			_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
+
 			moveRight();
 		}
+		if (_isUpButtonDown) {
+			jump();
+		}
 	}
+		else {
+			_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
 
+			if (_isLeftButtonDown) {
+
+				moveLeft();
+			}
+			if (_isRightButtonDown)
+
+			{
+
+				moveRight();
+			}
+		}
+
+	
 }
 
 
