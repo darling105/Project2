@@ -1,6 +1,8 @@
 ﻿#include "ButtonController.h"
 #include "ui/CocosGUI.h"
 #include "Character/Character.h"
+#include "AudioManager/AudioManager.h"
+#include "audio/include/AudioEngine.h"
 
 USING_NS_CC;
 
@@ -33,6 +35,10 @@ bool ButtonController::init() {
     if (!Node::init()) {
         return false;
     }
+
+    AudioManager* audioManager = AudioManager::getInstance();
+
+
     EntityInfo info(1, "character");
 
     _leftButton = ui::Button::create("CloseNormal.png", "CloseSelected.png");
@@ -93,10 +99,12 @@ bool ButtonController::init() {
         {
         case ui::Widget::TouchEventType::BEGAN:
             log("UpButton Pressed");
+            AudioManager::getInstance()->playSFX("jump.mp3");
             if (ButtonController::getInstance()) {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
                     _character->setUpButtonDown(true);
+                    
                 }
             }
             break;
@@ -106,6 +114,7 @@ bool ButtonController::init() {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
                     _character->setUpButtonDown(false);
+                    
                 }
             }
             break;

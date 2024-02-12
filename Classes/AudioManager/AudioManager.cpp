@@ -20,7 +20,8 @@ void AudioManager::playMusic(std::string fileName)
 
 void AudioManager::playSFX(std::string fileName)
 {
-    AudioEngine::play2d("Audio/SFX/" + fileName, false, _sfxVolume);
+    std::string filePath = "Audio/SFX/" + fileName;
+    AudioEngine::play2d(filePath, false);
 }
 
 void AudioManager::setMusicVolume(float newVolume)

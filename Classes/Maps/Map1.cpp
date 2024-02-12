@@ -26,6 +26,9 @@ bool Map1::init()
     {
         return false;
     }
+
+    
+
     auto physicsWorld = this->getPhysicsWorld();
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     this->getPhysicsWorld()->setGravity(Vec2(0, -300));
