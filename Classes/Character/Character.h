@@ -15,7 +15,6 @@ public:
     static void addCharacter(EntityInfo* info);
     static int getNumberOfCharacters();
     static Character* getCharacter(int index);
-    bool isTouchingEdge() const { return _isTouchingEdge; }
     void jump();
     void moveLeft();
     void moveRight();
@@ -30,7 +29,6 @@ private:
     bool init(EntityInfo* info) override;
     bool loadAnimations() override;
     PhysicsBody* physicBodyCharacter;
-    bool _isTouchingEdge = false;
     StateMachine* _stateMachine;
     bool _isLeftButtonDown = false;
     bool _isUpButtonDown = false;
@@ -41,6 +39,7 @@ protected:
     bool _isOnGround = false;
     bool _isOnStair;
     void update(float dt) override;
+    Node* bottomNode;
 };
 
 #endif // !__CHARACTER_H__

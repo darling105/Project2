@@ -37,7 +37,7 @@ bool Character::init(EntityInfo* info)
 	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
 	_model->setScale(1.5);
 	_model->runAction(animate);
-	this->addChild(_model,2);
+	this->addChild(_model, 2);
 
 	Size newSize(_model->getContentSize().width / 1.15, _model->getContentSize().height * 1.4);
 	physicBodyCharacter = PhysicsBody::createBox(newSize, PhysicsMaterial(1, 0, 0));
@@ -113,12 +113,12 @@ void Character::jump()
 
 void Character::moveLeft()
 {
-	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 25);
+	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 40);
 }
 
 void Character::moveRight()
 {
-	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 25);
+	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 40);
 }
 
 void Character::setLeftButtonDown(bool isPressed)
@@ -212,35 +212,19 @@ void Character::update(float dt) {
 			jump();
 		}
 	}
-		else {
-			_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
+	else {
+		//_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
 
-			if (_isLeftButtonDown) {
+		if (_isLeftButtonDown) {
 
-				moveLeft();
-			}
-			if (_isRightButtonDown)
-
-			{
-
-				moveRight();
-			}
+			moveLeft();
 		}
+		if (_isRightButtonDown)
+		{
 
-	
+			moveRight();
+		}
+	}
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

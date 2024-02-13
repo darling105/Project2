@@ -31,8 +31,8 @@ bool Map1::init()
 
     auto physicsWorld = this->getPhysicsWorld();
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-    this->getPhysicsWorld()->setGravity(Vec2(0, -300));
-    physicsWorld->setFixedUpdateRate(600.0f);
+    this->getPhysicsWorld()->setGravity(Vec2(0, -400));
+    physicsWorld->setFixedUpdateRate(800.0f);
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
     // Tạo menu "Back"
@@ -66,7 +66,7 @@ bool Map1::init()
     position.x = charSpawnPoint["x"].asFloat();
     position.y = charSpawnPoint["y"].asFloat();
     _character->setPosition(position);
-    this->addChild(_character);
+    this->addChild(_character, 2);
 
     auto buttonController = ButtonController::create();
     this->addChild(buttonController);
