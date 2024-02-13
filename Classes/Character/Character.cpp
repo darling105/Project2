@@ -2,6 +2,8 @@
 #include "AnimationUtilities/AnimationUtils.h"
 #include "DefineBitmask.h"
 #include "PhysicRender/PhysicGround.h"
+#include "AudioManager/AudioManager.h"
+#include "audio/include/AudioEngine.h"
 //#include "Enemy/Enemy.h"
 //#include "KeyBoardInput.h"
 
@@ -27,6 +29,9 @@ bool Character::init(EntityInfo* info)
 		log("Init Character failed!");
 		return false;
 	}
+
+	AudioManager* audioManager = AudioManager::getInstance();
+
 	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-idle");
 	auto animate = RepeatForever::create(Animate::create(aniIdle));
 	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
@@ -102,6 +107,7 @@ Character* Character::getCharacter(int index) {
 
 void Character::jump()
 {
+	AudioManager::getInstance()->playSFX("jump.mp3");
 	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 60);
 }
 
@@ -122,6 +128,7 @@ void Character::setLeftButtonDown(bool isPressed)
 
 void Character::setUpButtonDown(bool isPressed)
 {
+
 	_isUpButtonDown = isPressed;
 }
 

@@ -99,7 +99,6 @@ bool ButtonController::init() {
         {
         case ui::Widget::TouchEventType::BEGAN:
             log("UpButton Pressed");
-            AudioManager::getInstance()->playSFX("jump.mp3");
             if (ButtonController::getInstance()) {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
