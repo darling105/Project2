@@ -2,10 +2,10 @@
 #include "AnimationUtilities/AnimationUtils.h"
 #include "DefineBitmask.h"
 #include "PhysicRender/PhysicGround.h"
+#include "PhysicRender/Stair.h"
 #include "AudioManager/AudioManager.h"
 #include "audio/include/AudioEngine.h"
-//#include "Enemy/Enemy.h"
-//#include "KeyBoardInput.h"
+
 
 std::vector<Character*> Character::_characters;
 Character* Character::_instance;
@@ -32,18 +32,17 @@ bool Character::init(EntityInfo* info)
 
 	AudioManager* audioManager = AudioManager::getInstance();
 
-	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-idle");
+	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-jump");
 	auto animate = RepeatForever::create(Animate::create(aniIdle));
-	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
-	_model->setScale(1.5);
+	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-jump (1)");
 	_model->runAction(animate);
 	this->addChild(_model, 2);
-
-	Size newSize(_model->getContentSize().width / 1.15, _model->getContentSize().height * 1.4);
+	Size size = _model->getContentSize();
+	Size newSize(_model->getContentSize().width / 1.6, _model->getContentSize().height / 1.1);
 	physicBodyCharacter = PhysicsBody::createBox(newSize, PhysicsMaterial(1, 0, 0));
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
-	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND /*| DefineBitmask::STAIR*/);
+	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND);
 	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND /*| DefineBitmask::STAIR*/);
 	physicBodyCharacter->setRotationEnable(false);
 	physicBodyCharacter->setGravityEnable(true);
@@ -52,9 +51,32 @@ bool Character::init(EntityInfo* info)
 	this->setPhysicsBody(physicBodyCharacter);
 
 
+	//Vec2 position = _model->getPosition(); // Get the current position of the sprite
+	//Vec2 topLeftCharacterPosition = Vec2((position.x - size.width * _model->getAnchorPoint().x) + 3.0f,
+	//	position.y + size.height * (1 - _model->getAnchorPoint().y));
+
+	//auto topleftCharacterPoint = Node::create();
+	//auto physicsBodyTopLeftCharacter = PhysicsBody::createCircle(0.5, PhysicsMaterial(1, 1, 0));
+	//physicsBodyTopLeftCharacter->setDynamic(false);
+	//physicsBodyTopLeftCharacter->setRotationEnable(false);
+	//topleftCharacterPoint->setPhysicsBody(physicsBodyTopLeftCharacter);
+	//topleftCharacterPoint->setPosition(topLeftCharacterPosition);
+	//this->addChild(topleftCharacterPoint);
+
+	//Vec2 topRightCharacterPosition = Vec2((position.x + size.width * (1 - _model->getAnchorPoint().x)) - 3.0f,
+	//	position.y + size.height * (1 - _model->getAnchorPoint().y));
+
+	//auto topRightCharacterPoint = Node::create();
+	//auto physicsBodyTopRightCharacter = PhysicsBody::createCircle(0.5, PhysicsMaterial(1, 1, 0));
+	//physicsBodyTopRightCharacter->setDynamic(false);
+	//physicsBodyTopRightCharacter->setRotationEnable(false);
+	//topRightCharacterPoint->setPhysicsBody(physicsBodyTopRightCharacter);
+	//topRightCharacterPoint->setPosition(topRightCharacterPosition);
+	//this->addChild(topRightCharacterPoint);
+
 	auto listener = EventListenerPhysicsContact::create();
 	listener->onContactBegin = CC_CALLBACK_1(Character::callbackOnContactBegin, this);
-	listener->onContactSeparate = CC_CALLBACK_1(Character::callbackOnContactSeparate, this);
+	//listener->onContactSeparate = CC_CALLBACK_1(Character::callbackOnContactSeparate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
 
@@ -105,10 +127,16 @@ Character* Character::getCharacter(int index) {
 	return nullptr;
 }
 
+
+
 void Character::jump()
 {
-	AudioManager::getInstance()->playSFX("jump.mp3");
+	//AudioManager::getInstance()->playSFX("jump.mp3");
+	_isOnGround = false;
+	if (!_isJumping) {
 	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 60);
+	_isJumping = true;
+	}
 }
 
 void Character::moveLeft()
@@ -141,10 +169,11 @@ int Character::getNumberOfCharacters() {
 	return _characters.size();
 }
 
-
-bool Character::callbackOnContactBegin(PhysicsContact& contact) {
+bool Character::callbackOnContactBegin(PhysicsContact& contact)
+{
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
+
 	if (nodeA != this && nodeB != this) return false;
 
 	auto target = (nodeA == this) ? nodeB : nodeA;
@@ -155,27 +184,14 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact) {
 		{
 			log("onGround");
 			_isOnGround = true;
+			_isJumping = false; 
 		}
-		/*else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
-			_isOnStair = true;
-			physicBodyCharacter->setVelocity(Vec2::ZERO);
-			log("onStair");
-
-		}*/
 		else {
 			physicBodyCharacter->setVelocity(Vec2::ZERO);
 		}
 	}
-	/*if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
-		_isOnStair = true;
-		physicBodyCharacter->setVelocity(Vec2::ZERO);
-		log("onStair");
-	}*/
 	return true;
 }
-
-
-
 
 
 void Character::callbackOnContactSeparate(PhysicsContact& contact) {
@@ -187,44 +203,20 @@ void Character::callbackOnContactSeparate(PhysicsContact& contact) {
 		log("OnAir");
 		_isOnGround = false;
 	}
-	/*else {
-		_isOnStair = false;
-	}*/
 }
 
-
-
-
-
 void Character::update(float dt) {
-	if (_isOnGround) {
-		_physicsBody->setVelocity(Vec2::ZERO);
-		//log("tren mat dat");
+	if (_isOnGround || _isJumping) {
+		_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
+
 		if (_isLeftButtonDown) {
 			moveLeft();
 		}
-		if (_isRightButtonDown)
-		{
-
+		if (_isRightButtonDown) {
 			moveRight();
 		}
-		if (_isUpButtonDown) {
+		if (_isUpButtonDown && _isOnGround) { // Chỉ cho nhảy khi đang ở trên mặt đất
 			jump();
 		}
 	}
-	else {
-		//_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
-
-		if (_isLeftButtonDown) {
-
-			moveLeft();
-		}
-		if (_isRightButtonDown)
-		{
-
-			moveRight();
-		}
-	}
-
-
 }

@@ -36,8 +36,9 @@ private:
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     void callbackOnContactSeparate(PhysicsContact& contact);
+    bool _isJumping = false;
     bool _isOnGround = false;
-    bool _isOnStair;
+    bool _isOnStair = false;
     void update(float dt) override;
     Node* bottomNode;
 };

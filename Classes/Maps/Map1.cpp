@@ -2,9 +2,12 @@
 #include "Scene/GameScene.h"
 #include "MapUtilities/GameMap.h"
 #include "StateMachine/StateMachine.h"
-#include "Character/Character.h";
+#include "Character/Character.h"
 #include "ButtonController/ButtonController.h"
 #include "PhysicRender/PhysicGround.h"
+#include "Camera/CameraFollow.h"
+#include "Enemy/Enemy.h"
+#include "PhysicRender/Stair.h"
 
 
 
@@ -28,11 +31,11 @@ bool Map1::init()
     }
 
     
-
+    Vec2 origin = Director::getInstance()->getVisibleSize();
     auto physicsWorld = this->getPhysicsWorld();
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     this->getPhysicsWorld()->setGravity(Vec2(0, -400));
-    physicsWorld->setFixedUpdateRate(800.0f);
+    physicsWorld->setFixedUpdateRate(1000.0f);
     auto visibleSize = Director::getInstance()->getVisibleSize();
 
     // Tạo menu "Back"
@@ -52,29 +55,48 @@ bool Map1::init()
     this->addChild(_background);
 
     // Thêm GameMap
-    auto map1 = GameMap::create("Map/map1.tmx");
-    this->addChild(map1, 1);
+    _gameMap = GameMap::create("Map/map1.tmx");
+    this->addChild(_gameMap, 1);
 
     // Khởi tạo Character
     EntityInfo* characterInfo = new EntityInfo(1, "character");
-    auto _characterInstance = Character::getInstance(characterInfo);
-    _characterInstance->addCharacter(characterInfo);
-    auto _character = _characterInstance->getCharacter(0);
-    TMXObjectGroup* objectGroup = map1->getObjectGroup("CharacterSpawnPoint");
+    _character = Character::getInstance(characterInfo);
+    _character->addCharacter(characterInfo);
+    auto _charInstance = _character->getCharacter(0);
+    TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("CharacterSpawnPoint");
     ValueMap charSpawnPoint = objectGroup->getObject("SpawnPoint");
     Vec2 position;
     position.x = charSpawnPoint["x"].asFloat();
     position.y = charSpawnPoint["y"].asFloat();
-    _character->setPosition(position);
-    this->addChild(_character, 2);
+    _charInstance->setPosition(position);
+    this->addChild(_charInstance, 2);
+
+    std::vector<EntityInfo*> enemyInfoList;
+    for (int i = 0; i < 5; i++) {
+    EntityInfo* enemyInfo = new EntityInfo(1, "Hero");
+    enemyInfoList.push_back(enemyInfo);
+    _enemy = Enemy::getInstance(enemyInfo);
+    _enemy->addEnemy(enemyInfo);
+    auto enemyInstance = _enemy->getEnemy(i);
+
+    float xPos = (600) + 100 * i;
+    enemyInstance->setPosition(Vec2(xPos, position.y));
+    //this->addChild(enemyInstance);
+
+    }
+
 
     auto buttonController = ButtonController::create();
     this->addChild(buttonController);
     
 
-    auto objectPhysic = map1->getObjectGroup("PhysicsObject");
+    auto objectPhysic = _gameMap->getObjectGroup("PhysicsObject");
     auto groundPhysics = PhysicGround::create(objectPhysic);
     this->addChild(groundPhysics);
+
+    auto objectLadder = _gameMap->getObjectGroup("Ladder");
+    auto groundLadder = Stair::create(objectLadder);
+    this->addChild(groundLadder);
 
     this->scheduleUpdate();
 
@@ -85,4 +107,22 @@ bool Map1::init()
 void Map1::goToGameScene()
 {
 	Director::getInstance()->popScene();
+}
+
+void Map1::onEnter()
+{
+    Scene::onEnter();
+    auto _char = _character->getCharacter(0);
+    Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
+    auto mapSize = _gameMap->getContentSize();
+    Rect boundingBox = { size.width / 2,size.height / 2,1280 - size.width / 2 - size.width / 2,896 - size.height / 2 - size.height / 2 };
+    log("min x:%f", boundingBox.getMinX());
+    log("max x:%f", boundingBox.getMaxX());
+    log("min y:%f", boundingBox.getMinY());
+    log("max y:%f", boundingBox.getMaxY());
+
+    log("map x:%f", mapSize.width);
+    log("map y:%f", mapSize.height);
+    CameraFollow* cam = CameraFollow::create(_char, boundingBox);
+    this->addChild(cam);
 }
