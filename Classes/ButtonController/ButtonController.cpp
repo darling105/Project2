@@ -6,17 +6,14 @@
 
 USING_NS_CC;
 
-ButtonController* ButtonController::_instance = nullptr;
+ButtonController* ButtonController::_instance;
 
 ButtonController* ButtonController::getInstance() {
-    if (!_instance) {
-        _instance = new (std::nothrow) ButtonController();
-        if (_instance && _instance->init()) {
-            _instance->autorelease();
-        }
-        else {
-            CC_SAFE_DELETE(_instance);
-        }
+    if (_instance == nullptr)
+    {
+        _instance = new ButtonController();
+        _instance->init();
+        _instance->retain();
     }
     return _instance;
 }
@@ -41,10 +38,9 @@ bool ButtonController::init() {
 
     EntityInfo info(1, "character");
 
-    _leftButton = ui::Button::create("CloseNormal.png", "CloseSelected.png");
-    _leftButton->setScale(2.0f);
+    _leftButton = ui::Button::create("Buttons/Icon44.png");
     _leftButton->setContentSize(Size(50, 50));
-    _leftButton->setPosition(Vec2(100, 100));
+    _leftButton->setPosition(Vec2(100, 40));
     _leftButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
     switch (type)
     {
@@ -90,10 +86,9 @@ bool ButtonController::init() {
 
     addChild(_leftButton);
 
-    _upButton = ui::Button::create("CloseNormal.png", "CloseSelected.png");
-    _upButton->setScale(2.0f);
+    _upButton = ui::Button::create("Buttons/Icon43.png");
     _upButton->setContentSize(Size(50, 50));
-    _upButton->setPosition(Vec2(200, 200));
+    _upButton->setPosition(Vec2(1100, 40));
     _upButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
@@ -130,18 +125,17 @@ bool ButtonController::init() {
         });
 
 
-
+    
     addChild(_upButton);
-
-    _rightButton = ui::Button::create("CloseNormal.png", "CloseSelected.png");
-    _rightButton->setScale(2.0f);
+    
+    _rightButton = ui::Button::create("Buttons/Icon45.png");
     _rightButton->setContentSize(Size(50, 50));
-    _rightButton->setPosition(Vec2(300, 100));
+    _rightButton->setPosition(Vec2(300, 40));
     _rightButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
         case ui::Widget::TouchEventType::BEGAN:
-            log("UpButton Pressed");
+            log("RightButton Pressed");
             if (ButtonController::getInstance()) {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
@@ -150,7 +144,7 @@ bool ButtonController::init() {
             }
             break;
         case ui::Widget::TouchEventType::ENDED:
-            log("UpButton Released");
+            log("RightButton Released");
             if (ButtonController::getInstance()) {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
@@ -158,7 +152,7 @@ bool ButtonController::init() {
                 }
             }
         case ui::Widget::TouchEventType::CANCELED:
-            log("UpButton Released");
+            log("RIghtButton Released");
             if (ButtonController::getInstance()) {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
@@ -173,7 +167,7 @@ bool ButtonController::init() {
     _downButton = ui::Button::create("CloseNormal.png", "CloseSelected.png");
     _downButton->setScale(2.0f);
     _downButton->setContentSize(Size(50, 50));
-    _downButton->setPosition(Vec2(400, 100));
+    _downButton->setPosition(Vec2(400, 40));
     //addChild(_downButton);
 
     addButton(_leftButton);

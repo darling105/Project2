@@ -45,8 +45,8 @@ bool Map1::init()
         log("Back button clicked");
         });
     auto menuA = Menu::create(miFont, nullptr);
-    menuA->setPosition(Vec2(visibleSize.width / 2 - 1100, visibleSize.height / 2 - 50));
-    this->addChild(menuA, 1);
+    menuA->setPosition(Vec2(visibleSize.width / 2 , visibleSize.height / 2 ));
+    this->addChild(menuA, 3);
 
     // Thêm Background
     auto _background = Sprite::create("BackGround/Background2.png");
@@ -82,14 +82,10 @@ bool Map1::init()
     float xPos = (600) + 100 * i;
     enemyInstance->setPosition(Vec2(xPos, position.y));
     //this->addChild(enemyInstance);
-
     }
-
-
     auto buttonController = ButtonController::create();
-    this->addChild(buttonController);
+    this->addChild(buttonController,3);
     
-
     auto objectPhysic = _gameMap->getObjectGroup("PhysicsObject");
     auto groundPhysics = PhysicGround::create(objectPhysic);
     this->addChild(groundPhysics);
@@ -106,12 +102,17 @@ bool Map1::init()
 
 void Map1::goToGameScene()
 {
+    if (ButtonController::getInstance()->getParent() != nullptr){
+        ButtonController::getInstance()->removeFromParent();
+    }
+        
 	Director::getInstance()->popScene();
 }
 
 void Map1::onEnter()
 {
     Scene::onEnter();
+   
     auto _char = _character->getCharacter(0);
     Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
     auto mapSize = _gameMap->getContentSize();
@@ -125,4 +126,5 @@ void Map1::onEnter()
     log("map y:%f", mapSize.height);
     CameraFollow* cam = CameraFollow::create(_char, boundingBox);
     this->addChild(cam);
+    this->addChild(ButtonController::getInstance());
 }

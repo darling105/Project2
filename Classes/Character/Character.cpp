@@ -32,9 +32,9 @@ bool Character::init(EntityInfo* info)
 
 	AudioManager* audioManager = AudioManager::getInstance();
 
-	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-jump");
+	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-idle");
 	auto animate = RepeatForever::create(Animate::create(aniIdle));
-	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-jump (1)");
+	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
 	_model->runAction(animate);
 	this->addChild(_model, 2);
 	Size size = _model->getContentSize();
@@ -131,7 +131,6 @@ Character* Character::getCharacter(int index) {
 
 void Character::jump()
 {
-	//AudioManager::getInstance()->playSFX("jump.mp3");
 	_isOnGround = false;
 	if (!_isJumping) {
 	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 60);
