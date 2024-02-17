@@ -42,7 +42,7 @@ bool GameScene::init()
 	this->addChild(menuA, 1);
 	
 
-	auto button1 = ui::Button::create("Button_Normal.png", "Button_Press.png", "Button_Disable.png");
+	auto button1 = ui::Button::create("Buttons/Button_Normal.png", "Buttons/Button_Press.png", "Buttons/Button_Disable.png");
 	button1->setTitleText("Map 1");
 	button1->setTitleColor(Color3B::BLACK);
 	button1->setPosition(Vec2(visibleSize.width / 2 - 100, visibleSize.height / 2 - 100));
@@ -61,7 +61,7 @@ bool GameScene::init()
 		});
 
 	this->addChild(button1);
-	auto button2 = ui::Button::create("Button_Normal.png", "Button_Press.png", "Button_Disable.png");
+	auto button2 = ui::Button::create("Buttons/Button_Normal.png", "Buttons/Button_Press.png", "Buttons/Button_Disable.png");
 	button2->setTitleText("Map 2");
 	button2->setTitleColor(Color3B::BLACK);
 	button2->setPosition(Vec2(visibleSize.width / 2 + 50, visibleSize.height / 2 - 100));
