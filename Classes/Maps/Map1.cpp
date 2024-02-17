@@ -9,7 +9,7 @@
 #include "Enemy/Enemy.h"
 #include "PhysicRender/Stair.h"
 
-
+ButtonController* _buttonController;
 
 Scene* Map1::create()
 {
@@ -30,7 +30,7 @@ bool Map1::init()
         return false;
     }
 
-    
+    removeAllChildren();
     Vec2 origin = Director::getInstance()->getVisibleSize();
     auto physicsWorld = this->getPhysicsWorld();
     this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -42,6 +42,7 @@ bool Map1::init()
     auto miFont = MenuItemFont::create("Back", [&](Ref* sender) {
         auto gameScene = GameScene::create();
         Director::getInstance()->replaceScene(gameScene);
+        this->resetInput();
         log("Back button clicked");
         });
     auto menuA = Menu::create(miFont, nullptr);
@@ -83,8 +84,8 @@ bool Map1::init()
     enemyInstance->setPosition(Vec2(xPos, position.y));
     //this->addChild(enemyInstance);
     }
-    auto buttonController = ButtonController::create();
-    this->addChild(buttonController,3);
+   _buttonController = ButtonController::create();
+    this->addChild(_buttonController,3);
     
     auto objectPhysic = _gameMap->getObjectGroup("PhysicsObject");
     auto groundPhysics = PhysicGround::create(objectPhysic);
@@ -94,12 +95,17 @@ bool Map1::init()
     auto groundLadder = Stair::create(objectLadder);
     this->addChild(groundLadder);
 
+    auto _char = _character->getCharacter(0);
+    Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
+    auto mapSize = _gameMap->getContentSize();
+    Rect boundingBox = { size.width / 2,size.height / 2,1280 - size.width / 2 - size.width / 2,896 - size.height / 2 - size.height / 2 };
+    cam = CameraFollow::create(_char, boundingBox);
+    this->addChild(cam);
+
     this->scheduleUpdate();
 
     return true;
 }
-
-
 void Map1::goToGameScene()
 {
     if (ButtonController::getInstance()->getParent() != nullptr){
@@ -112,19 +118,38 @@ void Map1::goToGameScene()
 void Map1::onEnter()
 {
     Scene::onEnter();
-   
-    auto _char = _character->getCharacter(0);
-    Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
-    auto mapSize = _gameMap->getContentSize();
-    Rect boundingBox = { size.width / 2,size.height / 2,1280 - size.width / 2 - size.width / 2,896 - size.height / 2 - size.height / 2 };
-    log("min x:%f", boundingBox.getMinX());
+    
+   /* log("min x:%f", boundingBox.getMinX());
     log("max x:%f", boundingBox.getMaxX());
     log("min y:%f", boundingBox.getMinY());
     log("max y:%f", boundingBox.getMaxY());
 
     log("map x:%f", mapSize.width);
-    log("map y:%f", mapSize.height);
-    CameraFollow* cam = CameraFollow::create(_char, boundingBox);
-    this->addChild(cam);
-    this->addChild(ButtonController::getInstance());
+    log("map y:%f", mapSize.height);*/
+   
+    this->resetInput();
 }
+
+void Map1::resetInput()
+{
+    auto dispatcher = Director::getInstance()->getEventDispatcher();
+    dispatcher->removeEventListenersForTarget(this);
+}
+void Map1::update(float dt)
+{
+    // Kiểm tra xem camera có thay đổi vị trí không
+    if (cam && cam->isDirty()) {
+        // Lấy vị trí mới của camera
+        auto camPosition = cam->getPosition();
+        // Cập nhật vị trí của ButtonController theo vị trí mới của camera
+        _buttonController->setPosition(camPosition);
+    }
+}
+
+
+
+
+
+
+
+

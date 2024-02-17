@@ -15,6 +15,8 @@ public:
 
 	void setMusicVolume(float newVolume);
 	void setSFXVolume(float newVolume);
+	float getMusicVolume() const;
+	float getSFXVolume() const;
 private:
 	static AudioManager* _instance;
 

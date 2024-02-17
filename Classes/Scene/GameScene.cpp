@@ -54,7 +54,7 @@ bool GameScene::init()
 		case ui::Widget::TouchEventType::ENDED:
 			auto map1Scene = Map1::create();
 			Director::getInstance()->replaceScene(map1Scene);
-			log("Map2 Cliked");
+			log("Map1 Cliked");
 			break;
 		
 		}
@@ -73,7 +73,7 @@ bool GameScene::init()
 		case ui::Widget::TouchEventType::ENDED:
 			auto map2Scene = Map2::create();
 			Director::getInstance()->replaceScene(map2Scene);
-			log("Map1 Cliked");
+			log("Map2 Cliked");
 			break;
 
 		}

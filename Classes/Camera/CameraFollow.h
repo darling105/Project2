@@ -15,6 +15,10 @@ public:
 	virtual bool init(Node* target, Rect fieldOfView);
 
 	void update(float dt);
+
+	bool isDirty() const;
+	cocos2d::Vec2 _previousPosition;
+	bool _dirty;
 };
 
 #endif // !__CAMERA_FOLLOW_H__

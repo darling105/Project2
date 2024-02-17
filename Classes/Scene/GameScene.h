@@ -9,6 +9,7 @@ class GameScene : public Scene
 public:
 	static Scene* create();
 	virtual bool init();
+
 private:
 	Sprite* _background;
 private:

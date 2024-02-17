@@ -1,5 +1,7 @@
 #include "MainMenuScene.h"
 #include "Scene/GameScene.h"
+#include "Scene/SettingScene.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -21,29 +23,54 @@ bool MainMenu::init()
     _background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
     _background->setScale(2.25f);
     this->addChild(_background);
-
-    Vector<MenuItem*> MenuItems;
-    auto lblMenuExit = Label::createWithTTF("Exit", "fonts/arial.ttf", 28);
-    auto miExit = MenuItemLabel::create(lblMenuExit, CC_CALLBACK_1(MainMenu::menuCloseCallback, this));
-    miExit->setPosition(Vec2(0, -50));
-    MenuItems.pushBack(miExit);
-    MenuItemFont::setFontSize(28);
-    auto miFont = MenuItemFont::create("Play", [&](Ref* sender)
+    auto buttonExit = ui::Button::create("Buttons/Icon42.png");
+    buttonExit->setPosition(Vec2(visibleSize.width / 2-150, visibleSize.height / 2 ));
+    buttonExit->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
         {
-            auto gameScene = GameScene::create();
-            Director::getInstance()->replaceScene(gameScene);
-            log("Game Scene Cliked");
+        case ui::Widget::TouchEventType::BEGAN:
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            Director::getInstance()->end();
+            log("Exit");
+            break;
+        }
         });
-    miFont->setPosition(Vec2(0, 0));
-    MenuItems.pushBack(miFont);
-    auto miFont2 = MenuItemFont::create("Setting", [&](Ref* sender)
+    this->addChild(buttonExit);
+    auto buttonPlay = ui::Button::create("Buttons/Icon37.png");
+    buttonPlay->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+    buttonPlay->setScale(2.0f);
+    buttonPlay->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
         {
-
+            switch (type)
+            {
+            case ui::Widget::TouchEventType::BEGAN:
+                break;
+            case ui::Widget::TouchEventType::ENDED:
+                auto gameScene = GameScene::create();
+                Director::getInstance()->replaceScene(gameScene);
+                log("Play");
+                break;
+            }
         });
-    miFont->setPosition(Vec2(0, 50));
-    MenuItems.pushBack(miFont2);
-    auto menuA = Menu::createWithArray(MenuItems);
-    this->addChild(menuA);
+    this->addChild(buttonPlay);
+    auto buttonSetting = ui::Button::create("Buttons/Icon05.png");
+    buttonSetting->setPosition(Vec2(visibleSize.width / 2 + 150, visibleSize.height / 2));
+    buttonSetting->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            auto settingScene = SettingScene::create();
+            Director::getInstance()->replaceScene(settingScene);
+            log("Exit");
+            break;
+        }
+        });
+    this->addChild(buttonSetting);
+    
+    
 
     return true;
 }
