@@ -9,7 +9,6 @@ USING_NS_CC;
 class ButtonController : public Node
 {
 public:
-    static ButtonController* create();
     static ButtonController* getInstance();
     void addButton(ui::Button* button);
     bool getButton(ui::Button* button);

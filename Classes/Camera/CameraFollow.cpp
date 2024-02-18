@@ -1,9 +1,9 @@
-    #include "CameraFollow.h"
+﻿    #include "CameraFollow.h"
 
-    CameraFollow* CameraFollow::create(Node* target, Rect fieldOfView)
+    CameraFollow* CameraFollow::create(Node* target, Rect fieldOfView, ButtonController* buttonController)
     {
         auto newObject = new CameraFollow();
-        if (newObject != nullptr && newObject->init(target, fieldOfView)) {
+        if (newObject != nullptr && newObject->init(target, fieldOfView, buttonController)) {
             newObject->autorelease();
             return newObject;
         }
@@ -11,15 +11,17 @@
         return nullptr;
     }
 
-    bool CameraFollow::init(Node* target, Rect fieldOfView)
+    bool CameraFollow::init(Node* target, Rect fieldOfView, ButtonController* buttonController)
     {
         if (!target) {
             return false;
         }
-        this->_target = target;
-        this->_fieldOfView = fieldOfView;
-        
-        
+        _target = target;
+        _fieldOfView = fieldOfView;
+        _buttonController = buttonController; // Lưu trữ con trỏ đến ButtonController
+        _dirty = false;
+        _previousPosition = target->getPosition();
+
         this->scheduleUpdate();
         return true;
     }
@@ -28,11 +30,10 @@
     {
         if (!_target)
             return;
-       
+
         // Get the camera's position
         cocos2d::Camera* camera = cocos2d::Director::getInstance()->getRunningScene()->getDefaultCamera();
         cocos2d::Vec2 targetPosition = _target->getPosition();
-        cocos2d::Camera* buttonCam = cocos2d::Director::getInstance()->getRunningScene()->getDefaultCamera();
         if (_previousPosition != targetPosition) {
             _previousPosition = targetPosition;
             _dirty = true;
@@ -40,10 +41,8 @@
         else {
             _dirty = false;
         }
-        if (buttonCam) {
-            buttonCam->setPosition(targetPosition);
-        }
 
+        // Di chuyển camera
         float left_x = _fieldOfView.getMinX();
         float down_y = _fieldOfView.getMinY();
         float right_x = _fieldOfView.getMaxX();
@@ -54,6 +53,10 @@
 
         camera->setPosition(Vec2(positionx, positiony));
 
+        // Cập nhật vị trí của ButtonController
+        if (_buttonController) {
+            _buttonController->setPosition(camera->getPosition());
+        }
     }
 
     bool CameraFollow::isDirty() const

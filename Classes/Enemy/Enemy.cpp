@@ -1,14 +1,14 @@
 ﻿#include "Enemy.h"
 #include "AnimationUtilities/AnimationUtils.h"
 #include "DefineBitmask.h"
-//#include "CharacterSkill/CharacterSkill.h"
+#include "Skill/Skill.h"
 
 Enemy* Enemy::_instance;
 std::vector<Enemy*> Enemy::_enemies;
 
 
 Enemy* Enemy::getInstance(EntityInfo* info) {
-    if (_instance == nullptr){
+    if (_instance == nullptr) {
         _instance = new Enemy();
         _instance->init(info);
         _instance->retain();
@@ -34,9 +34,9 @@ int Enemy::getNumberOfEnemy()
 
 Enemy* Enemy::getEnemy(int index)
 {
-    if (index >= 0 && index< _enemies.size()) {
+    if (index >= 0 && index < _enemies.size()) {
         return _enemies[index];
- }
+    }
     return nullptr;
 }
 
@@ -59,9 +59,9 @@ bool Enemy::init(EntityInfo* info)
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
     auto enemyPhysicBody = PhysicsBody::createBox(_model->getContentSize() / 3.3, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-    enemyPhysicBody->setCategoryBitmask(DefineBitmask::ENEMY);
-    enemyPhysicBody->setCollisionBitmask(DefineBitmask::BULLET | DefineBitmask::CHARACTER);
-    enemyPhysicBody->setContactTestBitmask(DefineBitmask::BULLET | DefineBitmask::CHARACTER);
+    enemyPhysicBody->setCategoryBitmask(DefineBitmask::NON);
+    enemyPhysicBody->setCollisionBitmask(DefineBitmask::NON);
+    enemyPhysicBody->setContactTestBitmask(DefineBitmask::NON);
     enemyPhysicBody->setRotationEnable(false);
     enemyPhysicBody->setGravityEnable(false);
     this->setPhysicsBody(enemyPhysicBody);
@@ -72,6 +72,8 @@ bool Enemy::init(EntityInfo* info)
     _enemyStateMachine->addState("chase", new EnemyChaseState());
     _enemyStateMachine->setCurrentState("patrol");
     this->addChild(_enemyStateMachine);
+    //schedule(CC_SCHEDULE_SELECTOR(Enemy::shoot), 1.0f);
+
     return true;
 }
 
@@ -96,22 +98,15 @@ bool Enemy::callbackOnContactBegin(PhysicsContact& contact)
     EntityInfo info(1, "Hero");
     auto character = Character::getInstance(&info);
     auto _character = character->getCharacter(0);
-     nodeA = contact.getShapeA()->getBody()->getNode();
-     nodeB = contact.getShapeB()->getBody()->getNode();
-
-    // Kiểm tra xem enemy có tham gia vào va chạm không
+    nodeA = contact.getShapeA()->getBody()->getNode();
+    nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA != this && nodeB != this) return false;
-
-     target = (nodeA == this) ? (nodeB) : (nodeA);
-
-     //int physicbody = target->getPhysicsBody()->getContactTestBitmask();
-    // Kiểm tra vị trí của enemy so với nhân vật
+    target = (nodeA == this) ? (nodeB) : (nodeA);
     Vec2 enemyPosition = this->getPosition();
     Vec2 characterPosition = _character->getPosition();
     float enemyHeight = this->getContentSize().height;
-    if ( target != nullptr ) {
+    if (target != nullptr) {
         if (enemyPosition.y + enemyHeight + 10.0f <= characterPosition.y) {
-            // Nếu enemy ở dưới chân của nhân vật, xóa enemy
             this->removeFromParentAndCleanup(true);
         }
     }
@@ -121,6 +116,41 @@ bool Enemy::callbackOnContactBegin(PhysicsContact& contact)
 
     return true;
 }
+
+//void Enemy::shoot(float dt)
+//{
+//    for (int i = 0; i < 3; ++i) {
+//        // Tạo và bắn viên đạn
+//        auto bullet = Skill::create("fireskill");
+//        bullet->setPosition(this->getPosition());
+//        bullet->setOwner(this);
+//        this->getParent()->addChild(bullet,4);
+//        auto bulletBody = bullet->getPhysicsBody();
+//
+//        // Áp dụng lực cho viên đạn dựa vào chỉ số của vòng lặp
+//        float xImpulse = (i == 0) ? 0 : ((i == 1) ? -250000 : 250000);
+//        if (bulletBody) {
+//            bulletBody->applyImpulse(Vec2(xImpulse, 500000)); // Áp dụng lực để viên đạn đi lên và sang trái/phải
+//        }
+//
+//        // Tạo hành động Sequence cho viên đạn
+//        auto removeAction = RemoveSelf::create();
+//        auto delayAction = DelayTime::create(3.0f);
+//        auto sequence = Sequence::create(delayAction, removeAction, nullptr);
+//        bullet->runAction(sequence);
+//    }
+//}
+
+void Enemy::onEnter()
+{
+    Entity::onEnter();
+    this->scheduleUpdate();
+}
+
+
+
+
+
 
 
 

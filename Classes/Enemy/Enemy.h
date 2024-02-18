@@ -23,10 +23,13 @@ protected:
 	bool loadAnimations() override;
 	StateMachine* _enemyStateMachine;
 	bool callbackOnContactBegin(PhysicsContact& contact);
+	//void shoot(float dt);
+	void onEnter() override;
 protected:
 	Node* nodeA;
 	Node* nodeB;
 	Node* target;
+	float timeSinceLastShot;
 
 };
 #endif // !__ENEMY_H__

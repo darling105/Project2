@@ -18,15 +18,6 @@ ButtonController* ButtonController::getInstance() {
     return _instance;
 }
 
-ButtonController* ButtonController::create() {
-    ButtonController* controller = new (std::nothrow) ButtonController();
-    if (controller && controller->init()) {
-        controller->autorelease();
-        return controller;
-    }
-    CC_SAFE_DELETE(controller);
-    return nullptr;
-}
 
 bool ButtonController::init() {
     if (!Node::init()) {
@@ -50,6 +41,7 @@ bool ButtonController::init() {
             auto _character = Character::getInstance(&info)->getCharacter(0);
             if (_character) {
                 _character->setLeftButtonDown(true);
+                _character->setRightButtonDown(false);
             }
         }
         break;
@@ -140,6 +132,7 @@ bool ButtonController::init() {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
                     _character->setRightButtonDown(true);
+                    _character->setLeftButtonDown(false);
                 }
             }
             break;

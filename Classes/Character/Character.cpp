@@ -50,37 +50,10 @@ bool Character::init(EntityInfo* info)
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
 
-
-	//Vec2 position = _model->getPosition(); // Get the current position of the sprite
-	//Vec2 topLeftCharacterPosition = Vec2((position.x - size.width * _model->getAnchorPoint().x) + 3.0f,
-	//	position.y + size.height * (1 - _model->getAnchorPoint().y));
-
-	//auto topleftCharacterPoint = Node::create();
-	//auto physicsBodyTopLeftCharacter = PhysicsBody::createCircle(0.5, PhysicsMaterial(1, 1, 0));
-	//physicsBodyTopLeftCharacter->setDynamic(false);
-	//physicsBodyTopLeftCharacter->setRotationEnable(false);
-	//topleftCharacterPoint->setPhysicsBody(physicsBodyTopLeftCharacter);
-	//topleftCharacterPoint->setPosition(topLeftCharacterPosition);
-	//this->addChild(topleftCharacterPoint);
-
-	//Vec2 topRightCharacterPosition = Vec2((position.x + size.width * (1 - _model->getAnchorPoint().x)) - 3.0f,
-	//	position.y + size.height * (1 - _model->getAnchorPoint().y));
-
-	//auto topRightCharacterPoint = Node::create();
-	//auto physicsBodyTopRightCharacter = PhysicsBody::createCircle(0.5, PhysicsMaterial(1, 1, 0));
-	//physicsBodyTopRightCharacter->setDynamic(false);
-	//physicsBodyTopRightCharacter->setRotationEnable(false);
-	//topRightCharacterPoint->setPhysicsBody(physicsBodyTopRightCharacter);
-	//topRightCharacterPoint->setPosition(topRightCharacterPosition);
-	//this->addChild(topRightCharacterPoint);
-
 	auto listener = EventListenerPhysicsContact::create();
 	listener->onContactBegin = CC_CALLBACK_1(Character::callbackOnContactBegin, this);
 	//listener->onContactSeparate = CC_CALLBACK_1(Character::callbackOnContactSeparate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-
-
 
 	_stateMachine = StateMachine::create(this);
 	_stateMachine->addState("idle", new CharacterIdleState());
@@ -88,6 +61,7 @@ bool Character::init(EntityInfo* info)
 	_stateMachine->addState("jump", new CharacterRunState());
 	_stateMachine->setCurrentState("idle");
 	this->addChild(_stateMachine);
+
 	return true;
 }
 
@@ -166,6 +140,12 @@ void Character::setRightButtonDown(bool isPressed)
 
 int Character::getNumberOfCharacters() {
 	return _characters.size();
+}
+
+void Character::onEnter()
+{
+	Entity::onEnter();
+	this->scheduleUpdate();
 }
 
 bool Character::callbackOnContactBegin(PhysicsContact& contact)

@@ -21,7 +21,10 @@ public:
     void setLeftButtonDown(bool isPressed);
     void setUpButtonDown(bool isPressed);
     void setRightButtonDown(bool isPressed);
-    Character() : _isUpButtonDown(false), _isLeftButtonDown(false), _isRightButtonDown(false) {}
+    bool getLeftButtonDown() const { return _isLeftButtonDown; }
+    bool getUpButtonDown() const { return _isUpButtonDown; }
+    bool getRightButtonDown() const { return _isRightButtonDown; }
+
 
 private:
     static Character* _instance;
@@ -33,6 +36,7 @@ private:
     bool _isLeftButtonDown = false;
     bool _isUpButtonDown = false;
     bool _isRightButtonDown = false;
+    void onEnter() override;
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     void callbackOnContactSeparate(PhysicsContact& contact);
@@ -40,7 +44,6 @@ protected:
     bool _isOnGround = false;
     bool _isOnStair = false;
     void update(float dt) override;
-    Node* bottomNode;
 };
 
 #endif // !__CHARACTER_H__

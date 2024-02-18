@@ -1,6 +1,6 @@
 #include "CharacterIdleState.h"
-//#include "KeyBoardInput.h"
 #include "StateMachine/StateMachine.h"
+#include "Character/Character.h"
 
 void CharacterIdleState::enterState(Entity* owner)
 {
@@ -14,17 +14,9 @@ void CharacterIdleState::enterState(Entity* owner)
 
 std::string CharacterIdleState::updateState()
 {
-	//auto keyboard = KeyboardInput::getInstance();
-
-	//if (keyboard->getKey(EventKeyboard::KeyCode::KEY_SPACE))
-	//{
-	//	return "jump";
-	//}
-
-	//if (keyboard->getDirection() != Vec2::ZERO)
-	//{
-	//	return "run";
-	//}
+	EntityInfo info(1, "character");
+	auto _characterInstace = Character::getInstance(&info);
+	auto _character = _characterInstace->getCharacter(0);
 
 	return "idle";
 }
