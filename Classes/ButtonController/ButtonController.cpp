@@ -31,7 +31,7 @@ bool ButtonController::init() {
 
     _leftButton = ui::Button::create("Buttons/Icon44.png");
     _leftButton->setContentSize(Size(50, 50));
-    _leftButton->setPosition(Vec2(100, 40));
+    _leftButton->setPosition(Vec2(-550, -340));
     _leftButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
     switch (type)
     {
@@ -80,7 +80,7 @@ bool ButtonController::init() {
 
     _upButton = ui::Button::create("Buttons/Icon43.png");
     _upButton->setContentSize(Size(50, 50));
-    _upButton->setPosition(Vec2(1100, 40));
+    _upButton->setPosition(Vec2(590, -340));
     _upButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
@@ -122,7 +122,7 @@ bool ButtonController::init() {
     
     _rightButton = ui::Button::create("Buttons/Icon45.png");
     _rightButton->setContentSize(Size(50, 50));
-    _rightButton->setPosition(Vec2(300, 40));
+    _rightButton->setPosition(Vec2(-450, -340));
     _rightButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {

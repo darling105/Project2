@@ -55,7 +55,7 @@ bool Map1::init()
     this->addChild(_background);
 
     // Thêm GameMap
-    _gameMap = GameMap::create("Map/map1.tmx");
+    _gameMap = GameMap::create("Maps/map1.tmx");
     this->addChild(_gameMap, 1);
 
     // Khởi tạo Character
@@ -91,7 +91,7 @@ bool Map1::init()
     auto groundPhysics = PhysicGround::create(objectPhysic);
     this->addChild(groundPhysics);
 
-    auto objectLadder = _gameMap->getObjectGroup("Ladder");
+    auto objectLadder = _gameMap->getObjectGroup("LadderObject");
     auto groundLadder = Stair::create(objectLadder);
     this->addChild(groundLadder);
 
@@ -121,7 +121,7 @@ void Map1::onEnter()
     auto _char = _character->getCharacter(0);
     Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
     auto mapSize = _gameMap->getContentSize();
-    Rect boundingBox = { size.width / 2,size.height / 2,1280 - size.width / 2 - size.width / 2,896 - size.height / 2 - size.height / 2 };
+    Rect boundingBox = { size.width / 2,size.height / 2,1600 - size.width / 2 - size.width / 2,736 - size.height / 2 - size.height / 2 };
 
     auto buttonInstace = ButtonController::getInstance();
     CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace);
