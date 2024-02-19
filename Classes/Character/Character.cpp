@@ -115,11 +115,13 @@ void Character::jump()
 void Character::moveLeft()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 40);
+	_isMoving = true;
 }
 
 void Character::moveRight()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 40);
+	_isMoving = true;
 }
 
 void Character::setLeftButtonDown(bool isPressed)

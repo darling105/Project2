@@ -1,4 +1,4 @@
-#ifndef __ENEMY_H__
+﻿#ifndef __ENEMY_H__
 #define __ENEMY_H__
 
 #include "Entity/Entity.h"
@@ -25,11 +25,16 @@ protected:
 	bool callbackOnContactBegin(PhysicsContact& contact);
 	//void shoot(float dt);
 	void onEnter() override;
+	//void startShooting();
+	void update(float dt);
+	void startUpdating();
 protected:
 	Node* nodeA;
 	Node* nodeB;
 	Node* target;
 	float timeSinceLastShot;
+	float bulletTimer; // Biến để đếm thời gian giữa các lần bắn viên đạn
+	float bulletInterval; // Thời gian giữa các lần bắn viên đạn
 
 };
 #endif // !__ENEMY_H__

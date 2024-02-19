@@ -4,10 +4,10 @@
 
 //#include "IDamageable.h"
 
-Skill* Skill::create(std::string skillName)
+Skill* Skill::create(EntityInfo* info)
 {
 	auto newObject = new Skill();
-	if (newObject != nullptr && newObject->init(skillName)) {
+	if (newObject != nullptr && newObject->init(info)) {
 		newObject->autorelease();
 		return newObject;
 	}
@@ -15,31 +15,17 @@ Skill* Skill::create(std::string skillName)
 	return nullptr;
 }
 
-bool Skill::init(std::string skillName)
+bool Skill::init(EntityInfo* info)
 {
-    if (!Node::init()) {
+    if (!Entity::init(info)) {
         return false;
     }
 
-    // Tải sprite frame cache từ file plist và texture
-    if (!AnimationUtils::loadSpriteFrameCache("/Skill/", skillName)) {
-        log("Failed to load sprite frame cache");
-        return false;
-    }
-
-    // Tạo animation từ sprite frame cache
-    auto animationInfo = AnimationUtils::createAnimation(skillName, 1.0f); // Đặt thời gian cho mỗi frame
-    auto animation = animationInfo.first;
-    auto numFrames = animationInfo.second;
-
-    // Tạo animate từ animation
-    auto animate = RepeatForever::create(Animate::create(animation));
-
-    // Tạo sprite và chạy animation
-    _model = Sprite::createWithSpriteFrameName("./" + skillName + " (1)");
-    _model->setAnchorPoint(Vec2(0.6, 0.3));
-    _model->runAction(animate);
-    this->addChild(_model, 5);
+	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName);
+	auto animate = RepeatForever::create(Animate::create(aniIdle));
+	_model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + " (1)");
+	_model->runAction(animate);
+	this->addChild(_model, 2);
 
     // Tạo physics body cho đạn
     auto bodyBullet = PhysicsBody::createCircle(_model->getContentSize().height / 4, PhysicsMaterial(1, 0, 1));
@@ -56,7 +42,15 @@ bool Skill::init(std::string skillName)
     return true;
 }
 
+bool Skill::loadAnimations()
+{
+	Entity::loadAnimations();
 
+		AnimationUtils::loadSpriteFrameCache("Skill/", "fireskill");
+		AnimationUtils::createAnimation("fireskill", 1.0f);
+
+	return true;
+}
 
 
 bool Skill::callbackOnContactBegin(PhysicsContact& contact)

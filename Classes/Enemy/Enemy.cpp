@@ -72,7 +72,7 @@ bool Enemy::init(EntityInfo* info)
     _enemyStateMachine->addState("chase", new EnemyChaseState());
     _enemyStateMachine->setCurrentState("patrol");
     this->addChild(_enemyStateMachine);
-    //schedule(CC_SCHEDULE_SELECTOR(Enemy::shoot), 1.0f);
+    //schedule(CC_SCHEDULE_SELECTOR(Enemy::shoot), 10.0f);
 
     return true;
 }
@@ -117,34 +117,34 @@ bool Enemy::callbackOnContactBegin(PhysicsContact& contact)
     return true;
 }
 
-//void Enemy::shoot(float dt)
-//{
-//    for (int i = 0; i < 3; ++i) {
-//        // Tạo và bắn viên đạn
-//        auto bullet = Skill::create("fireskill");
-//        bullet->setPosition(this->getPosition());
-//        bullet->setOwner(this);
-//        this->getParent()->addChild(bullet,4);
-//        auto bulletBody = bullet->getPhysicsBody();
-//
-//        // Áp dụng lực cho viên đạn dựa vào chỉ số của vòng lặp
-//        float xImpulse = (i == 0) ? 0 : ((i == 1) ? -250000 : 250000);
-//        if (bulletBody) {
-//            bulletBody->applyImpulse(Vec2(xImpulse, 500000)); // Áp dụng lực để viên đạn đi lên và sang trái/phải
-//        }
-//
-//        // Tạo hành động Sequence cho viên đạn
-//        auto removeAction = RemoveSelf::create();
-//        auto delayAction = DelayTime::create(3.0f);
-//        auto sequence = Sequence::create(delayAction, removeAction, nullptr);
-//        bullet->runAction(sequence);
-//    }
-//}
+void Enemy::update(float dt) {
+    // Cập nhật biến đếm thời gian
+    bulletTimer += dt;
+    // Kiểm tra nếu đã đến thời điểm bắn viên đạn tiếp theo
+    if (bulletTimer >= bulletInterval) {
+        for (int i = 0; i < 3; ++i) {
+            auto bullet = Skill::create(new EntityInfo(1, "fireskill"));
+            bullet->setPosition(this->getPosition());
+            bullet->setOwner(this);
+            this->getParent()->addChild(bullet, 4);
+            auto bulletBody = bullet->getPhysicsBody();
+            float xImpulse = (i == 0) ? 0 : ((i == 1) ? -250000 : 250000);
+            if (bulletBody) {
+                bulletBody->applyImpulse(Vec2(xImpulse, 500000));
+            }
+        }
+        
+        // Đặt lại biến đếm thời gian
+        bulletTimer = 0.0f;
+    }
+}
+
 
 void Enemy::onEnter()
 {
     Entity::onEnter();
     this->scheduleUpdate();
+    bulletInterval = 2.0f;
 }
 
 

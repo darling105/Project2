@@ -24,8 +24,8 @@ public:
     bool getLeftButtonDown() const { return _isLeftButtonDown; }
     bool getUpButtonDown() const { return _isUpButtonDown; }
     bool getRightButtonDown() const { return _isRightButtonDown; }
-
-
+    bool _isJumping = false;
+    bool _isMoving = false;
 private:
     static Character* _instance;
     static std::vector<Character*> _characters;
@@ -40,7 +40,7 @@ private:
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     void callbackOnContactSeparate(PhysicsContact& contact);
-    bool _isJumping = false;
+
     bool _isOnGround = false;
     bool _isOnStair = false;
     void update(float dt) override;

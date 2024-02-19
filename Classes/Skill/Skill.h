@@ -9,12 +9,11 @@ USING_NS_CC;
 class Skill : public Entity {
 public:
 	static const int SKILL_TAG = 15;
-	static Skill* create(std::string skillName);
-	virtual bool init(std::string skillName);
-protected:
-	Sprite* _model;
+	static Skill* create(EntityInfo* info);
 protected:
 	bool callbackOnContactBegin(PhysicsContact& contact);
+	virtual bool init(EntityInfo* info);
+	bool loadAnimations() override;
 	CC_SYNTHESIZE(Entity*, _owner, Owner);
 };
 

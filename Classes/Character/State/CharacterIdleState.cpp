@@ -17,6 +17,12 @@ std::string CharacterIdleState::updateState()
 	EntityInfo info(1, "character");
 	auto _characterInstace = Character::getInstance(&info);
 	auto _character = _characterInstace->getCharacter(0);
+	if(_character->_isJumping){
+		return"jump";
+	}
+	if (_character->_isMoving) {
+		return "run";
+	}
 
 	return "idle";
 }
