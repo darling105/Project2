@@ -25,7 +25,7 @@ bool Stair::init(TMXObjectGroup* objectGroup) {
             auto stairNode = Node::create();
             auto physicsStairNode = PhysicsBody::createBox(Size(width, height), PhysicsMaterial(1, 0, 0));
             physicsStairNode->setCategoryBitmask(DefineBitmask::STAIR);
-            physicsStairNode->setCollisionBitmask(DefineBitmask::CHARACTER);
+            physicsStairNode->setCollisionBitmask(DefineBitmask::NON);
             physicsStairNode->setContactTestBitmask(DefineBitmask::CHARACTER);
             physicsStairNode->setPositionOffset(Vec2(width * 0.5f, height * 0.5f));
             physicsStairNode->setDynamic(false);

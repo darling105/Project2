@@ -43,25 +43,26 @@ bool Character::init(EntityInfo* info)
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
 	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND);
-	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND /*| DefineBitmask::STAIR*/);
+	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR);
 	physicBodyCharacter->setRotationEnable(false);
-	physicBodyCharacter->setGravityEnable(true);
-	physicBodyCharacter->setDynamic(true);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
 
+
 	auto listener = EventListenerPhysicsContact::create();
 	listener->onContactBegin = CC_CALLBACK_1(Character::callbackOnContactBegin, this);
-	//listener->onContactSeparate = CC_CALLBACK_1(Character::callbackOnContactSeparate, this);
+	listener->onContactSeparate = CC_CALLBACK_1(Character::callbackOnContactSeparate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+
+
 
 	_stateMachine = StateMachine::create(this);
 	_stateMachine->addState("idle", new CharacterIdleState());
 	_stateMachine->addState("run", new CharacterRunState());
-	_stateMachine->addState("jump", new CharacterRunState());
+	_stateMachine->addState("jump", new CharacterJumpState());
 	_stateMachine->setCurrentState("idle");
 	this->addChild(_stateMachine);
-
 	return true;
 }
 
@@ -115,13 +116,11 @@ void Character::jump()
 void Character::moveLeft()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 40);
-	_isMoving = true;
 }
 
 void Character::moveRight()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 40);
-	_isMoving = true;
 }
 
 void Character::setLeftButtonDown(bool isPressed)
@@ -138,6 +137,11 @@ void Character::setUpButtonDown(bool isPressed)
 void Character::setRightButtonDown(bool isPressed)
 {
 	_isRightButtonDown = isPressed;
+}
+
+void Character::setDownButtonDown(bool isPressed)
+{
+	_isDownButtonDown = isPressed;
 }
 
 int Character::getNumberOfCharacters() {
@@ -168,27 +172,33 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 			_isJumping = false; 
 		}
 		else {
-			physicBodyCharacter->setVelocity(Vec2::ZERO);
+			_physicsBody->setVelocity(Vec2::ZERO);
 		}
+	}
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
+		_isOnStair = true;
 	}
 	return true;
 }
 
 
-void Character::callbackOnContactSeparate(PhysicsContact& contact) {
+bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	auto nodeA = contact.getShapeA()->getBody()->getNode();
 	auto nodeB = contact.getShapeB()->getBody()->getNode();
-	if (nodeA != this && nodeB != this) return;
+
+	if (nodeA != this && nodeB != this) return false;
+
 	auto target = (nodeA == this) ? nodeB : nodeA;
-	if (target->getTag() == PhysicGround::TAG_GROUND && target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
-		log("OnAir");
-		_isOnGround = false;
+
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
+		_isOnStair = false;
 	}
+	return true;
 }
 
 void Character::update(float dt) {
 	if (_isOnGround || _isJumping) {
-		_physicsBody->setVelocity(Vec2(0, _physicsBody->getVelocity().y));
+		physicBodyCharacter->setVelocity(Vec2(0, physicBodyCharacter->getVelocity().y));
 
 		if (_isLeftButtonDown) {
 			moveLeft();
@@ -200,4 +210,24 @@ void Character::update(float dt) {
 			jump();
 		}
 	}
+	if (_isOnStair) {
+		physicBodyCharacter->setGravityEnable(false);
+		physicBodyCharacter->setVelocity(Vec2::ZERO);
+		if (_isUpButtonDown) {
+			physicBodyCharacter->applyImpulse(Vec2(0, 1) * 80);
+		}
+		if (_isDownButtonDown) {
+			physicBodyCharacter->applyImpulse(Vec2(0, -1) * 80);
+		}
+		if (_isLeftButtonDown) {
+			moveLeft();
+		}
+		if (_isRightButtonDown) {
+			moveRight();
+		}
+	}
+	else {
+		physicBodyCharacter->setGravityEnable(true);
+	}
+
 }

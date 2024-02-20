@@ -1,6 +1,6 @@
 #include "CharacterRunState.h"
 #include "StateMachine/StateMachine.h"
-//#include "KeyBoardInput.h"
+#include "Character/Character.h"
 
 void CharacterRunState::enterState(Entity* owner)
 {
@@ -19,29 +19,15 @@ void CharacterRunState::enterState(Entity* owner)
 
 std::string CharacterRunState::updateState()
 {
-	//auto keyboard = KeyboardInput::getInstance();
-	//// update
-	//Vec2 direction = keyboard->getDirection();
-	//float dt = Director::getInstance()->getAnimationInterval();
-	//Vec2 nextPosition = _owner->getPosition() + direction * 10 * dt;
-
-	//if (_map->getMetaAtPos(nextPosition) != GameMap::MetaRed) {
-	//	_owner->setPosition(nextPosition);
-	//}
-
-	//if (direction.x != 0)
-	//	_owner->getModel()->setFlippedX(direction.x < 0);
-
-	//// 
-	//if (keyboard->getKey(EventKeyboard::KeyCode::KEY_SPACE))
-	//{
-	//	return "jump";
-	//}
-
-	//if (keyboard->getDirection() == Vec2::ZERO)
-	//{
-	//	return "idle";
-	//}
+	EntityInfo info(1, "character");
+	auto character = Character::getInstance(&info);
+	auto _character = character->getCharacter(0);
+	if (!_character->getLeftButtonDown() && !_character->getRightButtonDown()) {
+		return "idle";
+	}
+	if (_character->_isJumping) {
+		return "jump";
+	}
 	return "run";
 }
 

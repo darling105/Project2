@@ -59,9 +59,9 @@ bool Enemy::init(EntityInfo* info)
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
     auto enemyPhysicBody = PhysicsBody::createBox(_model->getContentSize() / 3.3, PhysicsMaterial(0.1f, 1.0f, 0.0f));
-    enemyPhysicBody->setCategoryBitmask(DefineBitmask::NON);
+    enemyPhysicBody->setCategoryBitmask(DefineBitmask::ENEMY);
     enemyPhysicBody->setCollisionBitmask(DefineBitmask::NON);
-    enemyPhysicBody->setContactTestBitmask(DefineBitmask::NON);
+    enemyPhysicBody->setContactTestBitmask(DefineBitmask::CHARACTER);
     enemyPhysicBody->setRotationEnable(false);
     enemyPhysicBody->setGravityEnable(false);
     this->setPhysicsBody(enemyPhysicBody);
@@ -72,7 +72,6 @@ bool Enemy::init(EntityInfo* info)
     _enemyStateMachine->addState("chase", new EnemyChaseState());
     _enemyStateMachine->setCurrentState("patrol");
     this->addChild(_enemyStateMachine);
-    //schedule(CC_SCHEDULE_SELECTOR(Enemy::shoot), 10.0f);
 
     return true;
 }
@@ -144,7 +143,7 @@ void Enemy::onEnter()
 {
     Entity::onEnter();
     this->scheduleUpdate();
-    bulletInterval = 2.0f;
+    bulletInterval = 3.0f;
 }
 
 

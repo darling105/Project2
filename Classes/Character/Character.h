@@ -21,11 +21,12 @@ public:
     void setLeftButtonDown(bool isPressed);
     void setUpButtonDown(bool isPressed);
     void setRightButtonDown(bool isPressed);
+    void setDownButtonDown(bool isPressed);
     bool getLeftButtonDown() const { return _isLeftButtonDown; }
     bool getUpButtonDown() const { return _isUpButtonDown; }
     bool getRightButtonDown() const { return _isRightButtonDown; }
+    bool getDownButtonDown() const { return _isDownButtonDown; }
     bool _isJumping = false;
-    bool _isMoving = false;
 private:
     static Character* _instance;
     static std::vector<Character*> _characters;
@@ -36,10 +37,11 @@ private:
     bool _isLeftButtonDown = false;
     bool _isUpButtonDown = false;
     bool _isRightButtonDown = false;
+    bool _isDownButtonDown = false;
     void onEnter() override;
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
-    void callbackOnContactSeparate(PhysicsContact& contact);
+    bool callbackOnContactSeparate(PhysicsContact& contact);
 
     bool _isOnGround = false;
     bool _isOnStair = false;
