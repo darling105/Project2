@@ -21,6 +21,7 @@ private:
     bool _dirty;
     ButtonController* _buttonController; // Thêm trường để lưu trữ con trỏ đến ButtonController
     cocos2d::Vec2 _previousPosition;
+    Size _cameraSize;
 };
 
 #endif // !__CAMERA_FOLLOW_H__

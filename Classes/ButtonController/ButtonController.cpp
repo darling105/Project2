@@ -31,7 +31,7 @@ bool ButtonController::init() {
 
     _leftButton = ui::Button::create("Buttons/Icon44.png");
     _leftButton->setContentSize(Size(50, 50));
-    _leftButton->setPosition(Vec2(-550, -340));
+    _leftButton->setPosition(Vec2(100, 40));
     _leftButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
     switch (type)
     {
@@ -41,7 +41,6 @@ bool ButtonController::init() {
             auto _character = Character::getInstance(&info)->getCharacter(0);
             if (_character) {
                 _character->setLeftButtonDown(true);
-                _character->setRightButtonDown(false);
             }
         }
         break;
@@ -54,15 +53,6 @@ bool ButtonController::init() {
             }
         }
         break;
-    /*case ui::Widget::TouchEventType::MOVED:
-        log("LeftButton Released");
-        if (ButtonController::getInstance()) {
-            auto _character = Character::getInstance(&info)->getCharacter(0);
-            if (_character) {
-                _character->setLeftButtonDown(true);
-            }
-        }
-        break;*/
     case ui::Widget::TouchEventType::CANCELED:
         log("LeftButton Released");
         if (ButtonController::getInstance()) {
@@ -80,7 +70,7 @@ bool ButtonController::init() {
 
     _upButton = ui::Button::create("Buttons/Icon43.png");
     _upButton->setContentSize(Size(50, 50));
-    _upButton->setPosition(Vec2(590, -340));
+    _upButton->setPosition(Vec2(900, 40));
     _upButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
@@ -122,7 +112,7 @@ bool ButtonController::init() {
     
     _rightButton = ui::Button::create("Buttons/Icon45.png");
     _rightButton->setContentSize(Size(50, 50));
-    _rightButton->setPosition(Vec2(-450, -340));
+    _rightButton->setPosition(Vec2(300, 40));
     _rightButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
         switch (type)
         {
@@ -132,7 +122,6 @@ bool ButtonController::init() {
                 auto _character = Character::getInstance(&info)->getCharacter(0);
                 if (_character) {
                     _character->setRightButtonDown(true);
-                    _character->setLeftButtonDown(false);
                 }
             }
             break;
@@ -161,7 +150,38 @@ bool ButtonController::init() {
     _downButton->setScale(2.0f);
     _downButton->setContentSize(Size(50, 50));
     _downButton->setPosition(Vec2(400, 40));
-    //addChild(_downButton);
+    _downButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            log("DownButton Pressed");
+            if (ButtonController::getInstance()) {
+                auto _character = Character::getInstance(&info)->getCharacter(0);
+                if (_character) {
+                    _character->setDownButtonDown(true);
+                }
+            }
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            log("DownButton Released");
+            if (ButtonController::getInstance()) {
+                auto _character = Character::getInstance(&info)->getCharacter(0);
+                if (_character) {
+                    _character->setDownButtonDown(false);
+                }
+            }
+        case ui::Widget::TouchEventType::CANCELED:
+            log("DownButton Released");
+            if (ButtonController::getInstance()) {
+                auto _character = Character::getInstance(&info)->getCharacter(0);
+                if (_character) {
+                    _character->setDownButtonDown(false);
+                }
+            }
+            break;
+        }
+        });
+    addChild(_downButton);
 
     addButton(_leftButton);
     addButton(_upButton);

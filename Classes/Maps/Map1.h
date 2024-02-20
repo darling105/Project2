@@ -7,12 +7,14 @@
 #include "MapUtilities/GameMap.h"
 #include "Enemy/Enemy.h"
 #include "Camera/CameraFollow.h"
+#include "Maps/BaseMap.h"
 USING_NS_CC;
 
-class Map1 : public Scene
+class Map1 : public BaseMap
 {
 public:
-	static Scene* create();
+	static Map1* create();
+	//static Scene* create();
 	virtual bool init();
 	
 	ButtonController* _buttonController;
@@ -20,14 +22,11 @@ public:
 protected:
 	Sprite* _background;
 	Character* _character;
-	ButtonController* _button;
-	GameMap* _gameMap;
+	//GameMap* _gameMap;
 	Enemy* _enemy;
 protected:
 	void goToGameScene();
 	void onEnter() override;
-	void resetInput();
-private:
-	void update(float dt);
+	//void resetInput();
 };
 #endif //__MAP_1_H__

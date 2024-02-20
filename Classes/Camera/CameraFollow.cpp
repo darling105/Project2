@@ -21,7 +21,9 @@
         _buttonController = buttonController; // Lưu trữ con trỏ đến ButtonController
         _dirty = false;
         _previousPosition = target->getPosition();
-
+        Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
+        Size cameraSize = size / 2;
+        _cameraSize = cameraSize;
         this->scheduleUpdate();
         return true;
     }
@@ -42,20 +44,44 @@
             _dirty = false;
         }
 
-        // Di chuyển camera
         float left_x = _fieldOfView.getMinX();
         float down_y = _fieldOfView.getMinY();
         float right_x = _fieldOfView.getMaxX();
         float up_y = _fieldOfView.getMaxY();
 
-        float positionx = clampf(targetPosition.x, left_x, right_x);
-        float positiony = clampf(targetPosition.y, down_y, up_y);
-
-        camera->setPosition(Vec2(positionx, positiony));
+        if (targetPosition.x >= left_x && targetPosition.x <= right_x && targetPosition.y >= down_y && targetPosition.y <= up_y) {
+            camera->setPosition(targetPosition);
+        }
+        else {
+            if (targetPosition.x < left_x && targetPosition.y < down_y) {
+                camera->setPosition(Vec2(left_x, down_y));
+            }
+            else if (targetPosition.x < left_x && targetPosition.y > up_y) {
+                camera->setPosition(Vec2(left_x, up_y));
+            }
+            else if (targetPosition.x > right_x && targetPosition.y < down_y) {
+                camera->setPosition(Vec2(right_x, down_y));
+            }
+            else if (targetPosition.x > right_x && targetPosition.y > up_y) {
+                camera->setPosition(Vec2(right_x, up_y));
+            }
+            else if (targetPosition.y < down_y) {
+                camera->setPosition(Vec2(targetPosition.x, down_y));
+            }
+            else if (targetPosition.y > up_y) {
+                camera->setPosition(Vec2(targetPosition.x, up_y));
+            }
+            else if (targetPosition.x < left_x) {
+                camera->setPosition(Vec2(left_x, targetPosition.y));
+            }
+            else if (targetPosition.x > right_x) {
+                camera->setPosition(Vec2(right_x, targetPosition.y));
+            }
+        }
 
         // Cập nhật vị trí của ButtonController
         if (_buttonController) {
-            _buttonController->setPosition(camera->getPosition());
+            _buttonController->setPosition(camera->getPosition().x - 500, camera->getPosition().y - 200);
         }
     }
 

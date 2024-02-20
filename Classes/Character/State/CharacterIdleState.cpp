@@ -15,13 +15,13 @@ void CharacterIdleState::enterState(Entity* owner)
 std::string CharacterIdleState::updateState()
 {
 	EntityInfo info(1, "character");
-	auto _characterInstace = Character::getInstance(&info);
-	auto _character = _characterInstace->getCharacter(0);
-	if(_character->_isJumping){
-		return"jump";
-	}
-	if (_character->_isMoving) {
+	auto character = Character::getInstance(&info);
+	auto _character = character->getCharacter(0);
+	if (_character->getLeftButtonDown() || _character->getRightButtonDown()) {
 		return "run";
+	}
+	if (_character->_isJumping) {
+		return "jump";
 	}
 
 	return "idle";
