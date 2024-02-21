@@ -108,7 +108,7 @@ void Character::jump()
 {
 	_isOnGround = false;
 	if (!_isJumping) {
-	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 60);
+	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 80);
 	_isJumping = true;
 	}
 }
@@ -214,10 +214,10 @@ void Character::update(float dt) {
 		physicBodyCharacter->setGravityEnable(false);
 		physicBodyCharacter->setVelocity(Vec2::ZERO);
 		if (_isUpButtonDown) {
-			physicBodyCharacter->applyImpulse(Vec2(0, 1) * 80);
+			physicBodyCharacter->applyImpulse(Vec2(0, 1) * 40);
 		}
 		if (_isDownButtonDown) {
-			physicBodyCharacter->applyImpulse(Vec2(0, -1) * 80);
+			physicBodyCharacter->applyImpulse(Vec2(0, -1) * 40);
 		}
 		if (_isLeftButtonDown) {
 			moveLeft();

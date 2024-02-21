@@ -29,10 +29,11 @@ bool Map1::init() {
         return false;
     }
     addBackground("BackGround/Background2.png");
-    addGameMap("Map/map1/map2.tmx");
+    addGameMap("Maps/map1.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
     }
+    createMenu();
     createPhysicsWorld();
     addCharacter();
     addEnemies();
@@ -58,18 +59,11 @@ void Map1::onEnter()
     auto _char = _character->getCharacter(0);
     Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
     auto mapSize = _gameMap->getContentSize();
-    Rect boundingBox = { size.width / 2,size.height / 2,3200 - size.width / 2 - size.width / 2,1932 - size.height / 2 - size.height / 2 };
-
+    Rect boundingBox = { size.width / 2,size.height / 2,3680 - size.width / 2 - size.width / 2,1632 - size.height / 2 - size.height / 2 };
     auto buttonInstace = ButtonController::getInstance();
     CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace);
     this->addChild(cam);
 
-    //this->resetInput();
+   
 }
-
-//void Map1::resetInput()
-//{
-//    auto dispatcher = Director::getInstance()->getEventDispatcher();
-//    dispatcher->removeEventListenersForTarget(this);
-//}
 
