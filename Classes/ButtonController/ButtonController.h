@@ -24,10 +24,12 @@ private:
     bool _leftButtonPressed = false;
     bool _rightButtonPressed = false;
     bool _downButtonPressed = false;
+    bool _stopMenuPressed = false;
     ui::Button* _upButton;
     ui::Button* _leftButton;
     ui::Button* _rightButton;
     ui::Button* _downButton;
+    ui::Button* _stopMenu;
 };
 
 #endif // __BUTTON_CONTROLLER_H__

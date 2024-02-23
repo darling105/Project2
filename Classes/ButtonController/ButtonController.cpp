@@ -1,6 +1,8 @@
 ﻿#include "ButtonController.h"
 #include "ui/CocosGUI.h"
 #include "Character/Character.h"
+#include "Manager/GameManager.h"
+#include "Scene/PauseGame.h"
 #include "AudioManager/AudioManager.h"
 #include "audio/include/AudioEngine.h"
 
@@ -25,7 +27,6 @@ bool ButtonController::init() {
     }
 
     AudioManager* audioManager = AudioManager::getInstance();
-
 
     EntityInfo info(1, "character");
 
@@ -182,6 +183,25 @@ bool ButtonController::init() {
         }
         });
     addChild(_downButton);
+
+    _stopMenu = ui::Button::create("Buttons/Icon06.png");
+    _stopMenu->setContentSize(Size(50, 50));
+    _stopMenu->setPosition(Vec2(-150, 500));
+    _stopMenu->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            log("StopButton Pressed");
+            // Tạm dừng game khi nhấn nút stop
+            GameManager::getInstance()->pauseGame();
+            
+            break;
+        }
+        });
+
+
+
+    addChild(_stopMenu);
 
     addButton(_leftButton);
     addButton(_upButton);

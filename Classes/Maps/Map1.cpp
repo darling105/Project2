@@ -40,6 +40,7 @@ bool Map1::init() {
     createGroundPhysics();
     createButtonController();
     addLadder();
+    addFinish();
     this->scheduleUpdate();
     return true;
 }

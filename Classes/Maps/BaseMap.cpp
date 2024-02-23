@@ -5,6 +5,9 @@
 #include "PhysicRender/PhysicGround.h"
 #include "Enemy/Enemy.h"
 #include "PhysicRender/Stair.h"
+#include "PhysicRender/Finish.h"
+#include "Scene/GameScene.h"
+#include "Scene/PauseGame.h"
 
 USING_NS_CC;
 
@@ -28,7 +31,21 @@ void BaseMap::createPhysicsWorld() {
 }
 
 void BaseMap::createMenu() {
-    // giong init
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    Vector<MenuItem*> MenuItems;
+    auto miFont = MenuItemFont::create("Back", [&](Ref* sender) {
+        auto gameScene = GameScene::create();
+        Director::getInstance()->replaceScene(gameScene);
+        log("Game Clicked");
+        });
+    miFont->setPosition(Vec2(150,60));
+    MenuItems.pushBack(miFont);
+    auto menuA = Menu::createWithArray(MenuItems);
+    this->addChild(menuA, 2);
+    /*auto pauseLayer = PauseLayer::create();
+    this->addChild(pauseLayer, INT_MAX);*/
 }
 
 void BaseMap::createButtonController() {
@@ -77,7 +94,7 @@ void BaseMap::addEnemies() {
 
         float xPos = (600) + 100 * i;
         enemyInstance->setPosition(Vec2(200,200));
-        this->addChild(enemyInstance, 2);
+        //this->addChild(enemyInstance, 2);
     }
 }
 
@@ -92,4 +109,11 @@ void BaseMap::addLadder()
     auto objectLadder = _gameMap->getObjectGroup("Ladder");
     auto ladderPhysics = Stair::create(objectLadder);
     this->addChild(ladderPhysics);
+}
+
+void BaseMap::addFinish()
+{
+    auto objectFinish = _gameMap->getObjectGroup("Finish");
+    auto finishPhysics = Finish::create(objectFinish);
+    this->addChild(finishPhysics);
 }
