@@ -3,6 +3,8 @@
 #include "DefineBitmask.h"
 #include "PhysicRender/PhysicGround.h"
 #include "PhysicRender/Stair.h"
+#include "PhysicRender/Finish.h"
+#include "Manager/GameManager.h"
 #include "AudioManager/AudioManager.h"
 #include "audio/include/AudioEngine.h"
 
@@ -43,7 +45,7 @@ bool Character::init(EntityInfo* info)
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
 	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND);
-	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR);
+	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR | DefineBitmask::FINISH);
 	physicBodyCharacter->setRotationEnable(false);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
@@ -178,6 +180,10 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
 		_isOnStair = true;
 	}
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::FINISH)
+	{
+		_isOnFinish = true;
+	}
 	return true;
 }
 
@@ -190,8 +196,13 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 
 	auto target = (nodeA == this) ? nodeB : nodeA;
 
-	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
+	{
 		_isOnStair = false;
+	}
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::FINISH)
+	{
+		_isOnFinish = false;
 	}
 	return true;
 }
@@ -228,6 +239,9 @@ void Character::update(float dt) {
 	}
 	else {
 		physicBodyCharacter->setGravityEnable(true);
+	}
+	if (_isOnFinish) {
+		GameManager::getInstance()->endGame();
 	}
 
 }
