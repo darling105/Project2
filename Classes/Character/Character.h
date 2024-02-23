@@ -45,7 +45,6 @@ protected:
 
     bool _isOnGround = false;
     bool _isOnStair = false;
-    bool _isOnFinish = false;
     void update(float dt) override;
 };
 

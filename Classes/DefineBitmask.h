@@ -10,6 +10,5 @@ public:
 	static const int BULLET = 0x10;
 	static const int GROUND_EDGE = 0x20;
 	static const int STAIR = 0x09;
-	static const int FINISH = 0x40;
 };
 #endif // !_DEFINE_BITMASK_H__

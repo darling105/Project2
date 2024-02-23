@@ -11,7 +11,6 @@ public:
     void addEnemies();
     void addGameMap(const std::string& gameMapPath);
     void addLadder();
-    void addFinish();
     GameMap* _gameMap;
 protected:
     cocos2d::PhysicsWorld* _physicsWorld;
