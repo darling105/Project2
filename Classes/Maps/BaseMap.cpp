@@ -27,7 +27,7 @@ bool BaseMap::init() {
 
 void BaseMap::createPhysicsWorld() {
     auto _physicsWorld = this->getPhysicsWorld();
-    _physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //_physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     _physicsWorld->setGravity(Vec2(0, -400));
     _physicsWorld->setFixedUpdateRate(600.0f);
 }
@@ -114,12 +114,12 @@ void BaseMap::addEnemies() {
         /*Vec2 _position;
         _position.x = enemySpawnPoint["x"].asFloat();
         _position.y = enemySpawnPoint["y"].asFloat();*/
-        enemyInstance->setPosition(_position.x, _position.y);
+        //enemyInstance->setPosition(_position.x * 1.2, _position.y );
         creepInstance->setPosition(_position);
 
 
-        this->addChild(enemyInstance, 3);
-        this->addChild(creepInstance, 3);
+        this->addChild(enemyInstance,2);
+        this->addChild(creepInstance, 2);
     }
 }
 

@@ -13,7 +13,6 @@ void EnemyPatrolState::enterState(Entity* owner) {
 
     auto enemyBody = _owner->getPhysicsBody();
     if (enemyBody) {
-        enemyBody->setVelocity(velocityLeft);
         auto delay = DelayTime::create(2.0f);
         auto changeDirection = CallFunc::create([enemyBody, velocityRight, this]() {
             enemyBody->setVelocity(velocityRight);
@@ -50,10 +49,10 @@ std::string EnemyPatrolState::updateState() {
     auto creep = robotInstance->getEnemy(0);
 
     if (movingRight) {
-        _owner->getModel()->setFlippedX(false);
+        _owner->getModel()->setFlippedX(true);
     }
     else {
-        _owner->getModel()->setFlippedX(true);
+        _owner->getModel()->setFlippedX(false);
     }
 
     if (robot->_isAttack && creep->_isAttack) {

@@ -28,6 +28,12 @@ std::string CharacterRunState::updateState()
 	if (_character->_isJumping) {
 		return "jump";
 	}
+	if (_character->getLeftButtonDown()) {
+		_owner->getModel()->setFlippedX(true);
+	}
+	if (_character->getRightButtonDown()) {
+		_owner->getModel()->setFlippedX(false);
+	}
 	return "run";
 }
 

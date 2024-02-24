@@ -11,19 +11,14 @@ class Entity : public Node
 {
 public:
 	static Entity* create(EntityInfo* info);
-
 	virtual bool init(EntityInfo* info);
-
 	Sprite* getModel() { return _model; }
 	EntityInfo* getEntityInfo() { return _info; }
-	//EntityStat* getEntityStat(){ return _entityStat; }
 protected:
 	virtual bool loadAnimations();
 
 protected:
 	EntityInfo* _info;
-	//EntityStat* _entityStat;
-
 	Sprite* _model;
 };
 

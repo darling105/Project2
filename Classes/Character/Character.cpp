@@ -154,7 +154,14 @@ void Character::onEnter()
 {
 	Entity::onEnter();
 	this->scheduleUpdate();
+	_stateMachine->scheduleUpdate();
 }
+
+//void Character::onExit()
+//{
+//	Entity::onExit();
+//	_stateMachine->retain();
+//}
 
 bool Character::callbackOnContactBegin(PhysicsContact& contact)
 {

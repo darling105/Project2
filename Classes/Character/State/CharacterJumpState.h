@@ -3,6 +3,7 @@
 
 #include "StateMachine/State.h"
 #include "MapUtilities/GameMap.h"
+
 class CharacterJumpState : public State
 {
 public:
@@ -13,8 +14,7 @@ public:
 	GameMap* _map;
 	//CharacterJumpState() : isJumping(false) {};
 private:
-	//bool isJumping;
-	//void jump();
+
 };
 
 #endif // !__CHARACTER_JUMP_STATE_H__

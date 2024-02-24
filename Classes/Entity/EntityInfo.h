@@ -2,7 +2,7 @@
 #define __ENTITY_INFO_H__
 
 #include <iostream>
-//#include <string>
+
 
 class EntityInfo
 {
@@ -13,7 +13,7 @@ public:
 	EntityInfo(std::string name)
 	{
 		this->_entityName = name;
-		/*this->_level = level;*/
+
 	}
 };
 

@@ -1,8 +1,8 @@
 ﻿#include "CharacterJumpState.h"
 #include "StateMachine/StateMachine.h"
 #include "../Character.h"
-#include "../../Entity/Entity.h"
-//#include "KeyBoardInput.h"
+
+
 
 void CharacterJumpState::enterState(Entity* owner)
 {
@@ -17,7 +17,6 @@ void CharacterJumpState::enterState(Entity* owner)
     if (mapNode != nullptr) {
         _map = dynamic_cast<GameMap*>(mapNode);
     }
-    //isJumping = false;
   
 }
 
@@ -29,6 +28,7 @@ std::string CharacterJumpState::updateState()
     if (!_character->_isJumping) {
         return "idle";
     }
+    log("jumping");
     return "jump";
 }
 

@@ -73,7 +73,6 @@ bool Enemy::init(EntityInfo* info)
     _enemyStateMachine->addState("attack", new EnemyAttackState());
 
     _enemyStateMachine->setCurrentState("patrol");
-    //_enemyStateMachine->setDefaultState("patrol");
     this->addChild(_enemyStateMachine);
 
     return true;
@@ -95,7 +94,7 @@ bool Enemy::loadAnimations()
 
 bool Enemy::callbackOnContactBegin(PhysicsContact& contact)
 {
-    EntityInfo info("robot");
+    EntityInfo info("character");
     auto character = Character::getInstance(&info);
     auto _character = character->getCharacter(0);
     nodeA = contact.getShapeA()->getBody()->getNode();
@@ -109,9 +108,6 @@ bool Enemy::callbackOnContactBegin(PhysicsContact& contact)
         if (enemyPosition.y + enemyHeight + 10.0f <= characterPosition.y) {
             this->removeFromParentAndCleanup(true);
         }
-    }
-    else {
-        this->removeFromParentAndCleanup(true);
     }
 
     return true;

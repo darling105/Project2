@@ -34,9 +34,11 @@ std::string EnemyAttackState::updateState() {
 
     if (creep->_rightRange) {
         creep->getModel()->setFlippedX(true);
+        creep->getModel()->setAnchorPoint(Vec2(0.3, 0.5));
     }
     else if (creep->_leftRange) {
         creep->getModel()->setFlippedX(false);
+        creep->getModel()->setAnchorPoint(Vec2(0.7, 0.5));
     }
 
     return "attack";

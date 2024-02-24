@@ -39,6 +39,7 @@ private:
     bool _isRightButtonDown = false;
     bool _isDownButtonDown = false;
     void onEnter() override;
+    //void onExit() override;
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     bool callbackOnContactSeparate(PhysicsContact& contact);

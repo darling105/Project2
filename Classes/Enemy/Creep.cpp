@@ -1,7 +1,7 @@
 #include "Creep.h"
 #include "AnimationUtilities/AnimationUtils.h"
 #include "DefineBitmask.h"
-#include "Skill/Skill.h"
+#include "Skill/Bullet.h"
 #include "Character/Character.h"
 
 Creep* Creep::_instance;
@@ -58,7 +58,7 @@ bool Creep::init(EntityInfo* info)
     auto listener = EventListenerPhysicsContact::create();
     listener->onContactBegin = CC_CALLBACK_1(Creep::callbackOnContactBegin, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    Size size(_model->getContentSize().width / 1.5, _model->getContentSize().height / 1.4);
+    Size size(_model->getContentSize().width / 1.8, _model->getContentSize().height / 1.5);
     auto enemyPhysicBody = PhysicsBody::createBox(size, PhysicsMaterial(1.0f, 0.0f, 0.0f));
     enemyPhysicBody->setCategoryBitmask(DefineBitmask::ENEMY);
     enemyPhysicBody->setCollisionBitmask(DefineBitmask::GROUND);
@@ -67,17 +67,6 @@ bool Creep::init(EntityInfo* info)
     enemyPhysicBody->setGravityEnable(true);
     this->setPhysicsBody(enemyPhysicBody);
     enemyPhysicBody->setTag(ENEMY_TAG);
-
-    auto rangeAttackNode = Node::create();
-    auto physicRangeAttackNode = PhysicsBody::createBox(_model->getContentSize() * 2);
-    physicRangeAttackNode->setCategoryBitmask(0x030);
-    physicRangeAttackNode->setCollisionBitmask(DefineBitmask::GROUND);
-    physicRangeAttackNode->setRotationEnable(false);
-    rangeAttackNode->setPhysicsBody(physicRangeAttackNode);
-    rangeAttackNode->setPosition(Vec2::ZERO);
-
-    this->addChild(rangeAttackNode);
-
 
     _enemyStateMachine = StateMachine::create(this);
 
@@ -99,19 +88,22 @@ bool Creep::loadAnimations()
     for (auto name : aniNames)
     {
         AnimationUtils::loadSpriteFrameCache("Enemy/Void/", name);
-        AnimationUtils::createAnimation(name, 0.5f);
+        AnimationUtils::createAnimation(name, 1.0f);
     }
     return true;
 }
 
 bool Creep::callbackOnContactBegin(PhysicsContact& contact)
 {
+    EntityInfo info("character");
+    auto character = Character::getInstance(&info);
+    auto _character = character->getCharacter(0);
     nodeA = contact.getShapeA()->getBody()->getNode();
     nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA != this && nodeB != this) return false;
     target = (nodeA == this) ? (nodeB) : (nodeA);
     Vec2 enemyPosition = this->getPosition();
-    Vec2 characterPosition = target->getPosition();
+    Vec2 characterPosition = _character->getPosition();
     float enemyHeight = this->getContentSize().height;
     if (target != nullptr) {
         if (enemyPosition.y + enemyHeight + 10.0f < characterPosition.y) {
@@ -129,10 +121,12 @@ void Creep::update(float dt) {
     if (characterPosition.x > creepPositionX  + 20 && characterPosition.x < creepPositionX + 20 + 100) {
         _rightRange = true;
         _leftRange = false;
+        shoot(dt);
     }
     else if (characterPosition.x < creepPositionX - 20 && characterPosition.x > creepPositionX - 20 - 100) {
         _rightRange = false;
         _leftRange = true;
+        shoot(dt);
     }
     else {
         _rightRange = false;
@@ -159,14 +153,19 @@ void Creep::shoot(float dt)
 
     if (bulletTimer >= bulletInterval) {
         for (int i = 0; i < 3; ++i) {
-            auto bullet = Skill::create(new EntityInfo("fireskill"));
+            auto bullet = Bullet::create("attack_ball");
             bullet->setPosition(this->getPosition());
             bullet->setOwner(this);
             this->getParent()->addChild(bullet, 4);
             auto bulletBody = bullet->getPhysicsBody();
-            float xImpulse = (i == 0) ? 0 : ((i == 1) ? -250000 : 250000);
-            if (bulletBody) {
-                bulletBody->applyImpulse(Vec2(xImpulse, 500000));
+            if (_leftRange) {
+                bulletBody->setVelocity(Vec2(-300, 0));
+                bulletBody->setGravityEnable(false);
+                _isAttack = true;
+            }
+            if (_rightRange) {
+                bulletBody->setVelocity(Vec2(300, 0));
+                bulletBody->setGravityEnable(false);
                 _isAttack = true;
             }
         }
@@ -180,7 +179,7 @@ void Creep::onEnter()
 {
     Entity::onEnter();
     this->scheduleUpdate();
-    bulletInterval = 2.0f;
+    bulletInterval = 3.0f;
 }
 
 
