@@ -28,7 +28,7 @@ bool ButtonController::init() {
 
     AudioManager* audioManager = AudioManager::getInstance();
 
-    EntityInfo info(1, "character");
+    EntityInfo info("character");
 
     _leftButton = ui::Button::create("Buttons/Icon44.png");
     _leftButton->setContentSize(Size(50, 50));

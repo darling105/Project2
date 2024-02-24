@@ -11,6 +11,7 @@ public:
 	std::string updateState() override;
 	void exitState() override;
 protected:
+	bool movingRight = false;
 };
 
 #endif // !__ENEMY_PATROL_STATE_H__

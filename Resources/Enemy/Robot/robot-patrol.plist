@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./robot-patrol (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{10,-2}</string>
+    <key>spriteSize</key>
+    <string>{52,62}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{0,66},{52,62}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./robot-patrol (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{10,-2}</string>
+    <key>spriteSize</key>
+    <string>{52,64}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{52,64}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./robot-patrol (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{10,1}</string>
+    <key>spriteSize</key>
+    <string>{50,60}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{54,63},{50,60}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./robot-patrol (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{10,0}</string>
+    <key>spriteSize</key>
+    <string>{50,61}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{54,0},{50,61}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{106,130}</string>
+   <key>textureFileName</key>
+   <string>robot-patrol.png</string>
+  </dict>
+ </dict>
+</plist>

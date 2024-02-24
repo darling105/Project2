@@ -19,7 +19,7 @@ void CharacterRunState::enterState(Entity* owner)
 
 std::string CharacterRunState::updateState()
 {
-	EntityInfo info(1, "character");
+	EntityInfo info( "character");
 	auto character = Character::getInstance(&info);
 	auto _character = character->getCharacter(0);
 	if (!_character->getLeftButtonDown() && !_character->getRightButtonDown()) {

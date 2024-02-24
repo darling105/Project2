@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./robot-attack (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{11,-2}</string>
+    <key>spriteSize</key>
+    <string>{48,63}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{0,69},{48,63}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./robot-attack (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{11,-3}</string>
+    <key>spriteSize</key>
+    <string>{48,66}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{50,0},{48,66}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./robot-attack (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{11,-2}</string>
+    <key>spriteSize</key>
+    <string>{48,67}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{48,67}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./robot-attack (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{11,-3}</string>
+    <key>spriteSize</key>
+    <string>{48,66}</string>
+    <key>spriteSourceSize</key>
+    <string>{72,72}</string>
+    <key>textureRect</key>
+    <string>{{50,68},{48,66}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{100,136}</string>
+   <key>textureFileName</key>
+   <string>robot-attack.png</string>
+  </dict>
+ </dict>
+</plist>

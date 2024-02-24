@@ -1,24 +1,25 @@
-﻿#include "Enemy.h"
+#include "Creep.h"
 #include "AnimationUtilities/AnimationUtils.h"
 #include "DefineBitmask.h"
 #include "Skill/Skill.h"
+#include "Character/Character.h"
 
-Enemy* Enemy::_instance;
-std::vector<Enemy*> Enemy::_enemies;
+Creep* Creep::_instance;
+std::vector<Creep*> Creep::_enemies;
 
 
-Enemy* Enemy::getInstance(EntityInfo* info) {
+Creep* Creep::getInstance(EntityInfo* info) {
     if (_instance == nullptr) {
-        _instance = new Enemy();
+        _instance = new Creep();
         _instance->init(info);
         _instance->retain();
     }
     return _instance;
 }
 
-void Enemy::addEnemy(EntityInfo* info)
+void Creep::addEnemy(EntityInfo* info)
 {
-    Enemy* _newEnemy = new Enemy();
+    Creep* _newEnemy = new Creep();
     if (_newEnemy->init(info)) {
         _enemies.push_back(_newEnemy);
     }
@@ -27,12 +28,12 @@ void Enemy::addEnemy(EntityInfo* info)
     }
 }
 
-int Enemy::getNumberOfEnemy()
+int Creep::getNumberOfEnemy()
 {
     return _enemies.size();
 }
 
-Enemy* Enemy::getEnemy(int index)
+Creep* Creep::getEnemy(int index)
 {
     if (index >= 0 && index < _enemies.size()) {
         return _enemies[index];
@@ -40,7 +41,7 @@ Enemy* Enemy::getEnemy(int index)
     return nullptr;
 }
 
-bool Enemy::init(EntityInfo* info)
+bool Creep::init(EntityInfo* info)
 {
     if (!Entity::init(info))
     {
@@ -49,17 +50,16 @@ bool Enemy::init(EntityInfo* info)
     }
     _info = info;
     _isAttack = false;
-    auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-patrol");
-    auto animate = RepeatForever::create(Animate::create(aniIdle));
-    _model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-patrol (1)");
-    _model->runAction(animate);
+    _model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
+    _model->setScale(0.8f);
+    _model->setAnchorPoint(Vec2(0.7,0.5));
     this->addChild(_model);
 
     auto listener = EventListenerPhysicsContact::create();
-    listener->onContactBegin = CC_CALLBACK_1(Enemy::callbackOnContactBegin, this);
+    listener->onContactBegin = CC_CALLBACK_1(Creep::callbackOnContactBegin, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-
-    auto enemyPhysicBody = PhysicsBody::createBox(_model->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+    Size size(_model->getContentSize().width / 1.5, _model->getContentSize().height / 1.4);
+    auto enemyPhysicBody = PhysicsBody::createBox(size, PhysicsMaterial(1.0f, 0.0f, 0.0f));
     enemyPhysicBody->setCategoryBitmask(DefineBitmask::ENEMY);
     enemyPhysicBody->setCollisionBitmask(DefineBitmask::GROUND);
     enemyPhysicBody->setContactTestBitmask(DefineBitmask::CHARACTER);
@@ -67,57 +67,84 @@ bool Enemy::init(EntityInfo* info)
     enemyPhysicBody->setGravityEnable(true);
     this->setPhysicsBody(enemyPhysicBody);
     enemyPhysicBody->setTag(ENEMY_TAG);
+
+    auto rangeAttackNode = Node::create();
+    auto physicRangeAttackNode = PhysicsBody::createBox(_model->getContentSize() * 2);
+    physicRangeAttackNode->setCategoryBitmask(0x030);
+    physicRangeAttackNode->setCollisionBitmask(DefineBitmask::GROUND);
+    physicRangeAttackNode->setRotationEnable(false);
+    rangeAttackNode->setPhysicsBody(physicRangeAttackNode);
+    rangeAttackNode->setPosition(Vec2::ZERO);
+
+    this->addChild(rangeAttackNode);
+
+
     _enemyStateMachine = StateMachine::create(this);
 
-    _enemyStateMachine->addState("patrol", new EnemyPatrolState());
+    _enemyStateMachine->addState("idle", new EnemyIdleState());
     _enemyStateMachine->addState("attack", new EnemyAttackState());
 
-    _enemyStateMachine->setCurrentState("patrol");
-    //_enemyStateMachine->setDefaultState("patrol");
+    _enemyStateMachine->setCurrentState("idle");
     this->addChild(_enemyStateMachine);
 
     return true;
 }
 
-bool Enemy::loadAnimations()
+bool Creep::loadAnimations()
 {
     Entity::loadAnimations();
     std::vector<std::string> aniNames;
-    aniNames.push_back(_info->_entityName + "-patrol");
+    aniNames.push_back(_info->_entityName + "-idle");
     aniNames.push_back(_info->_entityName + "-attack");
     for (auto name : aniNames)
     {
-        AnimationUtils::loadSpriteFrameCache("Enemy/Robot/", name);
+        AnimationUtils::loadSpriteFrameCache("Enemy/Void/", name);
         AnimationUtils::createAnimation(name, 0.5f);
     }
     return true;
 }
 
-bool Enemy::callbackOnContactBegin(PhysicsContact& contact)
+bool Creep::callbackOnContactBegin(PhysicsContact& contact)
 {
-    EntityInfo info("robot");
-    auto character = Character::getInstance(&info);
-    auto _character = character->getCharacter(0);
     nodeA = contact.getShapeA()->getBody()->getNode();
     nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA != this && nodeB != this) return false;
     target = (nodeA == this) ? (nodeB) : (nodeA);
     Vec2 enemyPosition = this->getPosition();
-    Vec2 characterPosition = _character->getPosition();
+    Vec2 characterPosition = target->getPosition();
     float enemyHeight = this->getContentSize().height;
     if (target != nullptr) {
-        if (enemyPosition.y + enemyHeight + 10.0f <= characterPosition.y) {
+        if (enemyPosition.y + enemyHeight + 10.0f < characterPosition.y) {
             this->removeFromParentAndCleanup(true);
         }
-    }
-    else {
-        this->removeFromParentAndCleanup(true);
     }
 
     return true;
 }
 
-void Enemy::update(float dt) {
+void Creep::update(float dt) {
+    EntityInfo info("character");
+    Vec2 characterPosition = Character::getInstance(&info)->getCharacter(0)->getPosition();
+    float creepPositionX = this->getPositionX();
+    if (characterPosition.x > creepPositionX  + 20 && characterPosition.x < creepPositionX + 20 + 100) {
+        _rightRange = true;
+        _leftRange = false;
+    }
+    else if (characterPosition.x < creepPositionX - 20 && characterPosition.x > creepPositionX - 20 - 100) {
+        _rightRange = false;
+        _leftRange = true;
+    }
+    else {
+        _rightRange = false;
+        _leftRange = false;
+    }
+}
+
+
+
+
+void Creep::shoot(float dt)
+{
     bulletTimer += dt;
 
     if (_isAttack) {
@@ -145,16 +172,15 @@ void Enemy::update(float dt) {
         }
         bulletTimer = 0.0f;
     }
-
 }
 
 
 
-void Enemy::onEnter()
+void Creep::onEnter()
 {
     Entity::onEnter();
     this->scheduleUpdate();
-    bulletInterval = 3.0f;
+    bulletInterval = 2.0f;
 }
 
 

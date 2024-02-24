@@ -1,4 +1,4 @@
-#include "BaseMap.h"
+﻿#include "BaseMap.h"
 #include "ButtonController/ButtonController.h"
 #include "Character/Character.h"
 #include "MapUtilities/GameMap.h"
@@ -8,6 +8,8 @@
 #include "PhysicRender/Finish.h"
 #include "Scene/GameScene.h"
 #include "Scene/PauseGame.h"
+#include "PhysicRender/PolygonGround.h"
+#include "Enemy/Creep.h"
 
 USING_NS_CC;
 
@@ -40,7 +42,7 @@ void BaseMap::createMenu() {
         Director::getInstance()->replaceScene(gameScene);
         log("Game Clicked");
         });
-    miFont->setPosition(Vec2(150,60));
+    miFont->setPosition(Vec2(150, 60));
     MenuItems.pushBack(miFont);
     auto menuA = Menu::createWithArray(MenuItems);
     this->addChild(menuA, 2);
@@ -49,7 +51,7 @@ void BaseMap::createMenu() {
 }
 
 void BaseMap::createButtonController() {
-    
+
     auto _buttonController = ButtonController::getInstance();
     this->addChild(_buttonController);
 }
@@ -60,9 +62,16 @@ void BaseMap::createGroundPhysics() {
     this->addChild(groundPhysics);
 }
 
+void BaseMap::createPolygonPhysics()
+{
+    auto objectPolygon = _gameMap->getObjectGroup("PolygonPhysicsObject");
+    auto polygonPhysics = PolygonGround::create(objectPolygon);
+    this->addChild(polygonPhysics);
+}
+
 void BaseMap::addCharacter() {
 
-    EntityInfo* _characterInfo = new EntityInfo(1, "character");
+    EntityInfo* _characterInfo = new EntityInfo("character");
     auto _characterInstance = Character::getInstance(_characterInfo);
     _characterInstance->addCharacter(_characterInfo);
     auto _character = _characterInstance->getCharacter(0);
@@ -72,7 +81,7 @@ void BaseMap::addCharacter() {
     _position.x = charSpawnPoint["x"].asFloat();
     _position.y = charSpawnPoint["y"].asFloat();
     _character->setPosition(_position);
-    this->addChild(_character,1);
+    this->addChild(_character, 1);
 }
 
 void BaseMap::addBackground(const std::string& backgroundImagePath) {
@@ -84,17 +93,33 @@ void BaseMap::addBackground(const std::string& backgroundImagePath) {
 }
 
 void BaseMap::addEnemies() {
-    std::vector<EntityInfo*> enemyInfoList;
-    for (int i = 0; i < 2; i++) {
-        EntityInfo* enemyInfo = new EntityInfo(1, "Hero");
-        enemyInfoList.push_back(enemyInfo);
+    int numEnemies = 1;
+    for (int i = 0; i < numEnemies; i++) {
+
+        TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("VoidEnemySpawnPoint");
+        ValueMap charSpawnPoint = objectGroup->getObject("SpawnPoint");
+        Vec2 _position;
+        _position.x = charSpawnPoint["x"].asFloat();
+        _position.y = charSpawnPoint["y"].asFloat();
+        EntityInfo* enemyInfo = new EntityInfo("robot");
         auto _enemy = Enemy::getInstance(enemyInfo);
         _enemy->addEnemy(enemyInfo);
         auto enemyInstance = _enemy->getEnemy(i);
 
-        float xPos = (600) + 100 * i;
-        enemyInstance->setPosition(Vec2(200,200));
-        //this->addChild(enemyInstance, 2);
+        EntityInfo* creepInfo = new EntityInfo("void");
+        auto _creep = Creep::getInstance(creepInfo);
+        _creep->addEnemy(creepInfo);
+        auto creepInstance = _creep->getEnemy(i);
+
+        /*Vec2 _position;
+        _position.x = enemySpawnPoint["x"].asFloat();
+        _position.y = enemySpawnPoint["y"].asFloat();*/
+        enemyInstance->setPosition(_position.x, _position.y);
+        creepInstance->setPosition(_position);
+
+
+        this->addChild(enemyInstance, 3);
+        this->addChild(creepInstance, 3);
     }
 }
 

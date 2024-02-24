@@ -35,16 +35,21 @@ void StateMachine::addState(std::string stateName, State* state)
     _states.insert({ stateName, state });
 }
 
-void StateMachine::update(float dt)
-{
+void StateMachine::update(float dt) {
     std::string updateState = _states[_currentState]->updateState();
-    if (updateState != _currentState)
-    {
-        _states[_currentState]->exitState();
-        _currentState = updateState;
-        _states[_currentState]->enterState(_entityTarget);
+    if (_states.find(updateState) != _states.end()) {
+        if (updateState != _currentState) {
+            _states[_currentState]->exitState();
+            _currentState = updateState;
+            _states[_currentState]->enterState(_entityTarget);
+        }
     }
+    /*else {
+        _currentState = _defaultStateName;
+        _states[_currentState]->enterState(_entityTarget);
+    }*/
 }
+
 
 void StateMachine::onEnter()
 {
@@ -55,4 +60,6 @@ void StateMachine::onEnter()
 void StateMachine::setCurrentState(std::string _stateName)
 {
     _currentState = _stateName;
+
 }
+

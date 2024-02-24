@@ -10,10 +10,10 @@ public:
 	int _level;
 	std::string _entityName;
 
-	EntityInfo(int level, std::string name)
+	EntityInfo(std::string name)
 	{
 		this->_entityName = name;
-		this->_level = level;
+		/*this->_level = level;*/
 	}
 };
 

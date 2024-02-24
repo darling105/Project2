@@ -1,43 +1,70 @@
 #include "EnemyPatrolState.h"
 #include "StateMachine/StateMachine.h"
-#include "Character/Character.h"
+#include "Enemy/Enemy.h"
+#include "Enemy/Creep.h"
 
-void EnemyPatrolState::enterState(Entity* owner)
-{
-	State::enterState(owner);
-	auto ani = AnimationCache::getInstance()
-		->getAnimation(_owner->getEntityInfo()->_entityName + "_Idle_Right");
-	auto animate = RepeatForever::create(Animate::create(ani));
-	animate->setTag(StateMachine::EnemyAnimationTag);
-	_owner->getModel()->runAction(animate);
-	//auto mapNode = Director::getInstance()->getRunningScene()->getChildByTag(100);
-	/*if (mapNode != nullptr) {
-		_map = dynamic_cast<GameMap*>(mapNode);
-	}*/
-	auto _newEnemyPositionX = _owner->getPositionX();
-	auto _newEnemyPositionY = _owner->getPositionY();
-	auto moveLeft = MoveTo::create(1, Vec2(_newEnemyPositionX - 50, _newEnemyPositionY));
-	auto moveRight = MoveTo::create(1, Vec2(_newEnemyPositionX + 50, _newEnemyPositionY));
-	//auto delay = DelayTime::create(1.0f);
-	auto seq = Sequence::create(moveLeft, /*delay*/ moveRight, nullptr);
-	auto repeatForever = RepeatForever::create(seq);
+void EnemyPatrolState::enterState(Entity* owner) {
+    State::enterState(owner);
+    _owner->stopAllActions();
+    float patrolSpeed = 60.0f;
 
-	_owner->runAction(repeatForever);
+    Vec2 velocityLeft = Vec2(-patrolSpeed, 0);
+    Vec2 velocityRight = Vec2(patrolSpeed, 0);
+
+    auto enemyBody = _owner->getPhysicsBody();
+    if (enemyBody) {
+        enemyBody->setVelocity(velocityLeft);
+        auto delay = DelayTime::create(2.0f);
+        auto changeDirection = CallFunc::create([enemyBody, velocityRight, this]() {
+            enemyBody->setVelocity(velocityRight);
+            movingRight = true;
+            });
+
+        auto changeDirectionBack = CallFunc::create([enemyBody, velocityLeft, this]() {
+            enemyBody->setVelocity(velocityLeft);
+            movingRight = false;
+            });
+
+        auto sequence = Sequence::create(delay, changeDirection, delay, changeDirectionBack, nullptr);
+        auto repeat = RepeatForever::create(sequence);
+
+        _owner->runAction(repeat);
+    }
+
+    auto ani = AnimationCache::getInstance()
+        ->getAnimation(_owner->getEntityInfo()->_entityName + "-patrol");
+    auto animate = RepeatForever::create(Animate::create(ani));
+    animate->setTag(StateMachine::EnemyAnimationTag);
+    _owner->getModel()->runAction(animate);
 }
 
-std::string EnemyPatrolState::updateState()
-{
 
-	if (_owner->getModel()->getPosition() == Vec2(-100, 0)
-		&& _owner->getModel()->getPosition() == Vec2(100, 0))
-	{
-		return "idle";
-	}
-	
-	return "patrol";
+
+
+
+std::string EnemyPatrolState::updateState() {
+    EntityInfo info("robot");
+    auto robotInstance = Enemy::getInstance(&info);
+    auto robot = robotInstance->getEnemy(0);
+    auto creepInstance = Creep::getInstance(&info);
+    auto creep = robotInstance->getEnemy(0);
+
+    if (movingRight) {
+        _owner->getModel()->setFlippedX(false);
+    }
+    else {
+        _owner->getModel()->setFlippedX(true);
+    }
+
+    if (robot->_isAttack && creep->_isAttack) {
+        return "attack";
+    }
+
+    return "patrol";
 }
+
 
 void EnemyPatrolState::exitState()
 {
-	State::exitState();
+    State::exitState();
 }

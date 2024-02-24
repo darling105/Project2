@@ -23,7 +23,7 @@ void CharacterJumpState::enterState(Entity* owner)
 
 std::string CharacterJumpState::updateState()
 {
-    EntityInfo info(1, "character");
+    EntityInfo info("character");
     auto _characterInstace = Character::getInstance(&info);
     auto _character = _characterInstace->getCharacter(0);
     if (!_character->_isJumping) {

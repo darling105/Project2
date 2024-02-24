@@ -9,6 +9,7 @@
 #include "Camera/CameraFollow.h"
 #include "Enemy/Enemy.h"
 #include "PhysicRender/Stair.h"
+#include "Coin/Coin.h"
 
 ButtonController* _buttonController;
 
@@ -41,6 +42,10 @@ bool Map1::init() {
     createButtonController();
     addLadder();
     addFinish();
+    createPolygonPhysics();
+    auto coin = Coin::create(new EntityInfo("coin"));
+    coin->setPosition(Vec2(600, 1600));
+    this->addChild(coin);
     this->scheduleUpdate();
     return true;
 }

@@ -1,5 +1,5 @@
-﻿#ifndef __ENEMY_H__
-#define __ENEMY_H__
+#ifndef __CREEP_H__
+#define __CREEP_H__
 
 #include "Entity/Entity.h"
 #include "StateMachine/StateMachine.h"
@@ -8,18 +8,22 @@
 #include "State/EnemyPatrolState.h"
 #include "State/EnemyAttackState.h"
 
-class Enemy : public Entity
+
+class Creep : public Entity
 {
 public:
-	static const int ENEMY_TAG = 11;
-	static Enemy* getInstance(EntityInfo* info);
+	static const int ENEMY_TAG = 12;
+	static Creep* getInstance(EntityInfo* info);
 	static void addEnemy(EntityInfo* info);
 	static int getNumberOfEnemy();
-	static Enemy* getEnemy(int index);
+	static Creep* getEnemy(int index);
 	bool _isAttack = false;
+	bool _rightRange = false;
+	bool _leftRange = false;
+	void shoot(float dt);
 protected:
-	static Enemy* _instance;
-	static std::vector<Enemy*> _enemies;
+	static Creep* _instance;
+	static std::vector<Creep*> _enemies;
 	virtual bool init(EntityInfo* info) override;
 	bool loadAnimations() override;
 	StateMachine* _enemyStateMachine;
@@ -32,8 +36,9 @@ protected:
 	Node* nodeB;
 	Node* target;
 	float timeSinceLastShot;
-	float bulletTimer; // Biến để đếm thời gian giữa các lần bắn viên đạn
-	float bulletInterval; // Thời gian giữa các lần bắn viên đạn
+	float bulletTimer; 
+	float bulletInterval; 
+	float _distanceRight, _distanceLeft = 100.0f;
 
 };
-#endif // !__ENEMY_H__
+#endif // !__CREEP_H__
