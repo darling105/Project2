@@ -7,6 +7,10 @@
 #include "Manager/GameManager.h"
 #include "AudioManager/AudioManager.h"
 #include "audio/include/AudioEngine.h"
+#include "Manager/GameManager.h"
+#include "Coin/Coin.h"
+#include "Enemy/Creep/Creep.h"
+
 
 
 std::vector<Character*> Character::_characters;
@@ -45,7 +49,7 @@ bool Character::init(EntityInfo* info)
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
 	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND);
-	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR | DefineBitmask::FINISH);
+	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR | DefineBitmask::FINISH | DefineBitmask::SPIKE | DefineBitmask::COIN | DefineBitmask::ENEMY);
 	physicBodyCharacter->setRotationEnable(false);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
@@ -63,6 +67,7 @@ bool Character::init(EntityInfo* info)
 	_stateMachine->addState("idle", new CharacterIdleState());
 	_stateMachine->addState("run", new CharacterRunState());
 	_stateMachine->addState("jump", new CharacterJumpState());
+	_stateMachine->addState("climb", new CharacterClimbState());
 	_stateMachine->setCurrentState("idle");
 	this->addChild(_stateMachine);
 	return true;
@@ -76,6 +81,7 @@ bool Character::loadAnimations()
 	aniNames.push_back(_info->_entityName + "-idle");
 	aniNames.push_back(_info->_entityName + "-run");
 	aniNames.push_back(_info->_entityName + "-jump");
+	aniNames.push_back(_info->_entityName + "-climb");
 
 	for (auto name : aniNames)
 	{
@@ -108,21 +114,66 @@ Character* Character::getCharacter(int index) {
 
 void Character::jump()
 {
-	_isOnGround = false;
-	if (!_isJumping) {
-	this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 80);
-	_isJumping = true;
+	if (_jumpCooldown <= 0.0f) {
+		_isOnGround = false;
+		if (!_isJumping) {
+			this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 80);
+			_isJumping = true;
+			_jumpCooldown = 1.2f;
+		}
 	}
 }
+
 
 void Character::moveLeft()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 40);
+	if (!_isPickedCoin && !_isContactEnemy)
+	{
+		AnimationUtils::loadSpriteFrameCache("Character/", "character-run-effect");
+		AnimationUtils::createAnimation("character-run-effect", 0.025f);
+
+		auto explosion = Sprite::createWithSpriteFrameName("./character-run-effect (1)");
+		explosion->setScale(0.82f);
+		explosion->setPosition(this->getPosition());
+
+		this->getParent()->addChild(explosion, this->getLocalZOrder());
+
+		auto animation = AnimationCache::getInstance()->getAnimation("character-run-effect");
+		auto animate = Animate::create(animation);
+		auto removeExplosion = CallFunc::create([explosion]() {
+			explosion->removeFromParentAndCleanup(true);
+			});
+
+		auto sequence = Sequence::create(animate, removeExplosion, nullptr);
+		explosion->runAction(sequence);
+		explosion->setFlippedX(true);
+	}
 }
 
 void Character::moveRight()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 40);
+	if (!_isPickedCoin && !_isContactEnemy) {
+		AnimationUtils::loadSpriteFrameCache("Character/", "character-run-effect");
+		AnimationUtils::createAnimation("character-run-effect", 0.025f);
+
+		auto explosion = Sprite::createWithSpriteFrameName("./character-run-effect (1)");
+		explosion->setScale(0.82f);
+		explosion->setPosition(this->getPosition());
+
+		this->getParent()->addChild(explosion, this->getLocalZOrder());
+
+		auto animation = AnimationCache::getInstance()->getAnimation("character-run-effect");
+		auto animate = Animate::create(animation);
+		auto removeExplosion = CallFunc::create([explosion]() {
+			explosion->removeFromParentAndCleanup(true);
+			});
+
+		auto sequence = Sequence::create(animate, removeExplosion, nullptr);
+		explosion->runAction(sequence);
+		explosion->setFlippedX(false);
+	}
 }
 
 void Character::setLeftButtonDown(bool isPressed)
@@ -184,12 +235,24 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 			_physicsBody->setVelocity(Vec2::ZERO);
 		}
 	}
-	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) {
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
+	{
 		_isOnStair = true;
 	}
 	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::FINISH)
 	{
 		_isOnFinish = true;
+	}
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::SPIKE)
+	{
+		_isOnSpike = true;
+	}
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::COIN)
+	{
+		_isPickedCoin = true;
+	}
+	else {
+		_isContactEnemy = true;
 	}
 	return true;
 }
@@ -211,10 +274,23 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	{
 		_isOnFinish = false;
 	}
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::SPIKE)
+	{
+		_isOnSpike = false;
+	}
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::COIN)
+	{
+		_isPickedCoin = false;
+	}
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::ENEMY)
+	{
+		_isContactEnemy = false;
+	}
 	return true;
 }
 
 void Character::update(float dt) {
+	_jumpCooldown -= dt;
 	if (_isOnGround || _isJumping) {
 		physicBodyCharacter->setVelocity(Vec2(0, physicBodyCharacter->getVelocity().y));
 
@@ -224,7 +300,7 @@ void Character::update(float dt) {
 		if (_isRightButtonDown) {
 			moveRight();
 		}
-		if (_isUpButtonDown && _isOnGround) { // Chỉ cho nhảy khi đang ở trên mặt đất
+		if (_isUpButtonDown && _isOnGround && _jumpCooldown <= 0.0f) { // Chỉ cho nhảy khi đang ở trên mặt đất
 			jump();
 		}
 	}
@@ -249,6 +325,12 @@ void Character::update(float dt) {
 	}
 	if (_isOnFinish) {
 		GameManager::getInstance()->endGame();
+	}
+	if (_isOnSpike)
+	{
+		//Director::getInstance()->pause();
+		//GameManager::getInstance()->gameOver();
+		log("GameOver");
 	}
 
 }

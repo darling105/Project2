@@ -14,6 +14,7 @@ public:
     bool getButton(ui::Button* button);
     ui::Button* getPressedButton() { return _pressedButton; }
     ui::Button* getUpButton();
+    void showStopMenu(bool show);
 private:
     bool init() override;
 private:
@@ -25,11 +26,13 @@ private:
     bool _rightButtonPressed = false;
     bool _downButtonPressed = false;
     bool _stopMenuPressed = false;
+   // bool _resumeButtonPressed = false;
     ui::Button* _upButton;
     ui::Button* _leftButton;
     ui::Button* _rightButton;
     ui::Button* _downButton;
     ui::Button* _stopMenu;
+    //ui::Button* _resumeButton;
 };
 
 #endif // __BUTTON_CONTROLLER_H__

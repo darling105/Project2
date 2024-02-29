@@ -1,4 +1,4 @@
-#ifndef __CHARACTER_H__
+﻿#ifndef __CHARACTER_H__
 #define __CHARACTER_H__
 
 #include "Entity/Entity.h"
@@ -6,6 +6,7 @@
 #include "State/CharacterJumpState.h"
 #include "State/CharacterIdleState.h"
 #include "State/CharacterRunState.h"
+#include "State/CharacterClimbState.h"
 
 class Character : public Entity
 {
@@ -27,6 +28,10 @@ public:
     bool getRightButtonDown() const { return _isRightButtonDown; }
     bool getDownButtonDown() const { return _isDownButtonDown; }
     bool _isJumping = false;
+    bool _isOnStair = false;
+    bool _isOnGround = false;
+    bool _isOnFinish = false;
+    bool _isOnSpike = false;
 private:
     static Character* _instance;
     static std::vector<Character*> _characters;
@@ -38,15 +43,14 @@ private:
     bool _isUpButtonDown = false;
     bool _isRightButtonDown = false;
     bool _isDownButtonDown = false;
+    bool _isPickedCoin = false;
+    bool _isContactEnemy = false;
+    float _jumpCooldown;
     void onEnter() override;
     //void onExit() override;
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     bool callbackOnContactSeparate(PhysicsContact& contact);
-
-    bool _isOnGround = false;
-    bool _isOnStair = false;
-    bool _isOnFinish = false;
     void update(float dt) override;
 };
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="115" height="51" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="101">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="115" height="51" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="104">
  <tileset firstgid="1" name="TileSetDelta" tilewidth="32" tileheight="32" tilecount="42" columns="7">
   <image source="TileSetDelta.png" width="224" height="192"/>
  </tileset>
@@ -108,9 +108,13 @@
   <object id="85" x="352" y="1408" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="8" name="CharacterSpawnPoint">
-  <object id="3" name="SpawnPoint" x="445.333" y="1421.82">
+  <object id="3" name="SpawnPoint" x="1877.33" y="485.82">
    <point/>
   </object>
+ </objectgroup>
+ <objectgroup id="13" name="Spike">
+  <object id="101" x="2080" y="576" width="32" height="32"/>
+  <object id="102" x="2240" y="576" width="64" height="32"/>
  </objectgroup>
  <objectgroup id="11" name="PolygonPhysicsObject">
   <object id="90" x="2816" y="1312">

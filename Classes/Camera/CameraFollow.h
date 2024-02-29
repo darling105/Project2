@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "ButtonController/ButtonController.h"
+#include "Scene/PauseGame.h"
 USING_NS_CC;
 
 class CameraFollow : public cocos2d::Node {
@@ -20,6 +21,7 @@ private:
     Rect _fieldOfView;
     bool _dirty;
     ButtonController* _buttonController; // Thêm trường để lưu trữ con trỏ đến ButtonController
+    PauseGame* _resumeButton;
     cocos2d::Vec2 _previousPosition;
     Size _cameraSize;
 };

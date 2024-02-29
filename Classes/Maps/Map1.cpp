@@ -5,9 +5,9 @@
 #include "StateMachine/StateMachine.h"
 #include "Character/Character.h"
 #include "ButtonController/ButtonController.h"
+#include "Scene/GameOverScene.h"
 #include "PhysicRender/PhysicGround.h"
 #include "Camera/CameraFollow.h"
-#include "Enemy/Enemy.h"
 #include "PhysicRender/Stair.h"
 #include "Coin/Coin.h"
 
@@ -29,11 +29,12 @@ bool Map1::init() {
     if (!BaseMap::initWithPhysics()) {
         return false;
     }
-    addBackground("BackGround/Background2.png");
+   
+    addBackground("BackGround/Background1.png");
     addGameMap("Maps/map1.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
-    }
+    }   
     createMenu();
     createPhysicsWorld();
     addCharacter();
@@ -42,10 +43,8 @@ bool Map1::init() {
     createButtonController();
     addLadder();
     addFinish();
+    addSpike();
     createPolygonPhysics();
-    auto coin = Coin::create(new EntityInfo("coin"));
-    coin->setPosition(Vec2(600, 1600));
-    this->addChild(coin);
     this->scheduleUpdate();
     return true;
 }
@@ -55,7 +54,7 @@ void Map1::goToGameScene()
     if (ButtonController::getInstance()->getParent() != nullptr){
         ButtonController::getInstance()->removeFromParent();
     }
-        
+      
 	Director::getInstance()->popScene();
 }
 
@@ -69,7 +68,20 @@ void Map1::onEnter()
     auto buttonInstace = ButtonController::getInstance();
     CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace);
     this->addChild(cam);
-
-   
 }
+void Map1::callPauseScene(Ref* sender)
+{
+    auto pauseWindow = PauseGame::create();
+    addChild(pauseWindow, INT_MAX);
+    Director::getInstance()->pause();
+}
+void Map1::callGameOver(Ref* sender)
+{
+   
+    auto gameOverScene = GameOverScene::create();
+    addChild(gameOverScene, INT_MAX);
+
+}
+
+
 

@@ -2,16 +2,27 @@
 #define __MAP_2_H__
 
 #include "cocos2d.h"
+#include "Maps/BaseMap.h"
+#include "ButtonController/ButtonController.h"
+#include "Camera/CameraFollow.h"
 USING_NS_CC;
 
-class Map2 : public Scene
+class Map2 : public BaseMap
 {
 public:
-	static Scene* create();
+	static Map2* create();
 	virtual bool init();
-private:
+
+	//ButtonController* _buttonController;
+	CameraFollow* cam;
+protected:
 	Sprite* _background;
-private:
+	Character* _character;
+	//GameMap* _gameMap;
+	Vec2 _pauseButtonPosition;
+protected:
 	void goToGameScene();
+	void onEnter() override;
+	void callPauseScene(Ref* sender);
 };
-#endif //__MAP_1_H__
+#endif //__MAP_2_H__

@@ -192,21 +192,21 @@ bool ButtonController::init() {
         {
         case ui::Widget::TouchEventType::BEGAN:
             log("StopButton Pressed");
-            // Tạm dừng game khi nhấn nút stop
+           // _stopMenu->setVisible(false);
             GameManager::getInstance()->pauseGame();
             
             break;
+           
         }
         });
-
-
-
     addChild(_stopMenu);
+
 
     addButton(_leftButton);
     addButton(_upButton);
     addButton(_rightButton);
     addButton(_downButton);
+    addButton(_stopMenu);
 
     return true;
 }
@@ -223,4 +223,12 @@ ui::Button* ButtonController::getUpButton()
 {
     return _upButton;
 }
+
+//void ButtonController::showStopMenu(bool show)
+//{
+//    _stopMenu->setVisible(true);
+//}
+
+
+
 

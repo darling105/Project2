@@ -6,14 +6,15 @@
 
 USING_NS_CC;
 
-class Bullet : public Node {
+class Bullet : public Entity {
 public:
 	static const int SKILL_TAG = 15;
-	static Bullet* create(std::string bulletName);
+	static Bullet* create(EntityInfo* info);
 protected:
 	bool callbackOnContactBegin(PhysicsContact& contact);
-	virtual bool init(std::string bulletName);
+	virtual bool init(EntityInfo* info);
 	Sprite* _model;
+	bool loadAnimations() override;
 	CC_SYNTHESIZE(Entity*, _owner, Owner);
 };
 

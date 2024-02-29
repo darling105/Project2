@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./bat-patrol (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,3}</string>
+    <key>spriteSize</key>
+    <string>{32,23}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{32,23}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./bat-patrol (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,-5}</string>
+    <key>spriteSize</key>
+    <string>{32,21}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{34,0},{32,21}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./bat-patrol (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,-3}</string>
+    <key>spriteSize</key>
+    <string>{32,17}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{34,23},{32,17}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./bat-patrol (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,1}</string>
+    <key>spriteSize</key>
+    <string>{32,15}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{0,25},{32,15}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{68,42}</string>
+   <key>textureFileName</key>
+   <string>bat-patrol.png</string>
+  </dict>
+ </dict>
+</plist>

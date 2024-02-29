@@ -2,24 +2,19 @@
 #define __PAUSE_GAME_H__
 
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
+//#include "Camera/CameraFollow.h"
 USING_NS_CC;
 
-class PauseGame : public Layer
+class PauseGame : public LayerColor
 {
 public:
-    virtual bool init() override;
-    CREATE_FUNC(PauseGame);
-
-    // Hàm hiển thị và ẩn menu
-    void show();
-    void hide();
-
-private:
-    // Các hàm xử lý sự kiện nhấn nút
-    void onResumeButtonClicked(Ref* sender);
-
-    // Các thành phần UI, chẳng hạn các nút
-    
+    virtual bool init();
+    static LayerColor* create();
+    void goToMainMenuScene(Ref* sender);
+    void callResume(Ref* sender);
+    void goToSettingScene(Ref* sender);
+    void onEnter() override;
 };
 
 #endif // !__PAUSE_GAME_H__

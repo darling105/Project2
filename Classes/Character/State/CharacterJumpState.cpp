@@ -1,8 +1,6 @@
 ﻿#include "CharacterJumpState.h"
 #include "StateMachine/StateMachine.h"
-#include "../Character.h"
-
-
+#include "Character/Character.h"
 
 void CharacterJumpState::enterState(Entity* owner)
 {

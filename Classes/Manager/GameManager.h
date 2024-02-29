@@ -10,6 +10,7 @@ public:
     void endGame();
     void pauseGame();
     void resumeGame();
+    void gameOver();
     void showPauseMenu(bool show);
 
 private:

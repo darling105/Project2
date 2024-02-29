@@ -12,7 +12,11 @@ public:
     void addGameMap(const std::string& gameMapPath);
     void addLadder();
     void addFinish();
+    void addSpike();
+    void addCoin();
+    void addObjects();
     GameMap* _gameMap;
+    
 protected:
     cocos2d::PhysicsWorld* _physicsWorld;
     std::vector<cocos2d::Node*> _enemies;
@@ -24,4 +28,5 @@ protected:
     void createButtonController();
     void createGroundPhysics();
     void createPolygonPhysics();
+    
 };

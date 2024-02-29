@@ -1,5 +1,6 @@
 ﻿    #include "CameraFollow.h"
 
+
     CameraFollow* CameraFollow::create(Node* target, Rect fieldOfView, ButtonController* buttonController)
     {
         auto newObject = new CameraFollow();
@@ -82,6 +83,9 @@
         // Cập nhật vị trí của ButtonController
         if (_buttonController) {
             _buttonController->setPosition(camera->getPosition().x - 500, camera->getPosition().y - 200);
+        }
+        if (_resumeButton) {
+            _resumeButton->setPosition(camera->getPosition().x - 500, camera->getPosition().y - 200);
         }
     }
 
