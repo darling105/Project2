@@ -55,6 +55,10 @@ protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     bool callbackOnContactSeparate(PhysicsContact& contact);
     void update(float dt) override;
+    void resetRetryCount();
+    int _retryCount = 3;
+    float _baseSpeed = 60;
+    bool _gameOver;
 };
 
 #endif // !__CHARACTER_H__

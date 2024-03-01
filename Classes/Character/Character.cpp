@@ -129,7 +129,7 @@ void Character::jump()
 
 void Character::moveLeft()
 {
-	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * 40);
+	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * _baseSpeed);
 	if (!_isPickedCoin && !_isContactEnemy)
 	{
 		AnimationUtils::loadSpriteFrameCache("Character/", "character-run-effect");
@@ -155,7 +155,7 @@ void Character::moveLeft()
 
 void Character::moveRight()
 {
-	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * 40);
+	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * _baseSpeed);
 	if (!_isPickedCoin && !_isContactEnemy) {
 		AnimationUtils::loadSpriteFrameCache("Character/", "character-run-effect");
 		AnimationUtils::createAnimation("character-run-effect", 0.025f);
@@ -335,8 +335,25 @@ void Character::update(float dt) {
 	}
 	if (_isOnSpike)
 	{
+		log("%d", _retryCount);
 		this->setPosition(Vec2(2500, 1200));
 		log("GameOver");
+		_retryCount--;
 	}
+	if (_retryCount == 0) {
+		this->unscheduleUpdate();
+		this->getPhysicsBody()->setVelocity(Vec2::ZERO);
+		GameManager::getInstance()->gameOver();
+		resetRetryCount();
+	}
+	else
+	{
+		this->scheduleUpdate();
+	}
+}
 
+void Character::resetRetryCount()
+{
+	_retryCount = 3;
+	_baseSpeed = 60;
 }
