@@ -10,6 +10,8 @@
 #include "Manager/GameManager.h"
 #include "Coin/Coin.h"
 #include "Enemy/Creep/Creep.h"
+#include "ButtonController/ButtonController.h"
+#include "Maps/Map1.h"
 
 
 
@@ -197,6 +199,11 @@ void Character::setDownButtonDown(bool isPressed)
 	_isDownButtonDown = isPressed;
 }
 
+void Character::setPauseButtonDown(bool isPressed)
+{
+	_isDownButtonDown = isPressed;
+}
+
 int Character::getNumberOfCharacters() {
 	return _characters.size();
 }
@@ -328,8 +335,7 @@ void Character::update(float dt) {
 	}
 	if (_isOnSpike)
 	{
-		//Director::getInstance()->pause();
-		//GameManager::getInstance()->gameOver();
+		this->setPosition(Vec2(2500, 1200));
 		log("GameOver");
 	}
 

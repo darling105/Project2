@@ -14,6 +14,7 @@ public:
     bool getButton(ui::Button* button);
     ui::Button* getPressedButton() { return _pressedButton; }
     ui::Button* getUpButton();
+    ui::Button* getPauseButton();
     void showStopMenu(bool show);
 private:
     bool init() override;

@@ -40,24 +40,27 @@ bool GameOverScene::init()
 
 void GameOverScene::goToMainMenuScene(Ref* sender)
 {
-	Director::getInstance()->replaceScene(MainMenu::create());
+	Director::getInstance()->getRunningScene()->removeAllChildrenWithCleanup(true);
+	auto scene = Map1::create();
+	Director::getInstance()->replaceScene(scene);
 }
 
 void GameOverScene::onEnter()
 {
-	LayerColor::onEnter(); // Gọi phương thức onEnter của lớp cha
+	LayerColor::onEnter();
 
-	// Lấy thông tin camera
 	auto camera = Director::getInstance()->getRunningScene()->getDefaultCamera();
 
-	// Lấy vị trí của camera
 	auto cameraPosition = camera->getPosition();
 
-	// Đặt vị trí mới cho PauseGame
 	this->setPosition(cameraPosition);
 
-	// Thêm PauseGame vào CameraFollow (nếu có)
 	if (auto cameraFollow = dynamic_cast<CameraFollow*>(camera->getParent())) {
 		cameraFollow->addChild(this);
 	}
+}
+
+void GameOverScene::update()
+{
+
 }

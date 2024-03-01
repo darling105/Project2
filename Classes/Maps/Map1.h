@@ -12,22 +12,17 @@ USING_NS_CC;
 class Map1 : public BaseMap
 {
 public:
-	static Map1* create();
-	virtual bool init();
-	
-	//ButtonController* _buttonController;
-	//CameraFollow* cam;
+    static Map1* create();
+    virtual bool init() override;
 protected:
-	Sprite* _background;
-	Character* _character;
-	//GameMap* _gameMap;
-	 Vec2 _pauseButtonPosition;
+    Sprite* _background;
+    Character* _character;
+    Vec2 _pauseButtonPosition;
 protected:
-	void goToGameScene();
-	void onEnter() override;
-	void callPauseScene(Ref* sender);
-	void callGameOver(Ref* sender);
-	//void onExit();
-	
+    void onEnter() override;
+    void callPauseScene(Ref* sender);
+    void callGameOver(Ref* sender);
+    void update(float dt) override;
 };
-#endif //__MAP_1_H__
+
+#endif // __MAP_1_H__

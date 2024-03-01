@@ -200,8 +200,6 @@ bool ButtonController::init() {
         }
         });
     addChild(_stopMenu);
-
-
     addButton(_leftButton);
     addButton(_upButton);
     addButton(_rightButton);
@@ -224,10 +222,15 @@ ui::Button* ButtonController::getUpButton()
     return _upButton;
 }
 
-//void ButtonController::showStopMenu(bool show)
-//{
-//    _stopMenu->setVisible(true);
-//}
+ui::Button* ButtonController::getPauseButton()
+{
+    return _stopMenu;
+}
+
+void ButtonController::showStopMenu(bool show)
+{
+    _stopMenu->setVisible(true);
+}
 
 
 

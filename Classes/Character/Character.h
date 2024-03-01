@@ -23,10 +23,12 @@ public:
     void setUpButtonDown(bool isPressed);
     void setRightButtonDown(bool isPressed);
     void setDownButtonDown(bool isPressed);
+    void setPauseButtonDown(bool isPressed);
     bool getLeftButtonDown() const { return _isLeftButtonDown; }
     bool getUpButtonDown() const { return _isUpButtonDown; }
     bool getRightButtonDown() const { return _isRightButtonDown; }
     bool getDownButtonDown() const { return _isDownButtonDown; }
+    bool getPauseButtonDown() const { return _isPauseButtonDown; }
     bool _isJumping = false;
     bool _isOnStair = false;
     bool _isOnGround = false;
@@ -45,6 +47,7 @@ private:
     bool _isDownButtonDown = false;
     bool _isPickedCoin = false;
     bool _isContactEnemy = false;
+    bool _isPauseButtonDown = false;
     float _jumpCooldown;
     void onEnter() override;
     //void onExit() override;

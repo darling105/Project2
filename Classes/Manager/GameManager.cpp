@@ -5,6 +5,8 @@
 #include "Scene/GameOverScene.h"
 #include "Scene/PauseGame.h"
 #include "ButtonController/ButtonController.h"
+#include "Maps/BaseMap.h"
+#include "Maps/Map1.h"
 
 USING_NS_CC;
 
@@ -33,7 +35,7 @@ void GameManager::endGame()
     // Hiển thị màn hình kết thúc hoặc thực hiện hành động khác tùy thuộc vào yêu cầu của bạn
     auto scene = Director::getInstance()->getRunningScene();
         auto winningScene = WinningScene::create();
-        Director::getInstance()->replaceScene(winningScene);
+        Director::getInstance()->replaceScene(Map1::create());
         log("Game Clicked");
     
 }
@@ -44,7 +46,6 @@ void GameManager::pauseGame()
     // Pause game ở đây, ví dụ:
     Director::getInstance()->pause();
     AudioEngine::pauseAll();
-    // Nếu bạn có các hoạt động khác cần pause thì thực hiện ở đây
     showPauseMenu(true);
 }
 

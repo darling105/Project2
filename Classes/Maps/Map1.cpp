@@ -29,12 +29,12 @@ bool Map1::init() {
     if (!BaseMap::initWithPhysics()) {
         return false;
     }
-   
+
     addBackground("BackGround/Background1.png");
     addGameMap("Maps/map1.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
-    }   
+    }
     createMenu();
     createPhysicsWorld();
     addCharacter();
@@ -47,15 +47,6 @@ bool Map1::init() {
     createPolygonPhysics();
     this->scheduleUpdate();
     return true;
-}
-
-void Map1::goToGameScene()
-{
-    if (ButtonController::getInstance()->getParent() != nullptr){
-        ButtonController::getInstance()->removeFromParent();
-    }
-      
-	Director::getInstance()->popScene();
 }
 
 void Map1::onEnter()
@@ -77,11 +68,11 @@ void Map1::callPauseScene(Ref* sender)
 }
 void Map1::callGameOver(Ref* sender)
 {
-   
     auto gameOverScene = GameOverScene::create();
     addChild(gameOverScene, INT_MAX);
 
 }
 
-
-
+void Map1::update(float dt)
+{
+}
