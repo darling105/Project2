@@ -1,10 +1,9 @@
 ﻿    #include "CameraFollow.h"
 
-
-    CameraFollow* CameraFollow::create(Node* target, Rect fieldOfView, ButtonController* buttonController)
+    CameraFollow* CameraFollow::create(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty)
     {
         auto newObject = new CameraFollow();
-        if (newObject != nullptr && newObject->init(target, fieldOfView, buttonController)) {
+        if (newObject != nullptr && newObject->init(target, fieldOfView, buttonController, healthBar, healthEmpty)) {
             newObject->autorelease();
             return newObject;
         }
@@ -12,7 +11,7 @@
         return nullptr;
     }
 
-    bool CameraFollow::init(Node* target, Rect fieldOfView, ButtonController* buttonController)
+    bool CameraFollow::init(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty)
     {
         if (!target) {
             return false;
@@ -22,6 +21,8 @@
         _buttonController = buttonController; // Lưu trữ con trỏ đến ButtonController
         _dirty = false;
         _previousPosition = target->getPosition();
+        _healthBar = healthBar;
+        _healthEmpty = healthEmpty;
         Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
         Size cameraSize = size / 2;
         _cameraSize = cameraSize;
@@ -86,6 +87,12 @@
         }
         if (_resumeButton) {
             _resumeButton->setPosition(camera->getPosition().x - 500, camera->getPosition().y - 200);
+        }
+        if (_healthBar) {
+            _healthBar->setPosition(camera->getPosition().x + 550, camera->getPosition().y + 300);
+        }
+        if (_healthEmpty) {
+            _healthEmpty->setPosition(camera->getPosition().x + 550, camera->getPosition().y + 300);
         }
     }
 

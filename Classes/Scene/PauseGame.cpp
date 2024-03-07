@@ -29,7 +29,7 @@ bool PauseGame::init()
         return false;
     }
     auto visibleSize = Director::getInstance()->getVisibleSize();
-    auto pauseWindow = Sprite::create("Background/Menu.png");
+    auto pauseWindow = Sprite::create("BackGround/Menu.png");
     pauseWindow->setScale(2.0f);
     this->addChild(pauseWindow);
     auto windowSize = pauseWindow->getContentSize();

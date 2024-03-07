@@ -13,9 +13,14 @@ public:
 protected:
 	bool callbackOnContactBegin(PhysicsContact& contact);
 	virtual bool init(EntityInfo* info);
-	Sprite* _model;
 	bool loadAnimations() override;
+	void update(float dt);
+	void onEnter() override;
 	CC_SYNTHESIZE(Entity*, _owner, Owner);
+protected:
+	Sprite* _model;
+	bool _isCollidedGround;
+	bool _isCollidedCharacter;
 };
 
 #endif // !__BULLET_H__

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./pupple-patrol (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{3,-8}</string>
+    <key>spriteSize</key>
+    <string>{30,22}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{34,0},{30,22}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./pupple-patrol (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{3,-9}</string>
+    <key>spriteSize</key>
+    <string>{32,20}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{34,24},{32,20}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./pupple-patrol (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{3,-8}</string>
+    <key>spriteSize</key>
+    <string>{32,21}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{0,24},{32,21}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./pupple-patrol (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{2,-8}</string>
+    <key>spriteSize</key>
+    <string>{32,22}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{32,22}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{68,47}</string>
+   <key>textureFileName</key>
+   <string>pupple-patrol.png</string>
+  </dict>
+ </dict>
+</plist>

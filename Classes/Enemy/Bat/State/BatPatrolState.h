@@ -10,6 +10,9 @@ public:
 	std::string updateState() override;
 	void exitState() override;
 protected:
+	void movingLeftFirst();
+	void movingRightFirst();
+protected:
 	bool movingRight = false;
 	bool movingLeft = false;
 };

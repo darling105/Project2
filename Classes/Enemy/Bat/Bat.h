@@ -10,6 +10,9 @@ public:
 	static const int ENEMY_TAG = 12;
 	static Bat* create(EntityInfo* info);
 	virtual bool init(EntityInfo* info) override;
+	void setupBat(float patrolSpeed, Vec2 initialMoveDirection);
+	float _patrolSpeed;
+	Vec2 _initialMoveDirection;
 protected:
 	bool loadAnimations() override;
 	StateMachine* _enemyStateMachine;

@@ -112,3 +112,9 @@ void Bat::onEnter()
     Entity::onEnter();
     this->scheduleUpdate();
 }
+
+void Bat::setupBat(float patrolSpeed, Vec2 initialMoveDirection)
+{
+    _patrolSpeed = patrolSpeed;
+    _initialMoveDirection = initialMoveDirection;
+}

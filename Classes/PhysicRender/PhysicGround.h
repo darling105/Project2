@@ -12,7 +12,7 @@ public:
      static PhysicGround* create(TMXObjectGroup* objectGroup);
 protected:
      bool init(TMXObjectGroup* objectGroup);
-     bool onContactBegin(const PhysicsContact& contact);
+
 };
 
 #endif // !__PHYSIC_GROUND_H__

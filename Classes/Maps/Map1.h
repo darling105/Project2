@@ -7,6 +7,7 @@
 #include "MapUtilities/GameMap.h"
 #include "Camera/CameraFollow.h"
 #include "Maps/BaseMap.h"
+#include "HealthController/HealthController.h"
 USING_NS_CC;
 
 class Map1 : public BaseMap
@@ -14,6 +15,7 @@ class Map1 : public BaseMap
 public:
     static Map1* create();
     virtual bool init() override;
+    HealthController* healthBar;
 protected:
     Sprite* _background;
     Character* _character;
@@ -22,7 +24,6 @@ protected:
     void onEnter() override;
     void callPauseScene(Ref* sender);
     void callGameOver(Ref* sender);
-    void update(float dt) override;
 };
 
 #endif // __MAP_1_H__

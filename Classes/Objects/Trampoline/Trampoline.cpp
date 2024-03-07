@@ -25,21 +25,22 @@ bool Trampoline::init(EntityInfo* info)
 	/*auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-idle");
 	auto animate = RepeatForever::create(Animate::create(aniIdle));*/
 	_model = Sprite::create("Objects/Trampoline/" + _info->_entityName + ".png");
-	//_model->runAction(animate);
+	_model->setScale(1.5);
+	_model->setAnchorPoint(Vec2(0.5, 0.2));
 	this->addChild(_model);
 
 	auto listener = EventListenerPhysicsContact::create();
 	listener->onContactBegin = CC_CALLBACK_1(Trampoline::callbackOnContactBegin, this);
+	listener->onContactSeparate = CC_CALLBACK_1(Trampoline::callbackOnContaceSeparate, this);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-	float halfCicle = _model->getContentSize().width / 3;
-	auto coinPhysicBody = PhysicsBody::createCircle(halfCicle, PhysicsMaterial(1, 0, 0));
-	coinPhysicBody->setCategoryBitmask(DefineBitmask::COIN);
-	coinPhysicBody->setCollisionBitmask(DefineBitmask::NON);
-	coinPhysicBody->setContactTestBitmask(DefineBitmask::CHARACTER);
-	coinPhysicBody->setRotationEnable(false);
-	coinPhysicBody->setGravityEnable(false);
-	this->setPhysicsBody(coinPhysicBody);
+	Size size(_model->getContentSize().width, _model->getContentSize().height / 1.7);
+	auto trampolinePhysicBody = PhysicsBody::createBox(size, PhysicsMaterial(1, 0, 0));
+	trampolinePhysicBody->setCategoryBitmask(DefineBitmask::TRAMPOLINE);
+	trampolinePhysicBody->setCollisionBitmask(DefineBitmask::GROUND);
+	trampolinePhysicBody->setContactTestBitmask(DefineBitmask::CHARACTER);
+	trampolinePhysicBody->setRotationEnable(false);
+	this->setPhysicsBody(trampolinePhysicBody);
 
 	return true;
 }
@@ -61,7 +62,7 @@ bool Trampoline::callbackOnContactBegin(PhysicsContact& contact)
 	}
 
 	AnimationUtils::loadSpriteFrameCache("Objects/Trampoline/", "trampoline-active");
-	AnimationUtils::createAnimation("trampoline-active", 0.5f);
+	AnimationUtils::createAnimation("trampoline-active", 0.2f);
 
 	auto explosion = Sprite::createWithSpriteFrameName("./trampoline-active (1)");
 
@@ -81,6 +82,18 @@ bool Trampoline::callbackOnContactBegin(PhysicsContact& contact)
 
 }
 
+bool Trampoline::callbackOnContaceSeparate(PhysicsContact& contact)
+{
+	Node* nodeA = contact.getShapeA()->getBody()->getNode();
+	Node* nodeB = contact.getShapeB()->getBody()->getNode();
+	if (nodeA != this && nodeB != this) return false;
+	auto target = (nodeA == this) ? nodeA : nodeB;
+	if (target) {
+		_isPicked = false;
+	}
+	return false;
+}
+
 
 void Trampoline::onEnter()
 {
@@ -90,8 +103,16 @@ void Trampoline::onEnter()
 
 void Trampoline::update(float dt)
 {
+	EntityInfo info("character");
+	auto _charInstance = Character::getInstance(&info);
+	auto _char = _charInstance->getCharacter(0);
 	if (_isPicked) {
 		log("contact");
-		//this->removeFromParentAndCleanup(false);
+		_model->setVisible(false);
+		_char->getPhysicsBody()->setVelocity(Vec2::ZERO);
+		_char->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 140);
+	}
+	else {
+		_model->setVisible(true);
 	}
 }

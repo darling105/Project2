@@ -5,20 +5,17 @@
 void BatPatrolState::enterState(Entity* owner) {
     State::enterState(owner);
     _owner->stopAllActions();
-    float patrolSpeed = 200.0f;
-    Vec2 moveLeft = Vec2(-patrolSpeed, 0);
-    Vec2 moveRight = Vec2(patrolSpeed, 0);
-    auto moveLeftAction = MoveBy::create(2.0f, moveLeft);
-    auto moveRightAction = MoveBy::create(2.0f, moveRight);
-    auto sequence = Sequence::create(
-        CallFunc::create([this]() { movingRight = false; }),
-        moveLeftAction,
-        CallFunc::create([this]() { movingRight = true; }),
-        moveRightAction,
-        nullptr
-    );
-    auto repeat = RepeatForever::create(sequence);
-    _owner->runAction(repeat);
+    auto bat = static_cast<Bat*> (_owner);
+    Vec2 moveDirection = bat->_initialMoveDirection;
+    
+    if (moveDirection == Vec2(1.0f, 0.0f)) {
+        // Di chuy?n sang ph?i ??u tiên, r?i sau ?ó ?i sang trái
+        movingRightFirst();
+    }
+    else if (moveDirection == Vec2(-1.0f, 0.0f)) {
+        // Di chuy?n sang trái ??u tiên, r?i sau ?ó ?i sang ph?i
+        movingLeftFirst();
+    }
 
     auto ani = AnimationCache::getInstance()
         ->getAnimation(_owner->getEntityInfo()->_entityName + "-patrol");
@@ -44,4 +41,42 @@ std::string BatPatrolState::updateState() {
 void BatPatrolState::exitState()
 {
     State::exitState();
+}
+
+void BatPatrolState::movingLeftFirst()
+{
+    auto bat = static_cast<Bat*> (_owner);
+    float patrolSpeed = bat->_patrolSpeed;
+    Vec2 moveLeft = Vec2(-patrolSpeed, 0);
+    Vec2 moveRight = Vec2(patrolSpeed, 0);
+    auto moveLeftAction = MoveBy::create(2.0f, moveLeft);
+    auto moveRightAction = MoveBy::create(2.0f, moveRight);
+    auto sequence = Sequence::create(
+        CallFunc::create([this]() { movingRight = false; }),
+        moveLeftAction,
+        CallFunc::create([this]() { movingRight = true; }),
+        moveRightAction,
+        nullptr
+    );
+    auto repeat = RepeatForever::create(sequence);
+    _owner->runAction(repeat);
+}
+
+void BatPatrolState::movingRightFirst()
+{
+    auto bat = static_cast<Bat*> (_owner);
+    float patrolSpeed = bat->_patrolSpeed;
+    Vec2 moveLeft = Vec2(-patrolSpeed, 0);
+    Vec2 moveRight = Vec2(patrolSpeed, 0);
+    auto moveLeftAction = MoveBy::create(2.0f, moveLeft);
+    auto moveRightAction = MoveBy::create(2.0f, moveRight);
+    auto sequence = Sequence::create(
+        CallFunc::create([this]() { movingRight = true; }),
+        moveRightAction,
+        CallFunc::create([this]() { movingRight = false; }),
+        moveLeftAction,
+        nullptr
+    );
+    auto repeat = RepeatForever::create(sequence);
+    _owner->runAction(repeat);
 }

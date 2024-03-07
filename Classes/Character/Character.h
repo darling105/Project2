@@ -7,6 +7,7 @@
 #include "State/CharacterIdleState.h"
 #include "State/CharacterRunState.h"
 #include "State/CharacterClimbState.h"
+#include "HealthController/HealthController.h"
 
 class Character : public Entity
 {
@@ -34,6 +35,7 @@ public:
     bool _isOnGround = false;
     bool _isOnFinish = false;
     bool _isOnSpike = false;
+    bool _isContactedSkills = false;
 private:
     static Character* _instance;
     static std::vector<Character*> _characters;
@@ -46,7 +48,7 @@ private:
     bool _isRightButtonDown = false;
     bool _isDownButtonDown = false;
     bool _isPickedCoin = false;
-    bool _isContactEnemy = false;
+    bool _isContactedEnemy = false;
     bool _isPauseButtonDown = false;
     float _jumpCooldown;
     void onEnter() override;
@@ -54,11 +56,12 @@ private:
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     bool callbackOnContactSeparate(PhysicsContact& contact);
-    void update(float dt) override;
-    void resetRetryCount();
+    void update(float dt);
+    void reset();
     int _retryCount = 3;
     float _baseSpeed = 60;
     bool _gameOver;
+    std::vector<PhysicsBody*> _groundList;
 };
 
 #endif // !__CHARACTER_H__

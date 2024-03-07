@@ -14,6 +14,7 @@ public:
 protected:
 	bool loadAnimations() override;
 	bool callbackOnContactBegin(PhysicsContact& contact);
+	bool callbackOnContaceSeparate(PhysicsContact& contact);
 	void onEnter() override;
 	void update(float dt) override;
 	StateMachine* _stateMachine;

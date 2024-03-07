@@ -24,7 +24,7 @@ bool GameOverScene::init()
 		return false;
 	}
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto gameOverWindow = Sprite::create("Background/GameOver.png");
+	auto gameOverWindow = Sprite::create("BackGround/GameOver.png");
 	gameOverWindow->setScale(2.0f);
 	this->addChild(gameOverWindow);
 	auto windowSize = gameOverWindow->getContentSize();

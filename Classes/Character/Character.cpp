@@ -51,7 +51,8 @@ bool Character::init(EntityInfo* info)
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
 	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND);
-	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR | DefineBitmask::FINISH | DefineBitmask::SPIKE | DefineBitmask::COIN | DefineBitmask::ENEMY);
+	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR | DefineBitmask::FINISH |
+		DefineBitmask::SPIKE | DefineBitmask::COIN | DefineBitmask::ENEMY | DefineBitmask::BULLET);
 	physicBodyCharacter->setRotationEnable(false);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
@@ -62,9 +63,6 @@ bool Character::init(EntityInfo* info)
 	listener->onContactSeparate = CC_CALLBACK_1(Character::callbackOnContactSeparate, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-
-
-
 	_stateMachine = StateMachine::create(this);
 	_stateMachine->addState("idle", new CharacterIdleState());
 	_stateMachine->addState("run", new CharacterRunState());
@@ -72,6 +70,7 @@ bool Character::init(EntityInfo* info)
 	_stateMachine->addState("climb", new CharacterClimbState());
 	_stateMachine->setCurrentState("idle");
 	this->addChild(_stateMachine);
+
 	return true;
 }
 
@@ -119,9 +118,9 @@ void Character::jump()
 	if (_jumpCooldown <= 0.0f) {
 		_isOnGround = false;
 		if (!_isJumping) {
-			this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 80);
+			this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 85);
 			_isJumping = true;
-			_jumpCooldown = 1.2f;
+			_jumpCooldown = 1.1f;
 		}
 	}
 }
@@ -130,7 +129,7 @@ void Character::jump()
 void Character::moveLeft()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(-1, 0) * _baseSpeed);
-	if (!_isPickedCoin && !_isContactEnemy)
+	if (!_isPickedCoin && !_isContactedEnemy)
 	{
 		AnimationUtils::loadSpriteFrameCache("Character/", "character-run-effect");
 		AnimationUtils::createAnimation("character-run-effect", 0.025f);
@@ -156,7 +155,7 @@ void Character::moveLeft()
 void Character::moveRight()
 {
 	this->getPhysicsBody()->applyImpulse(Vec2(1, 0) * _baseSpeed);
-	if (!_isPickedCoin && !_isContactEnemy) {
+	if (!_isPickedCoin && !_isContactedEnemy) {
 		AnimationUtils::loadSpriteFrameCache("Character/", "character-run-effect");
 		AnimationUtils::createAnimation("character-run-effect", 0.025f);
 
@@ -232,7 +231,7 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 
 	if (target->getTag() == PhysicGround::TAG_GROUND &&
 		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
-		if (target->getPosition().y < this->getPosition().y)
+		if (target->getPositionY() < this->getPositionY())
 		{
 			log("onGround");
 			_isOnGround = true;
@@ -258,8 +257,11 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 	{
 		_isPickedCoin = true;
 	}
-	else {
-		_isContactEnemy = true;
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::ENEMY) {
+		_isContactedEnemy = true;
+	}
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::BULLET) {
+		_isContactedSkills = true;
 	}
 	return true;
 }
@@ -272,6 +274,14 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	if (nodeA != this && nodeB != this) return false;
 
 	auto target = (nodeA == this) ? nodeB : nodeA;
+
+	if (target->getTag() == PhysicGround::TAG_GROUND &&
+		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
+		if (!_isOnGround) {
+		_isOnGround = false;
+		_isJumping = true;
+		}
+	}
 
 	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
 	{
@@ -291,7 +301,10 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	}
 	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::ENEMY)
 	{
-		_isContactEnemy = false;
+		_isContactedEnemy = false;
+	}
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::BULLET) {
+		_isContactedSkills = false;
 	}
 	return true;
 }
@@ -301,13 +314,13 @@ void Character::update(float dt) {
 	if (_isOnGround || _isJumping) {
 		physicBodyCharacter->setVelocity(Vec2(0, physicBodyCharacter->getVelocity().y));
 
-		if (_isLeftButtonDown) {
+		if (_isLeftButtonDown ) {
 			moveLeft();
 		}
 		if (_isRightButtonDown) {
 			moveRight();
 		}
-		if (_isUpButtonDown && _isOnGround && _jumpCooldown <= 0.0f) { // Chỉ cho nhảy khi đang ở trên mặt đất
+		if (_isUpButtonDown && _isOnGround && _jumpCooldown <= 0.0f) { 
 			jump();
 		}
 	}
@@ -333,27 +346,33 @@ void Character::update(float dt) {
 	if (_isOnFinish) {
 		GameManager::getInstance()->endGame();
 	}
-	if (_isOnSpike)
+
+	auto _healthController = HealthController::getInstance(3, "/Character/Health/Healthbar_full.png");
+
+	if (_isOnSpike || _isContactedSkills)
 	{
 		log("%d", _retryCount);
 		this->setPosition(Vec2(2500, 1200));
 		log("GameOver");
 		_retryCount--;
+		
+
+		float newHealth = _healthController->getCurrentHealth()  - 1;
+		_healthController->setCurrentHealth(newHealth);
+
 	}
 	if (_retryCount == 0) {
 		this->unscheduleUpdate();
 		this->getPhysicsBody()->setVelocity(Vec2::ZERO);
 		GameManager::getInstance()->gameOver();
-		resetRetryCount();
-	}
-	else
-	{
-		this->scheduleUpdate();
+		reset();
 	}
 }
 
-void Character::resetRetryCount()
+void Character::reset()
 {
+	auto _healthController = HealthController::getInstance(3, "/Character/Health/Healthbar_full.png");
 	_retryCount = 3;
+	_healthController->setCurrentHealth(_retryCount);
 	_baseSpeed = 60;
 }

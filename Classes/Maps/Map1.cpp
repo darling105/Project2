@@ -10,6 +10,8 @@
 #include "Camera/CameraFollow.h"
 #include "PhysicRender/Stair.h"
 #include "Coin/Coin.h"
+#include "HealthController/HealthController.h"
+#include "HealthController/HealthBarEmpty.h"
 
 ButtonController* _buttonController;
 
@@ -30,7 +32,7 @@ bool Map1::init() {
         return false;
     }
 
-    addBackground("BackGround/Background1.png");
+    addBackground("BackGround/hell.png");
     addGameMap("Maps/map1.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
@@ -44,7 +46,10 @@ bool Map1::init() {
     addLadder();
     addFinish();
     addSpike();
+    addCoin();
+    addObjects();
     createPolygonPhysics();
+    createHealthBar();
     this->scheduleUpdate();
     return true;
 }
@@ -57,7 +62,9 @@ void Map1::onEnter()
     auto mapSize = _gameMap->getContentSize();
     Rect boundingBox = { size.width / 2,size.height / 2,3680 - size.width / 2 - size.width / 2,1632 - size.height / 2 - size.height / 2 };
     auto buttonInstace = ButtonController::getInstance();
-    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace);
+    auto _healthBar = HealthController::getInstance(3, "/Character/Health/Healthbar_full.png");
+    auto _healthEmpty = HealthBarEmpty::getInstance( "/Character/Health/Healthbar_empty.png");
+    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty);
     this->addChild(cam);
 }
 void Map1::callPauseScene(Ref* sender)
@@ -73,6 +80,3 @@ void Map1::callGameOver(Ref* sender)
 
 }
 
-void Map1::update(float dt)
-{
-}

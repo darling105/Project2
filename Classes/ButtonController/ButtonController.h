@@ -12,10 +12,10 @@ public:
     static ButtonController* getInstance();
     void addButton(ui::Button* button);
     bool getButton(ui::Button* button);
-    ui::Button* getPressedButton() { return _pressedButton; }
-    ui::Button* getUpButton();
     ui::Button* getPauseButton();
     void showStopMenu(bool show);
+protected:
+    void onEnter() override;
 private:
     bool init() override;
 private:
@@ -27,13 +27,23 @@ private:
     bool _rightButtonPressed = false;
     bool _downButtonPressed = false;
     bool _stopMenuPressed = false;
-   // bool _resumeButtonPressed = false;
     ui::Button* _upButton;
     ui::Button* _leftButton;
     ui::Button* _rightButton;
     ui::Button* _downButton;
     ui::Button* _stopMenu;
-    //ui::Button* _resumeButton;
+    Vec2 previousTouchPos;
+    Vec2 _touchMovedPos;
+    Vec2 _moveLeftPos;
+    Vec2 touchLeftButton;
+
+    Vec2 previousTouchRightPos;
+    Vec2 _touchMovedRightPos;
+    Vec2 _moveRightPos;
+    Vec2 touchRightButton;
+    void update(float dt);
+    Node* nodeLeftTouch;
+    Node* nodeRightTouch;
 };
 
 #endif // __BUTTON_CONTROLLER_H__

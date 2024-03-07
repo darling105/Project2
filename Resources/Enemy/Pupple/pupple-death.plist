@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./pupple-death (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{5,-6}</string>
+    <key>spriteSize</key>
+    <string>{28,25}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{28,25}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./pupple-death (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{3,-7}</string>
+    <key>spriteSize</key>
+    <string>{30,23}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{0,27},{30,23}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./pupple-death (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{3,-10}</string>
+    <key>spriteSize</key>
+    <string>{32,18}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{30,0},{32,18}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./pupple-death (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{3,-12}</string>
+    <key>spriteSize</key>
+    <string>{32,13}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{32,27},{32,13}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./pupple-death (5)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{2,-14}</string>
+    <key>spriteSize</key>
+    <string>{34,10}</string>
+    <key>spriteSourceSize</key>
+    <string>{38,38}</string>
+    <key>textureRect</key>
+    <string>{{0,52},{34,10}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{66,64}</string>
+   <key>textureFileName</key>
+   <string>pupple-death.png</string>
+  </dict>
+ </dict>
+</plist>

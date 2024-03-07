@@ -118,18 +118,21 @@ void Creep::update(float dt) {
     Vec2 characterPosition = Character::getInstance(&info)->getCharacter(0)->getPosition();
     float creepPositionX = this->getPositionX();
     float creepPositionY = this->getPositionY();
-    float creepHeight = this->getContentSize().height;
+    float creepHeight = 32.0f;
+    /*log("yPos Character: %f", characterPosition.y);
+    log("yPos Enemy: %f", creepPositionY);*/
     if (characterPosition.x > creepPositionX + 20 && characterPosition.x < creepPositionX + 20 + 100
-        && characterPosition.y < creepPositionY + creepHeight) {
+        && characterPosition.y < creepPositionY + creepHeight && characterPosition.y + 2 > creepPositionY ) {
         _rightRange = true;
         _leftRange = false;
         log("right");
         shoot(dt);
     }
     else if (characterPosition.x < creepPositionX - 20 && characterPosition.x > creepPositionX - 20 - 100
-        && characterPosition.y < creepPositionY + creepHeight) {
+        && characterPosition.y < creepPositionY + creepHeight && characterPosition.y + 2 > creepPositionY) {
         _rightRange = false;
         _leftRange = true;
+        log("left");
         shoot(dt);
     }
     else {

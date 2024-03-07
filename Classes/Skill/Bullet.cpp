@@ -27,10 +27,34 @@ bool Bullet::init(EntityInfo* info)
 	_model->runAction(animate);
 	this->addChild(_model, 2);
 	auto bodyBullet = PhysicsBody::createCircle(_model->getContentSize().height / 4, PhysicsMaterial(1, 0, 1));
-	bodyBullet->setContactTestBitmask(DefineBitmask::BULLET);
+	bodyBullet->setCategoryBitmask(DefineBitmask::BULLET);
 	bodyBullet->setCollisionBitmask(DefineBitmask::GROUND);
+	bodyBullet->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::CHARACTER);
 	bodyBullet->setTag(SKILL_TAG);
 	this->setPhysicsBody(bodyBullet);
+
+	auto listener = EventListenerPhysicsContact::create();
+	listener->onContactBegin = CC_CALLBACK_1(Bullet::callbackOnContactBegin, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+	return true;
+}
+
+bool Bullet::callbackOnContactBegin(PhysicsContact& contact)
+{
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (nodeA != this && nodeB != this) return false;
+
+	auto target = (nodeA == this) ? (nodeB) : (nodeA);
+
+	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
+		_isCollidedGround = true;
+	}
+	else {
+		_isCollidedCharacter = true;
+	}
+
 	return true;
 }
 
@@ -42,4 +66,17 @@ bool Bullet::loadAnimations()
 	AnimationUtils::createAnimation("ball", 1.0f);
 
 	return true;
+}
+
+void Bullet::update(float dt)
+{
+	if (_isCollidedGround || _isCollidedCharacter) {
+		this->removeFromParentAndCleanup(true);
+	}
+}
+
+void Bullet::onEnter()
+{
+	Entity::onEnter();
+	this->scheduleUpdate();
 }

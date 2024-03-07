@@ -95,6 +95,6 @@ void Coin::onEnter()
 void Coin::update(float dt)
 {
 	if (_isPicked) {
-		//this->removeFromParentAndCleanup(true);
+		this->removeFromParentAndCleanup(true);
 	}
 }

@@ -27,8 +27,8 @@ bool PhysicGround::init(TMXObjectGroup* objectGroup) {
             auto groundNode = Node::create();
             auto physicsBodyGround = PhysicsBody::createBox(Size(width, height), PhysicsMaterial(1, 0, 0));
             physicsBodyGround->setCategoryBitmask(DefineBitmask::GROUND);
-            physicsBodyGround->setCollisionBitmask(DefineBitmask::CHARACTER | DefineBitmask::ENEMY | DefineBitmask::VOID_ENEMY);
-            physicsBodyGround->setContactTestBitmask(DefineBitmask::CHARACTER);
+            physicsBodyGround->setCollisionBitmask(DefineBitmask::CHARACTER | DefineBitmask::ENEMY | DefineBitmask::TRAMPOLINE);
+            physicsBodyGround->setContactTestBitmask(DefineBitmask::CHARACTER | DefineBitmask::BULLET);
             physicsBodyGround->setPositionOffset(Vec2(width * 0.5f, height * 0.5f));
             physicsBodyGround->setDynamic(false);
             groundNode->setPhysicsBody(physicsBodyGround);
@@ -40,8 +40,6 @@ bool PhysicGround::init(TMXObjectGroup* objectGroup) {
     }
     return true;
 }
-
-
 
 PhysicGround* PhysicGround::create(TMXObjectGroup* objectGroup) {
     auto ground = new (std::nothrow) PhysicGround();

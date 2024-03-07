@@ -60,8 +60,8 @@ void Map2::onEnter()
     auto mapSize1 = _gameMap->getContentSize();
     Rect boundingBox1 = { size1.width / 2,size1.height / 2,3680 - size1.width / 2 - size1.width / 2,1632 - size1.height / 2 - size1.height / 2 };
     auto buttonInstace1 = ButtonController::getInstance();
-    CameraFollow* cam1 = CameraFollow::create(_char1, boundingBox1, buttonInstace1);
-    this->addChild(cam1);
+    /*CameraFollow* cam1 = CameraFollow::create(_char1, boundingBox1, buttonInstace1);
+    this->addChild(cam1);*/
 }
 void Map2::callPauseScene(Ref* sender)
 {

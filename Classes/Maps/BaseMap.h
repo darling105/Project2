@@ -2,6 +2,7 @@
 
 #include "cocos2d.h"
 #include "Character/Character.h"
+#include "Enemy/Bat/Bat.h"
 
 class BaseMap : public cocos2d::Scene {
 public:
@@ -28,5 +29,8 @@ protected:
     void createButtonController();
     void createGroundPhysics();
     void createPolygonPhysics();
+    void createHealthBar();
+
+    Bat* bat;
     
 };
