@@ -9,7 +9,6 @@ void CharacterJumpState::enterState(Entity* owner)
     auto ani = AnimationCache::getInstance()
         ->getAnimation(owner->getEntityInfo()->_entityName + "-jump");
     auto animate = RepeatForever::create(Animate::create(ani));
-    animate->setTag(StateMachine::AnimationTag);
     owner->getModel()->runAction(animate);
     auto mapNode = Director::getInstance()->getRunningScene()->getChildByTag(100);
     if (mapNode != nullptr) {
@@ -23,10 +22,20 @@ std::string CharacterJumpState::updateState()
     EntityInfo info("character");
     auto _characterInstace = Character::getInstance(&info);
     auto _character = _characterInstace->getCharacter(0);
+
+    if (_character->getLeftButtonDown()) {
+        _owner->getModel()->setFlippedX(true);
+    }
+    if (_character->getRightButtonDown()) {
+        _owner->getModel()->setFlippedX(false);
+    }
+
     if (!_character->_isJumping) {
         return "idle";
     }
-    log("jumping");
+    if (_character->_isOnStair) {
+        return "climb";
+    }
     return "jump";
 }
 

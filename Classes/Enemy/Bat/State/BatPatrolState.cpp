@@ -9,18 +9,15 @@ void BatPatrolState::enterState(Entity* owner) {
     Vec2 moveDirection = bat->_initialMoveDirection;
     
     if (moveDirection == Vec2(1.0f, 0.0f)) {
-        // Di chuy?n sang ph?i ??u tiên, r?i sau ?ó ?i sang trái
         movingRightFirst();
     }
     else if (moveDirection == Vec2(-1.0f, 0.0f)) {
-        // Di chuy?n sang trái ??u tiên, r?i sau ?ó ?i sang ph?i
         movingLeftFirst();
     }
 
     auto ani = AnimationCache::getInstance()
         ->getAnimation(_owner->getEntityInfo()->_entityName + "-patrol");
     auto animate = RepeatForever::create(Animate::create(ani));
-    animate->setTag(StateMachine::EnemyAnimationTag);
     _owner->getModel()->runAction(animate);
 }
 
@@ -28,11 +25,15 @@ void BatPatrolState::enterState(Entity* owner) {
 std::string BatPatrolState::updateState() {
     if (movingRight) {
         _owner->getModel()->setFlippedX(true);
-        _owner->getModel()->setAnchorPoint(Vec2(0.38, 0.5));
+        _owner->getModel()->setAnchorPoint(Vec2(0.5, 0.5));
     }
     else {
         _owner->getModel()->setFlippedX(false);
-        _owner->getModel()->setAnchorPoint(Vec2(0.6, 0.5));
+        _owner->getModel()->setAnchorPoint(Vec2(0.5, 0.5));
+    }
+    auto bat = static_cast<Bat*> (_owner);
+    if (bat->_isContactCharacter) {
+        return "death";
     }
     return "patrol";
 }

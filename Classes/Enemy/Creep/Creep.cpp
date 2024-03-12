@@ -44,7 +44,7 @@ bool Creep::init(EntityInfo* info)
     enemyPhysicBody->setRotationEnable(false);
     enemyPhysicBody->setGravityEnable(true);
     this->setPhysicsBody(enemyPhysicBody);
-    enemyPhysicBody->setTag(ENEMY_TAG);
+
 
     _enemyStateMachine = StateMachine::create(this);
     _enemyStateMachine->addState("patrol", new CreepPatrolState());
@@ -53,6 +53,10 @@ bool Creep::init(EntityInfo* info)
     this->addChild(_enemyStateMachine);
 
     return true;
+}
+
+void Creep::setupCreep(float patrolSpeed, Vec2 initialMoveDirection)
+{
 }
 
 bool Creep::loadAnimations()
@@ -71,31 +75,36 @@ bool Creep::loadAnimations()
 
 bool Creep::callbackOnContactBegin(PhysicsContact& contact)
 {
+    EntityInfo info("character");
+    auto character = Character::getInstance(&info);
+    auto _character = character->getCharacter(0);
     nodeA = contact.getShapeA()->getBody()->getNode();
     nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA != this && nodeB != this) return false;
-    if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
-        nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
-    {
-        _isContactCharacter = true;
+    auto target = (nodeA == this) ? nodeA : nodeB;
+    if (target) {
+        if (_character->getPosition().y > this->getPosition().y ) {
+            _isContactCharacter = true;
+            AnimationUtils::loadSpriteFrameCache("Enemy/Creep/", "creep-death");
+            AnimationUtils::createAnimation("creep-death", 1.25f);
+
+            auto explosion = Sprite::createWithSpriteFrameName("./creep-death (1)");
+
+            explosion->setPosition(this->getPosition());
+
+            this->getParent()->addChild(explosion, this->getLocalZOrder());
+
+            auto animation = AnimationCache::getInstance()->getAnimation("creep-death");
+            auto animate = Animate::create(animation);
+            auto removeExplosion = CallFunc::create([explosion]() {
+                explosion->removeFromParentAndCleanup(true);
+                });
+
+            auto sequence = Sequence::create(animate, removeExplosion, nullptr);
+            explosion->runAction(sequence);
+        }
     }
-    AnimationUtils::loadSpriteFrameCache("Enemy/Creep/", "creep-death");
-    AnimationUtils::createAnimation("creep-death", 1.25f);
 
-    auto explosion = Sprite::createWithSpriteFrameName("./creep-death (1)");
-
-    explosion->setPosition(this->getPosition());
-
-    this->getParent()->addChild(explosion, this->getLocalZOrder());
-
-    auto animation = AnimationCache::getInstance()->getAnimation("creep-death");
-    auto animate = Animate::create(animation);
-    auto removeExplosion = CallFunc::create([explosion]() {
-        explosion->removeFromParentAndCleanup(true);
-        });
-
-    auto sequence = Sequence::create(animate, removeExplosion, nullptr);
-    explosion->runAction(sequence);
     return false;
 }
 
@@ -104,9 +113,8 @@ bool Creep::callbackOnContactSeparate(PhysicsContact& contact)
     nodeA = contact.getShapeA()->getBody()->getNode();
     nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA != this && nodeB != this) return false;
-    if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
-        nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
-    {
+    auto target = (nodeA == this) ? nodeA : nodeB;
+    if (target){
         _isContactCharacter = false;
     }
     return true;
@@ -119,8 +127,7 @@ void Creep::update(float dt) {
     float creepPositionX = this->getPositionX();
     float creepPositionY = this->getPositionY();
     float creepHeight = 32.0f;
-    /*log("yPos Character: %f", characterPosition.y);
-    log("yPos Enemy: %f", creepPositionY);*/
+
     if (characterPosition.x > creepPositionX + 20 && characterPosition.x < creepPositionX + 20 + 100
         && characterPosition.y < creepPositionY + creepHeight && characterPosition.y + 2 > creepPositionY ) {
         _rightRange = true;
@@ -169,12 +176,12 @@ void Creep::shoot(float dt)
             this->getParent()->addChild(bullet, 4);
             auto bulletBody = bullet->getPhysicsBody();
             if (_leftRange) {
-                bulletBody->setVelocity(Vec2(-300, 0));
+                bulletBody->setVelocity(Vec2(-60, 0));
                 bulletBody->setGravityEnable(false);
                 _isAttack = true;
             }
             if (_rightRange) {
-                bulletBody->setVelocity(Vec2(300, 0));
+                bulletBody->setVelocity(Vec2(60, 0));
                 bulletBody->setGravityEnable(false);
                 _isAttack = true;
             }
@@ -189,6 +196,5 @@ void Creep::shoot(float dt)
 void Creep::onEnter()
 {
     Entity::onEnter();
-    this->scheduleUpdate();
     bulletInterval = 0.5f;
 }

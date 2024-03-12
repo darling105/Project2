@@ -8,7 +8,6 @@ void CharacterClimbState::enterState(Entity* owner)
 	auto ani = AnimationCache::getInstance()
 		->getAnimation(_owner->getEntityInfo()->_entityName + "-climb");
 	auto animate = RepeatForever::create(Animate::create(ani));
-	animate->setTag(StateMachine::AnimationTag);
 	_owner->getModel()->runAction(animate);
 }
 

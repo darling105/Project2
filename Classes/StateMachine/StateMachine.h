@@ -9,8 +9,8 @@ USING_NS_CC;
 class StateMachine : public Node
 {
 public:
-	static const int AnimationTag = 100;
-	static const int EnemyAnimationTag = 10;
+	//static const int AnimationTag = 100;
+	//static const int EnemyAnimationTag = 10;
 public:
 	static StateMachine* create(Entity* entity);
 
@@ -23,7 +23,7 @@ protected:
 
 	std::string _currentState;
 protected:
-	void update(float dt) override;
+	void update(float dt);
 	void onEnter() override;
 };
 

@@ -43,8 +43,8 @@ bool PolygonGround::init(TMXObjectGroup* objectGroup)
         auto groundNode = Node::create();
         auto physicsBodyGround = PhysicsBody::createPolygon(reversedPolygonPoints.data(), static_cast<int>(reversedPolygonPoints.size()));
         physicsBodyGround->setCategoryBitmask(DefineBitmask::GROUND);
-        physicsBodyGround->setCollisionBitmask(DefineBitmask::CHARACTER);
-        physicsBodyGround->setContactTestBitmask(DefineBitmask::CHARACTER);
+        physicsBodyGround->setCollisionBitmask(DefineBitmask::CHARACTER | DefineBitmask::ENEMY | DefineBitmask::TRAMPOLINE | DefineBitmask::BULLET);
+        physicsBodyGround->setContactTestBitmask(DefineBitmask::CHARACTER | DefineBitmask::BULLET);
         physicsBodyGround->setDynamic(false);
         groundNode->setPhysicsBody(physicsBodyGround);
 

@@ -15,8 +15,7 @@ protected:
 	bool loadAnimations() override;
 	bool callbackOnContactBegin(PhysicsContact& contact);
 	bool callbackOnContaceSeparate(PhysicsContact& contact);
-	void onEnter() override;
-	void update(float dt) override;
+	void update(float dt);
 	StateMachine* _stateMachine;
 protected:
 	Node* nodeA;

@@ -12,6 +12,7 @@
 #include "Coin/Coin.h"
 #include "HealthController/HealthController.h"
 #include "HealthController/HealthBarEmpty.h"
+#include "Score/Score.h"
 
 ButtonController* _buttonController;
 
@@ -39,8 +40,8 @@ bool Map1::init() {
     }
     createMenu();
     createPhysicsWorld();
-    addCharacter();
-    addEnemies();
+    addCharacter1();
+    addMap1Enemies();
     createGroundPhysics();
     createButtonController();
     addLadder();
@@ -50,6 +51,8 @@ bool Map1::init() {
     addObjects();
     createPolygonPhysics();
     createHealthBar();
+    createCheckPoint();
+    addScore();
     this->scheduleUpdate();
     return true;
 }
@@ -57,14 +60,18 @@ bool Map1::init() {
 void Map1::onEnter()
 {
     Scene::onEnter();
+    Score::getInstance()->reset();
     auto _char = _character->getCharacter(0);
     Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
     auto mapSize = _gameMap->getContentSize();
     Rect boundingBox = { size.width / 2,size.height / 2,3680 - size.width / 2 - size.width / 2,1632 - size.height / 2 - size.height / 2 };
     auto buttonInstace = ButtonController::getInstance();
-    auto _healthBar = HealthController::getInstance(3, "/Character/Health/Healthbar_full.png");
+
+    auto _healthBar = HealthController::getInstance();
+    
     auto _healthEmpty = HealthBarEmpty::getInstance( "/Character/Health/Healthbar_empty.png");
-    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty);
+    auto _scoreLabel = Score::getInstance();
+    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel);
     this->addChild(cam);
 }
 void Map1::callPauseScene(Ref* sender)

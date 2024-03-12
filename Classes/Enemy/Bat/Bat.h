@@ -13,17 +13,21 @@ public:
 	void setupBat(float patrolSpeed, Vec2 initialMoveDirection);
 	float _patrolSpeed;
 	Vec2 _initialMoveDirection;
+	bool _isContactCharacter = false;
+	bool _isContactGround = false;
 protected:
 	bool loadAnimations() override;
 	StateMachine* _enemyStateMachine;
-	//bool callbackOnContactBegin(PhysicsContact& contact);
-	//bool callbackOnContactSeparate(PhysicsContact& contact);
+	bool callbackOnContactBegin(PhysicsContact& contact);
+	bool callbackOnContactSeparate(PhysicsContact& contact);
+	void update(float dt);
 	void onEnter() override;
 protected:
 	Node* nodeA;
 	Node* nodeB;
 	Node* target;
-	bool _isContactCharacter = false;
+	float _maxSpeed;
+	float timeDeath;
 
 };
 #endif // !__BAT_H__

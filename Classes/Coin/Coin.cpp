@@ -2,6 +2,7 @@
 #include "AnimationUtilities/AnimationUtils.h"
 #include "Character/Character.h"
 #include "DefineBitmask.h"
+#include "Score/Score.h"
 
 Coin* Coin::create(EntityInfo* info)
 {
@@ -64,6 +65,8 @@ bool Coin::callbackOnContactBegin(PhysicsContact& contact)
 		_isPicked = true;
 	}
 
+	Score::getInstance()->update(10);
+
 	AnimationUtils::loadSpriteFrameCache("Coin/", "coin-picked");
 	AnimationUtils::createAnimation("coin-picked", 0.1f);
 
@@ -83,13 +86,6 @@ bool Coin::callbackOnContactBegin(PhysicsContact& contact)
 	explosion->runAction(sequence);
 	return false;
 
-}
-
-
-void Coin::onEnter()
-{
-	Entity::onEnter();
-	this->scheduleUpdate();
 }
 
 void Coin::update(float dt)

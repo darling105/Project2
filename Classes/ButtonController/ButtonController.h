@@ -32,18 +32,12 @@ private:
     ui::Button* _rightButton;
     ui::Button* _downButton;
     ui::Button* _stopMenu;
-    Vec2 previousTouchPos;
-    Vec2 _touchMovedPos;
-    Vec2 _moveLeftPos;
-    Vec2 touchLeftButton;
 
-    Vec2 previousTouchRightPos;
+    Vec2 _touchMovedPos;
     Vec2 _touchMovedRightPos;
-    Vec2 _moveRightPos;
-    Vec2 touchRightButton;
+
     void update(float dt);
-    Node* nodeLeftTouch;
-    Node* nodeRightTouch;
+
 };
 
 #endif // __BUTTON_CONTROLLER_H__

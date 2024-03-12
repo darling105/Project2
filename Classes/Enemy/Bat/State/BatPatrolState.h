@@ -7,8 +7,8 @@ class BatPatrolState : public State
 {
 public:
 	void enterState(Entity* owner) override;
-	std::string updateState() override;
 	void exitState() override;
+	std::string updateState() override;
 protected:
 	void movingLeftFirst();
 	void movingRightFirst();

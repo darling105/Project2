@@ -23,7 +23,7 @@ void CreepPatrolState::enterState(Entity* owner) {
     auto ani = AnimationCache::getInstance()
         ->getAnimation(_owner->getEntityInfo()->_entityName + "-patrol");
     auto animate = RepeatForever::create(Animate::create(ani));
-    animate->setTag(StateMachine::EnemyAnimationTag);
+
     _owner->getModel()->runAction(animate);
 }
 

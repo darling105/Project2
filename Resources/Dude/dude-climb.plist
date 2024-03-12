@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./dude-climb (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-2,-2}</string>
+    <key>spriteSize</key>
+    <string>{20,27}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{20,27}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./dude-climb (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,-2}</string>
+    <key>spriteSize</key>
+    <string>{18,27}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{22,29},{18,27}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./dude-climb (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-1,-2}</string>
+    <key>spriteSize</key>
+    <string>{20,27}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{22,0},{20,27}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./dude-climb (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-3,-2}</string>
+    <key>spriteSize</key>
+    <string>{20,27}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{0,29},{20,27}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{44,58}</string>
+   <key>textureFileName</key>
+   <string>dude-climb.png</string>
+  </dict>
+ </dict>
+</plist>

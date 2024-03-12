@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./ghost-death (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{1,-5}</string>
+    <key>spriteSize</key>
+    <string>{32,18}</string>
+    <key>spriteSourceSize</key>
+    <string>{44,31}</string>
+    <key>textureRect</key>
+    <string>{{34,30},{32,18}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./ghost-death (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{1,-5}</string>
+    <key>spriteSize</key>
+    <string>{32,18}</string>
+    <key>spriteSourceSize</key>
+    <string>{44,31}</string>
+    <key>textureRect</key>
+    <string>{{34,30},{32,18}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./ghost-death (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{1,-3}</string>
+    <key>spriteSize</key>
+    <string>{32,22}</string>
+    <key>spriteSourceSize</key>
+    <string>{44,31}</string>
+    <key>textureRect</key>
+    <string>{{0,30},{32,22}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./ghost-death (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{1,-2}</string>
+    <key>spriteSize</key>
+    <string>{28,26}</string>
+    <key>spriteSourceSize</key>
+    <string>{44,31}</string>
+    <key>textureRect</key>
+    <string>{{30,0},{28,26}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./ghost-death (5)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,-1}</string>
+    <key>spriteSize</key>
+    <string>{28,28}</string>
+    <key>spriteSourceSize</key>
+    <string>{44,31}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{28,28}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{68,54}</string>
+   <key>textureFileName</key>
+   <string>ghost-death.png</string>
+  </dict>
+ </dict>
+</plist>

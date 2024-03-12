@@ -94,13 +94,6 @@ bool Trampoline::callbackOnContaceSeparate(PhysicsContact& contact)
 	return false;
 }
 
-
-void Trampoline::onEnter()
-{
-	Entity::onEnter();
-	this->scheduleUpdate();
-}
-
 void Trampoline::update(float dt)
 {
 	EntityInfo info("character");
@@ -110,7 +103,7 @@ void Trampoline::update(float dt)
 		log("contact");
 		_model->setVisible(false);
 		_char->getPhysicsBody()->setVelocity(Vec2::ZERO);
-		_char->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 140);
+		_char->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 35);
 	}
 	else {
 		_model->setVisible(true);

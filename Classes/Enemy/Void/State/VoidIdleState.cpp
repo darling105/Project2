@@ -7,7 +7,6 @@ void VoidIdleState::enterState(Entity* owner)
 	auto ani = AnimationCache::getInstance()
 		->getAnimation(_owner->getEntityInfo()->_entityName + "-idle");
 	auto animate = RepeatForever::create(Animate::create(ani));
-	animate->setTag(StateMachine::AnimationTag);
 	_owner->getModel()->runAction(animate);
 }
 

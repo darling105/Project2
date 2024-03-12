@@ -8,7 +8,6 @@ void CharacterRunState::enterState(Entity* owner)
 	auto ani = AnimationCache::getInstance()
 		->getAnimation(_owner->getEntityInfo()->_entityName + "-run");
 	auto animate = RepeatForever::create(Animate::create(ani));
-	animate->setTag(StateMachine::AnimationTag);
 	_owner->getModel()->runAction(animate);
 
 	auto mapNode = Director::getInstance()->getRunningScene()->getChildByTag(100);

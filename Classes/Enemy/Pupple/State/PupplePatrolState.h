@@ -2,7 +2,7 @@
 #define __PUPPLE_PATROL_STATE_H__
 
 #include "StateMachine/State.h"
-#include "Character/Character.h"
+
 class PupplePatrolState : public State
 {
 public:
@@ -10,6 +10,8 @@ public:
 	std::string updateState() override;
 	void exitState() override;
 protected:
+	void movingLeftFirst();
+	void movingRightFirst();
 	bool movingRight = false;
 	bool movingLeft = false;
 };

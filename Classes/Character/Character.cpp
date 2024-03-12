@@ -12,11 +12,15 @@
 #include "Enemy/Creep/Creep.h"
 #include "ButtonController/ButtonController.h"
 #include "Maps/Map1.h"
+#include "Score/Score.h"
 
 
 
 std::vector<Character*> Character::_characters;
 Character* Character::_instance;
+
+std::vector<int> checkpointContacted;
+
 
 Character* Character::getInstance(EntityInfo* info)
 {
@@ -37,7 +41,6 @@ bool Character::init(EntityInfo* info)
 		log("Init Character failed!");
 		return false;
 	}
-
 	AudioManager* audioManager = AudioManager::getInstance();
 
 	auto aniIdle = AnimationCache::getInstance()->getAnimation(_info->_entityName + "-idle");
@@ -46,13 +49,13 @@ bool Character::init(EntityInfo* info)
 	_model->runAction(animate);
 	this->addChild(_model, 2);
 	Size size = _model->getContentSize();
-	Size newSize(_model->getContentSize().width / 1.6, _model->getContentSize().height / 1.1);
+	Size newSize(_model->getContentSize().width / 1.8, _model->getContentSize().height / 1.15);
 	physicBodyCharacter = PhysicsBody::createBox(newSize, PhysicsMaterial(1, 0, 0));
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
 	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND);
 	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR | DefineBitmask::FINISH |
-		DefineBitmask::SPIKE | DefineBitmask::COIN | DefineBitmask::ENEMY | DefineBitmask::BULLET);
+		DefineBitmask::SPIKE | DefineBitmask::COIN | DefineBitmask::ENEMY | DefineBitmask::BULLET | DefineBitmask::CHECKPOINT);
 	physicBodyCharacter->setRotationEnable(false);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
@@ -70,6 +73,8 @@ bool Character::init(EntityInfo* info)
 	_stateMachine->addState("climb", new CharacterClimbState());
 	_stateMachine->setCurrentState("idle");
 	this->addChild(_stateMachine);
+
+	checkpointContacted.resize(10, false);
 
 	return true;
 }
@@ -118,9 +123,9 @@ void Character::jump()
 	if (_jumpCooldown <= 0.0f) {
 		_isOnGround = false;
 		if (!_isJumping) {
-			this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 85);
+			this->getPhysicsBody()->applyImpulse(Vec2(0, 1) * 28);
 			_isJumping = true;
-			_jumpCooldown = 1.1f;
+			_jumpCooldown = 0.62f;
 		}
 	}
 }
@@ -210,15 +215,10 @@ int Character::getNumberOfCharacters() {
 void Character::onEnter()
 {
 	Entity::onEnter();
+	_baseSpeed = 12;
 	this->scheduleUpdate();
 	_stateMachine->scheduleUpdate();
 }
-
-//void Character::onExit()
-//{
-//	Entity::onExit();
-//	_stateMachine->retain();
-//}
 
 bool Character::callbackOnContactBegin(PhysicsContact& contact)
 {
@@ -233,7 +233,6 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
 		if (target->getPositionY() < this->getPositionY())
 		{
-			log("onGround");
 			_isOnGround = true;
 			_isJumping = false; 
 		}
@@ -241,7 +240,7 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 			_physicsBody->setVelocity(Vec2::ZERO);
 		}
 	}
-	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
+	 if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
 	{
 		_isOnStair = true;
 	}
@@ -257,9 +256,18 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 	{
 		_isPickedCoin = true;
 	}
-	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::ENEMY) {
-		_isContactedEnemy = true;
-	}
+	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHECKPOINT) {
+		 int tag = target->getTag();
+		 if (tag >= 1 && tag <= 3) {
+			 int checkpointIndex = tag - 1; // Chuyển đổi từ tag thành chỉ số mảng
+			 if (!checkpointContacted[checkpointIndex]) {
+				 _isContactedCheckPoint = true;
+				 indexCheckPoint++;
+				 checkpointContacted[checkpointIndex] = true; // Cập nhật trạng thái của checkpoint
+				 check = target->getPosition();
+			 }
+		 }
+	 }
 	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::BULLET) {
 		_isContactedSkills = true;
 	}
@@ -278,11 +286,10 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	if (target->getTag() == PhysicGround::TAG_GROUND &&
 		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
 		if (!_isOnGround) {
-		_isOnGround = false;
-		_isJumping = true;
+			_isOnGround = false;
+			_isJumping = true;
 		}
 	}
-
 	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
 	{
 		_isOnStair = false;
@@ -298,10 +305,6 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::COIN)
 	{
 		_isPickedCoin = false;
-	}
-	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::ENEMY)
-	{
-		_isContactedEnemy = false;
 	}
 	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::BULLET) {
 		_isContactedSkills = false;
@@ -328,10 +331,10 @@ void Character::update(float dt) {
 		physicBodyCharacter->setGravityEnable(false);
 		physicBodyCharacter->setVelocity(Vec2::ZERO);
 		if (_isUpButtonDown) {
-			physicBodyCharacter->applyImpulse(Vec2(0, 1) * 40);
+			physicBodyCharacter->applyImpulse(Vec2(0, 1) * 10);
 		}
 		if (_isDownButtonDown) {
-			physicBodyCharacter->applyImpulse(Vec2(0, -1) * 40);
+			physicBodyCharacter->applyImpulse(Vec2(0, -1) * 10);
 		}
 		if (_isLeftButtonDown) {
 			moveLeft();
@@ -347,18 +350,14 @@ void Character::update(float dt) {
 		GameManager::getInstance()->endGame();
 	}
 
-	auto _healthController = HealthController::getInstance(3, "/Character/Health/Healthbar_full.png");
 
-	if (_isOnSpike || _isContactedSkills)
+
+	if (_isOnSpike || _isContactedSkills || _isContactedEnemy)
 	{
-		log("%d", _retryCount);
-		this->setPosition(Vec2(2500, 1200));
-		log("GameOver");
 		_retryCount--;
-		
-
-		float newHealth = _healthController->getCurrentHealth()  - 1;
-		_healthController->setCurrentHealth(newHealth);
+		if (indexCheckPoint >= 0) {
+			this->setPosition(check);
+		}
 
 	}
 	if (_retryCount == 0) {
@@ -367,12 +366,31 @@ void Character::update(float dt) {
 		GameManager::getInstance()->gameOver();
 		reset();
 	}
+	
+	if (_isContactedCheckPoint) {
+		log("check");
+		}
+
+	auto _healBar = HealthController::getInstance();
+	_healBar->setCurrentHealth(_retryCount);
 }
 
 void Character::reset()
 {
-	auto _healthController = HealthController::getInstance(3, "/Character/Health/Healthbar_full.png");
 	_retryCount = 3;
-	_healthController->setCurrentHealth(_retryCount);
-	_baseSpeed = 60;
+	Score::getInstance()->reset();
+}
+
+void Character::resetInstance() {
+	// Đặt thể hiện của Character về nullptr
+	if (_instance != nullptr) {
+		delete _instance;
+		_instance = nullptr;
+	}
+
+	// Xóa tất cả các nhân vật từ vector _characters
+	for (auto character : _characters) {
+		delete character;
+	}
+	_characters.clear();
 }

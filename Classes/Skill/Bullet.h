@@ -12,10 +12,10 @@ public:
 	static Bullet* create(EntityInfo* info);
 protected:
 	bool callbackOnContactBegin(PhysicsContact& contact);
+	bool callbackOnContactSeparate(PhysicsContact& contact);
 	virtual bool init(EntityInfo* info);
 	bool loadAnimations() override;
-	void update(float dt);
-	void onEnter() override;
+	//void update(float dt);
 	CC_SYNTHESIZE(Entity*, _owner, Owner);
 protected:
 	Sprite* _model;

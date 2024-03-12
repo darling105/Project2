@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "DefineBitmask.h"
 #include "AnimationUtilities/AnimationUtils.h"
+#include "PhysicRender/PhysicGround.h"
 
 Bullet* Bullet::create(EntityInfo* info)
 {
@@ -48,11 +49,32 @@ bool Bullet::callbackOnContactBegin(PhysicsContact& contact)
 
 	auto target = (nodeA == this) ? (nodeB) : (nodeA);
 
-	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
+	if (target->getTag() == PhysicGround::TAG_GROUND &&
+		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
 		_isCollidedGround = true;
+		this->removeFromParentAndCleanup(true);
 	}
 	else {
 		_isCollidedCharacter = true;
+	}
+
+	return true;
+}
+
+bool Bullet::callbackOnContactSeparate(PhysicsContact& contact)
+{
+	auto nodeA = contact.getShapeA()->getBody()->getNode();
+	auto nodeB = contact.getShapeB()->getBody()->getNode();
+	if (nodeA != this && nodeB != this) return false;
+
+	auto target = (nodeA == this) ? (nodeB) : (nodeA);
+
+	if (target->getTag() == PhysicGround::TAG_GROUND &&
+		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::GROUND) {
+		_isCollidedGround = false;
+	}
+	else {
+		_isCollidedCharacter = false;
 	}
 
 	return true;
@@ -68,15 +90,10 @@ bool Bullet::loadAnimations()
 	return true;
 }
 
-void Bullet::update(float dt)
-{
-	if (_isCollidedGround || _isCollidedCharacter) {
-		this->removeFromParentAndCleanup(true);
-	}
-}
+//void Bullet::update(float dt)
+//{
+//	if (_isCollidedGround) {
+//		this->removeFromParentAndCleanup(true);
+//	}
+//}
 
-void Bullet::onEnter()
-{
-	Entity::onEnter();
-	this->scheduleUpdate();
-}

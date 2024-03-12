@@ -3,6 +3,7 @@
 #include "DefineBitmask.h"
 #include "Character/Character.h"
 #include "State/VoidIdleState.h"
+#include "Skill/Bullet.h"
 
 Void* Void::create(EntityInfo* info)
 {
@@ -27,24 +28,14 @@ bool Void::init(EntityInfo* info)
     _model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-idle (1)");
     _model->setAnchorPoint(Vec2(0.7, 0.5));
     _model->setScale(0.75f);
-    _model->setRotation(-90);
     this->addChild(_model);
 
-    /*auto listener = EventListenerPhysicsContact::create();
-    listener->onContactBegin = CC_CALLBACK_1(Void::callbackOnContactBegin, this);
-    listener->onContactSeparate = CC_CALLBACK_1(Void::callbackOnContactSeparate, this);
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);*/
-
-    Size size(_model->getContentSize().width, _model->getContentSize().height);
+    Size size(_model->getContentSize().width / 1.5, _model->getContentSize().height / 1.5);
     auto enemyPhysicBody = PhysicsBody::createBox(size, PhysicsMaterial(1.0f, 0.0f, 0.0f));
-    enemyPhysicBody->setCategoryBitmask(DefineBitmask::ENEMY);
-    enemyPhysicBody->setCollisionBitmask(DefineBitmask::GROUND);
-    enemyPhysicBody->setContactTestBitmask(DefineBitmask::CHARACTER);
     enemyPhysicBody->setRotationEnable(false);
     enemyPhysicBody->setGravityEnable(false);
     this->setPhysicsBody(enemyPhysicBody);
 
-    enemyPhysicBody->setTag(ENEMY_TAG);
 
     _enemyStateMachine = StateMachine::create(this);
     _enemyStateMachine->addState("idle", new VoidIdleState());
@@ -67,51 +58,58 @@ bool Void::loadAnimations()
     return true;
 }
 
-//bool Void::callbackOnContactBegin(PhysicsContact& contact)
-//{
-//    nodeA = contact.getShapeA()->getBody()->getNode();
-//    nodeB = contact.getShapeB()->getBody()->getNode();
-//    if (nodeA != this && nodeB != this) return false;
-//    if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
-//        nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
-//    {
-//        _isContactCharacter = true;
-//    }
-//    AnimationUtils::loadSpriteFrameCache("Enemy/Void/", "creep-death");
-//    AnimationUtils::createAnimation("creep-death", 1.25f);
-//
-//    auto explosion = Sprite::createWithSpriteFrameName("./creep-death (1)");
-//
-//    explosion->setPosition(this->getPosition());
-//
-//    this->getParent()->addChild(explosion, this->getLocalZOrder());
-//
-//    auto animation = AnimationCache::getInstance()->getAnimation("creep-death");
-//    auto animate = Animate::create(animation);
-//    auto removeExplosion = CallFunc::create([explosion]() {
-//        explosion->removeFromParentAndCleanup(true);
-//        });
-//
-//    auto sequence = Sequence::create(animate, removeExplosion, nullptr);
-//    explosion->runAction(sequence);
-//    return false;
-//}
-//
-//bool Void::callbackOnContactSeparate(PhysicsContact& contact)
-//{
-//    nodeA = contact.getShapeA()->getBody()->getNode();
-//    nodeB = contact.getShapeB()->getBody()->getNode();
-//    if (nodeA != this && nodeB != this) return false;
-//    if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
-//        nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
-//    {
-//        _isContactCharacter = false;
-//    }
-//    return true;
-//}
-
-void Void::onEnter()
+void Void::update(float dt)
 {
-    Entity::onEnter();
-    this->scheduleUpdate();
+
+    EntityInfo info("character");
+    Vec2 characterPosition = Character::getInstance(&info)->getCharacter(0)->getPosition();
+    float creepPositionX = this->getPositionX();
+    float creepPositionY = this->getPositionY();
+    float creepHeight = 600.0f;
+
+    if (characterPosition.x > creepPositionX + 20 && characterPosition.x < creepPositionX + 20 + 950
+        && characterPosition.y < creepPositionY + (creepHeight / 4) && characterPosition.y > creepPositionY - creepHeight ) {
+        shoot(dt);
+    }
+    else if (characterPosition.x < creepPositionX - 20 && characterPosition.x > creepPositionX - 20 - 950
+        && characterPosition.y < creepPositionY + (creepHeight / 4) && characterPosition.y  > creepPositionY - creepHeight ) {
+        shoot(dt);
+    }
 }
+
+void Void::shoot(float dt)
+{
+    _countTime += dt;
+    if (_countTime >= _timeShoot) {
+        auto bullet = Bullet::create(new EntityInfo("ball"));
+        bullet->setPosition(this->getPosition());
+        bullet->setOwner(this);
+        this->getParent()->addChild(bullet, 4);
+        auto bulletBody = bullet->getPhysicsBody();
+        if (_skillDirection == Vec2(0,-1)) {
+            bulletBody->setVelocity(Vec2(0, -60));
+        }
+        else if (_skillDirection == Vec2(0, 1)) {
+            bulletBody->setVelocity(Vec2(0, 60));
+        }
+        else if (_skillDirection == Vec2(-1, 0)) {
+            bulletBody->setVelocity(Vec2(-60, 0));
+        }
+        else if (_skillDirection == Vec2(1, 0)) {
+            bulletBody->setVelocity(Vec2(60, 0));
+        }
+        bulletBody->setGravityEnable(false);
+        _countTime = 0.0f;
+    }
+    this->setRotation(_rotation);
+}
+
+
+void Void::setupVoid(float rotation, float timeShoot ,Vec2 skillDirection)
+{
+    _rotation = rotation;
+    _timeShoot = timeShoot;
+    _skillDirection = skillDirection;
+}
+
+

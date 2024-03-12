@@ -17,6 +17,7 @@ public:
     static void addCharacter(EntityInfo* info);
     static int getNumberOfCharacters();
     static Character* getCharacter(int index);
+    void resetInstance();
     void jump();
     void moveLeft();
     void moveRight();
@@ -30,12 +31,17 @@ public:
     bool getRightButtonDown() const { return _isRightButtonDown; }
     bool getDownButtonDown() const { return _isDownButtonDown; }
     bool getPauseButtonDown() const { return _isPauseButtonDown; }
+    void reset();
     bool _isJumping = false;
     bool _isOnStair = false;
     bool _isOnGround = false;
     bool _isOnFinish = false;
     bool _isOnSpike = false;
     bool _isContactedSkills = false;
+    bool _isContactedEnemy = false;
+    bool _isContactedCheckPoint = false;
+    bool isFirstCheckpointContacted = false;
+    bool isFirstCheckpointContacted1 = false;
 private:
     static Character* _instance;
     static std::vector<Character*> _characters;
@@ -48,20 +54,21 @@ private:
     bool _isRightButtonDown = false;
     bool _isDownButtonDown = false;
     bool _isPickedCoin = false;
-    bool _isContactedEnemy = false;
     bool _isPauseButtonDown = false;
     float _jumpCooldown;
     void onEnter() override;
-    //void onExit() override;
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     bool callbackOnContactSeparate(PhysicsContact& contact);
     void update(float dt);
-    void reset();
     int _retryCount = 3;
     float _baseSpeed = 60;
     bool _gameOver;
     std::vector<PhysicsBody*> _groundList;
+    std::vector<int> checkpointContacted;
+    int indexCheckPoint = 0;
+    Vec2 check;
+    Vec2 check1;
 };
 
 #endif // !__CHARACTER_H__

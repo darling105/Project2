@@ -3,6 +3,9 @@
 #include "ui/CocosGUI.h"
 #include "Character/Character.h"
 #include "ButtonController/ButtonController.h"
+#include "HealthController/HealthBarEmpty.h"
+#include "HealthController/HealthController.h"
+#include "Score/Score.h"
 
 USING_NS_CC;    
 
@@ -32,13 +35,18 @@ bool Map2::init() {
     }
     createMenu();
     createPhysicsWorld();
-    addCharacter();
-    addEnemies();
+    addCharacter2();
+    addMap2Enemies();
     createGroundPhysics();
     createButtonController();
     addLadder();
     addFinish();
     createPolygonPhysics();
+    createHealthBar();
+    addCoin();
+    addScore();
+    addObjects();
+    createCheckPoint();
     this->scheduleUpdate();
     return true;
 }
@@ -55,13 +63,19 @@ void Map2::goToGameScene()
 void Map2::onEnter()
 {
     Scene::onEnter();
-    auto _char1 = _character->getCharacter(0);
-    Size size1 = Director::getInstance()->getOpenGLView()->getFrameSize();
-    auto mapSize1 = _gameMap->getContentSize();
-    Rect boundingBox1 = { size1.width / 2,size1.height / 2,3680 - size1.width / 2 - size1.width / 2,1632 - size1.height / 2 - size1.height / 2 };
-    auto buttonInstace1 = ButtonController::getInstance();
-    /*CameraFollow* cam1 = CameraFollow::create(_char1, boundingBox1, buttonInstace1);
-    this->addChild(cam1);*/
+    Score::getInstance()->reset();
+    auto _char = _character->getCharacter(0);
+    Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
+    auto mapSize = _gameMap->getContentSize();
+    Rect boundingBox = { size.width / 2,size.height / 2,3680 - size.width / 2 - size.width / 2,1632 - size.height / 2 - size.height / 2 };
+    auto buttonInstace = ButtonController::getInstance();
+
+    auto _healthBar = HealthController::getInstance();
+
+    auto _healthEmpty = HealthBarEmpty::getInstance("/Character/Health/Healthbar_empty.png");
+    auto _scoreLabel = Score::getInstance();
+    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel);
+    this->addChild(cam);
 }
 void Map2::callPauseScene(Ref* sender)
 {

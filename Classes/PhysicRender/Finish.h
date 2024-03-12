@@ -13,4 +13,4 @@ protected:
     //bool onContactBegin(const PhysicsContact& contact);
 };
 
-#endif // !__STAIR_H__
+#endif // !__FINISH_H__

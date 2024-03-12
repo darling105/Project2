@@ -60,7 +60,3 @@ void GameOverScene::onEnter()
 	}
 }
 
-void GameOverScene::update()
-{
-
-}

@@ -25,15 +25,14 @@ bool Pupple::init(EntityInfo* info)
         return false;
     }
     _model = Sprite::createWithSpriteFrameName("./" + _info->_entityName + "-patrol (1)");
-    _model->setAnchorPoint(Vec2(0.7, 0.5));
     this->addChild(_model);
 
-    /*auto listener = EventListenerPhysicsContact::create();
+    auto listener = EventListenerPhysicsContact::create();
     listener->onContactBegin = CC_CALLBACK_1(Pupple::callbackOnContactBegin, this);
     listener->onContactSeparate = CC_CALLBACK_1(Pupple::callbackOnContactSeparate, this);
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);*/
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-    Size size(_model->getContentSize().width, _model->getContentSize().height);
+    Size size(_model->getContentSize().width / 1.2, _model->getContentSize().height / 1.5);
     auto enemyPhysicBody = PhysicsBody::createBox(size, PhysicsMaterial(1.0f, 0.0f, 0.0f));
     enemyPhysicBody->setCategoryBitmask(DefineBitmask::ENEMY);
     enemyPhysicBody->setCollisionBitmask(DefineBitmask::GROUND);
@@ -41,7 +40,7 @@ bool Pupple::init(EntityInfo* info)
     enemyPhysicBody->setRotationEnable(false);
     enemyPhysicBody->setGravityEnable(true);
     this->setPhysicsBody(enemyPhysicBody);
-    enemyPhysicBody->setTag(ENEMY_TAG);
+
 
     _enemyStateMachine = StateMachine::create(this);
     _enemyStateMachine->addState("patrol", new PupplePatrolState());
@@ -49,6 +48,12 @@ bool Pupple::init(EntityInfo* info)
     this->addChild(_enemyStateMachine);
 
     return true;
+}
+
+void Pupple::setupPupple(float patrolSpeed, Vec2 initialMoveDirection)
+{
+    _patrolSpeed = patrolSpeed;
+    _initialMoveDirection = initialMoveDirection;
 }
 
 bool Pupple::loadAnimations()
@@ -64,51 +69,70 @@ bool Pupple::loadAnimations()
     return true;
 }
 
-//bool Pupple::callbackOnContactBegin(PhysicsContact& contact)
-//{
-//    nodeA = contact.getShapeA()->getBody()->getNode();
-//    nodeB = contact.getShapeB()->getBody()->getNode();
-//    if (nodeA != this && nodeB != this) return false;
-//    if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
-//        nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
-//    {
-//        _isContactCharacter = true;
-//    }
-//    AnimationUtils::loadSpriteFrameCache("Enemy/Pupple/", "creep-death");
-//    AnimationUtils::createAnimation("creep-death", 1.25f);
-//
-//    auto explosion = Sprite::createWithSpriteFrameName("./creep-death (1)");
-//
-//    explosion->setPosition(this->getPosition());
-//
-//    this->getParent()->addChild(explosion, this->getLocalZOrder());
-//
-//    auto animation = AnimationCache::getInstance()->getAnimation("creep-death");
-//    auto animate = Animate::create(animation);
-//    auto removeExplosion = CallFunc::create([explosion]() {
-//        explosion->removeFromParentAndCleanup(true);
-//        });
-//
-//    auto sequence = Sequence::create(animate, removeExplosion, nullptr);
-//    explosion->runAction(sequence);
-//    return false;
-//}
-//
-//bool Pupple::callbackOnContactSeparate(PhysicsContact& contact)
-//{
-//    nodeA = contact.getShapeA()->getBody()->getNode();
-//    nodeB = contact.getShapeB()->getBody()->getNode();
-//    if (nodeA != this && nodeB != this) return false;
-//    if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
-//        nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
-//    {
-//        _isContactCharacter = false;
-//    }
-//    return true;
-//}
-
-void Pupple::onEnter()
+bool Pupple::callbackOnContactBegin(PhysicsContact& contact)
 {
-    Entity::onEnter();
-    this->scheduleUpdate();
+    EntityInfo info("character");
+    auto character = Character::getInstance(&info);
+    auto _character = character->getCharacter(0);
+    nodeA = contact.getShapeA()->getBody()->getNode();
+    nodeB = contact.getShapeB()->getBody()->getNode();
+    if (nodeA != this && nodeB != this) return false;
+    if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
+        nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
+    {
+        if (_character->getPosition().y >= this->getPosition().y + 22) {
+
+        _isContactCharacter = true;
+
+        AnimationUtils::loadSpriteFrameCache("Enemy/Pupple/", "pupple-death");
+        AnimationUtils::createAnimation("pupple-death", 1.25f);
+        auto explosion = Sprite::createWithSpriteFrameName("./pupple-death (1)");
+        explosion->setPosition(this->getPosition());
+        this->getParent()->addChild(explosion, this->getLocalZOrder());
+        auto animation = AnimationCache::getInstance()->getAnimation("pupple-death");
+        auto animate = Animate::create(animation);
+        auto removeExplosion = CallFunc::create([explosion]() {
+            explosion->removeFromParentAndCleanup(true);
+            });
+        auto sequence = Sequence::create(animate, removeExplosion, nullptr);
+        explosion->runAction(sequence);
+
+        _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 240);
+        }
+        else {
+            _character->_isContactedEnemy = true;
+        }
+    }
+    
+    return false;
+}
+
+bool Pupple::callbackOnContactSeparate(PhysicsContact& contact)
+{
+    EntityInfo info("character");
+    auto character = Character::getInstance(&info);
+    auto _character = character->getCharacter(0);
+    nodeA = contact.getShapeA()->getBody()->getNode();
+    nodeB = contact.getShapeB()->getBody()->getNode();
+    if (nodeA != this && nodeB != this) return false;
+    auto target = (nodeA == this) ? nodeA : nodeB;
+    if (target) {
+        if (_character->getPosition().y >= this->getPosition().y + 22) {
+            _character->_isContactedEnemy = false;
+        }
+        else {
+            _character->_isContactedEnemy = false;
+        }
+    }
+    return false;
+}
+
+void Pupple::update(float dt)
+{
+    EntityInfo info("character");
+    auto character = Character::getInstance(&info);
+    auto _character = character->getCharacter(0);
+    if (_isContactCharacter) {
+        this->removeFromParentAndCleanup(true);
+    }
 }

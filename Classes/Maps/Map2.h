@@ -5,6 +5,7 @@
 #include "Maps/BaseMap.h"
 #include "ButtonController/ButtonController.h"
 #include "Camera/CameraFollow.h"
+
 USING_NS_CC;
 
 class Map2 : public BaseMap

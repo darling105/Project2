@@ -8,7 +8,6 @@ void CharacterIdleState::enterState(Entity* owner)
 	auto ani = AnimationCache::getInstance()
 		->getAnimation(_owner->getEntityInfo()->_entityName + "-idle");
 	auto animate = RepeatForever::create(Animate::create(ani));
-	animate->setTag(StateMachine::AnimationTag);
 	_owner->getModel()->runAction(animate);
 }
 
@@ -22,6 +21,9 @@ std::string CharacterIdleState::updateState()
 	}
 	if (_character->_isJumping) {
 		return "jump";
+	}
+	if (_character->_isOnStair) {
+		return "climb";
 	}
 
 	return "idle";

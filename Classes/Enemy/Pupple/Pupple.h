@@ -10,12 +10,15 @@ public:
 	static const int ENEMY_TAG = 12;
 	static Pupple* create(EntityInfo* info);
 	virtual bool init(EntityInfo* info) override;
+	void setupPupple(float patrolSpeed, Vec2 initialMoveDirection);
+	float _patrolSpeed;
+	Vec2 _initialMoveDirection;
 protected:
 	bool loadAnimations() override;
 	StateMachine* _enemyStateMachine;
-	//bool callbackOnContactBegin(PhysicsContact& contact);
-	//bool callbackOnContactSeparate(PhysicsContact& contact);
-	void onEnter() override;
+	bool callbackOnContactBegin(PhysicsContact& contact);
+	bool callbackOnContactSeparate(PhysicsContact& contact);
+	void update(float dt);
 protected:
 	Node* nodeA;
 	Node* nodeB;

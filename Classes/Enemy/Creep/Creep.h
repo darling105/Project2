@@ -10,6 +10,9 @@ public:
 	static const int ENEMY_TAG = 12;
 	static Creep* create(EntityInfo* info);
 	virtual bool init(EntityInfo* info) override;
+	void setupCreep(float patrolSpeed, Vec2 initialMoveDirection);
+	float _patrolSpeed;
+	Vec2 _initialMoveDirection;
 	bool _isAttack = false;
 	bool _rightRange = false;
 	bool _leftRange = false;

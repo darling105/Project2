@@ -25,9 +25,9 @@ bool PhysicGround::init(TMXObjectGroup* objectGroup) {
             Vec2 bottomRight(x + width, y);
 
             auto groundNode = Node::create();
-            auto physicsBodyGround = PhysicsBody::createBox(Size(width, height), PhysicsMaterial(1, 0, 0));
+            auto physicsBodyGround = PhysicsBody::createBox(Size(width, height), PhysicsMaterial(0.1, 0, 0));
             physicsBodyGround->setCategoryBitmask(DefineBitmask::GROUND);
-            physicsBodyGround->setCollisionBitmask(DefineBitmask::CHARACTER | DefineBitmask::ENEMY | DefineBitmask::TRAMPOLINE);
+            physicsBodyGround->setCollisionBitmask(DefineBitmask::CHARACTER | DefineBitmask::ENEMY | DefineBitmask::TRAMPOLINE );
             physicsBodyGround->setContactTestBitmask(DefineBitmask::CHARACTER | DefineBitmask::BULLET);
             physicsBodyGround->setPositionOffset(Vec2(width * 0.5f, height * 0.5f));
             physicsBodyGround->setDynamic(false);
