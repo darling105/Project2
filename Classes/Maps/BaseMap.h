@@ -20,6 +20,7 @@ public:
     void addSpike();
     void addCoin();
     void addObjects();
+    void addObjectsMap3();
     void addScore();
     GameMap* _gameMap;
 protected:

@@ -1,4 +1,4 @@
-#include "Map2.h"
+#include "Map3.h"
 #include "Scene/GameScene.h"
 #include "ui/CocosGUI.h"
 #include "Character/Character.h"
@@ -7,11 +7,12 @@
 #include "HealthController/HealthController.h"
 #include "Score/Score.h"
 
-USING_NS_CC;    
+USING_NS_CC;
 
 
-Map2* Map2::create() {
-    auto newObject = new Map2();
+
+Map3* Map3::create() {
+    auto newObject = new Map3();
     if (newObject != nullptr && newObject->init()) {
         newObject->autorelease();
         return newObject;
@@ -22,21 +23,21 @@ Map2* Map2::create() {
 
 
 
-bool Map2::init() {
+bool Map3::init() {
     if (!BaseMap::initWithPhysics()) {
         return false;
     }
 
     addBackground("BackGround/CaveBG.jpg");
-    addGameMap("Maps/map2.tmx");
+    addGameMap("Maps/map3.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
     }
     this->setTag(05);
     createMenu();
     createPhysicsWorld();
-    addCharacter2();
-    addMap2Enemies();
+    addCharacter3();
+    addMap3Enemies();
     createGroundPhysics();
     createButtonController();
     addLadder();
@@ -46,12 +47,13 @@ bool Map2::init() {
     addCoin();
     addScore();
     addObjects();
+    addObjectsMap3();
     createCheckPoint();
     this->scheduleUpdate();
     return true;
 }
 
-void Map2::goToGameScene()
+void Map3::goToGameScene()
 {
     if (ButtonController::getInstance()->getParent() != nullptr) {
         ButtonController::getInstance()->removeFromParent();
@@ -60,7 +62,7 @@ void Map2::goToGameScene()
     Director::getInstance()->popScene();
 }
 
-void Map2::onEnter()
+void Map3::onEnter()
 {
     Scene::onEnter();
     Score::getInstance()->reset();
@@ -77,7 +79,7 @@ void Map2::onEnter()
     CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel);
     this->addChild(cam);
 }
-void Map2::callPauseScene(Ref* sender)
+void Map3::callPauseScene(Ref* sender)
 {
     auto pauseWindow = PauseGame::create();
     addChild(pauseWindow, INT_MAX);

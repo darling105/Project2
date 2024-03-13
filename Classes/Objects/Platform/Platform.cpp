@@ -98,11 +98,11 @@ void Platform::update(float dt)
     auto character = Character::getInstance(&info);
     auto _character = character->getCharacter(0);
     _countSpeed += dt;
-    if (movingLeft && _countSpeed >= 2.0f) {
+    if (movingLeft && _countSpeed >= 4.5f) {
         movingRightFirst();
         _countSpeed = 0.0f;
     }
-    else if (movingRight && _countSpeed >= 2.0f) {
+    else if (movingRight && _countSpeed >= 4.5f) {
         movingLeftFirst();
         _countSpeed = 0.0f;
     }

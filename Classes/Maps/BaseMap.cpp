@@ -61,7 +61,7 @@ void BaseMap::createButtonController() {
 void BaseMap::createGroundPhysics() {
     auto objectPhysic = _gameMap->getObjectGroup("PhysicsObject");
     auto groundPhysics = PhysicGround::create(objectPhysic);
-    this->addChild(groundPhysics);
+    this->addChild(groundPhysics, 1);
 }
 
 void BaseMap::createPolygonPhysics()
@@ -136,7 +136,7 @@ void BaseMap::addCharacter3()
     _position.x = charSpawnPoint["x"].asFloat();
     _position.y = charSpawnPoint["y"].asFloat();
     _character1->setPosition(_position);
-    this->addChild(_character1, 0);
+    this->addChild(_character1, 1);
 }
 
 void BaseMap::addBackground(const std::string& backgroundImagePath) {
@@ -361,14 +361,33 @@ void BaseMap::addMap3Enemies()
         _position.y = puppleSpawnPoint["y"].asFloat();
         auto pupple = Pupple::create(new EntityInfo("pupple"));
         pupple->setPosition(_position);
-        if (puppleIndex <= 3) {
-            pupple->setupPupple(200, Vec2(-1, 0));
+        if (puppleIndex == 2) {
+            pupple->setupPupple(100, Vec2(-1, 0));
         }
         else {
             pupple->setupPupple(200, Vec2(1, 0));
         }
         this->addChild(pupple, 2);
         puppleIndex++;
+    }
+    int VoidIndex = 0;
+    TMXObjectGroup* voidObjectGroup = _gameMap->getObjectGroup("VoidSpawnPoint");
+    auto voidObjects = voidObjectGroup->getObjects();
+    for (const auto& object : voidObjects) {
+        ValueMap voidSpawnPoint = object.asValueMap();
+        Vec2 _position;
+        _position.x = voidSpawnPoint["x"].asFloat();
+        _position.y = voidSpawnPoint["y"].asFloat();
+        auto _void = Void::create(new EntityInfo("void"));
+        _void->setPosition(_position);
+        if (VoidIndex == 0) {
+        _void->setupVoid(180, 2, Vec2(1, 0));
+        }
+        else {
+            _void->setupVoid(-90, 2, Vec2(0, -1));
+        }
+        this->addChild(_void, 2);
+        VoidIndex++;
     }
 }
 
@@ -444,7 +463,6 @@ void BaseMap::addCoin()
 }
 void BaseMap::addObjects()
 {
-    int index = 0;
     TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("Trampoline");
     auto objects = objectGroup->getObjects();
     for (const auto& object : objects) {
@@ -456,7 +474,11 @@ void BaseMap::addObjects()
         trampoline->setPosition(_position);
         this->addChild(trampoline, 2);
     }
+}
 
+void BaseMap::addObjectsMap3()
+{
+    int index = 0;
     TMXObjectGroup* sawGroup = _gameMap->getObjectGroup("Saw");
     auto sawObjects = sawGroup->getObjects();
     for (const auto& object : sawObjects) {
@@ -479,14 +501,18 @@ void BaseMap::addObjects()
         }
         else if (index == 3) {
             saw->setSpeed(20.0f);
+            saw->movingRightFirst();
+        }
+        else {
+            saw->setSpeed(15.0f);
             saw->movingLeftFirst();
         }
-        
-        saw->setPosition(_position);
-        this->addChild(saw, 0);
+
+        saw->setPosition(_position.x, _position.y + 10);
+        this->addChild(saw, 2);
         index++;
     }
-
+    int indexPlatForm = 0;
     TMXObjectGroup* platformGroup = _gameMap->getObjectGroup("Platform");
     auto platformObjects = platformGroup->getObjects();
     for (const auto& object : platformObjects) {
@@ -495,23 +521,22 @@ void BaseMap::addObjects()
         _position.x = platformSpawnPoint["x"].asFloat();
         _position.y = platformSpawnPoint["y"].asFloat();
         auto platform = Platform::create(new EntityInfo("platform"));
-        /*if (index == 0) {
-            saw->setSpeed(35.0f);
-            saw->movingRightFirst();
+        if (indexPlatForm == 0) {
+            platform->setSpeed(35.0f);
+            platform->movingLeftFirst();
         }
-        else if (index == 1) {
-            saw->setSpeed(10.0f);
-            saw->movingLeftFirst();
+        else if (indexPlatForm == 1) {
+            platform->setSpeed(14.0f);
+            platform->movingRightFirst();
         }
         else {
-            saw->setSpeed(20.0f);
-            saw->movingRightFirst();
-        }*/
-        platform->setSpeed(20.0f);
-        platform->movingLeftFirst();
+            platform->setSpeed(10.0f);
+            platform->movingLeftFirst();
+        }
+
         platform->setPosition(_position);
-        this->addChild(platform);
-        index++;
+        this->addChild(platform, 2);
+        indexPlatForm++;
     }
 }
 
@@ -520,4 +545,5 @@ void BaseMap::addScore()
     auto _score = Score::getInstance();
     this->addChild(_score, 2);
 }
+
 

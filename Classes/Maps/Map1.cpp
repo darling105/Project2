@@ -14,7 +14,6 @@
 #include "HealthController/HealthBarEmpty.h"
 #include "Score/Score.h"
 
-ButtonController* _buttonController;
 
 Map1* Map1::create() {
     auto newObject = new Map1();
@@ -34,15 +33,15 @@ bool Map1::init() {
     }
 
     addBackground("BackGround/DeltaBG.jpg");
-    addGameMap("Maps/map3.tmx");
+    addGameMap("Maps/map1.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
     }
     this->setTag(10);
     createMenu();
     createPhysicsWorld();
-    addCharacter3();
-    addMap3Enemies();
+    addCharacter1();
+    addMap1Enemies();
     createGroundPhysics();
     createButtonController();
     addLadder();

@@ -34,7 +34,8 @@ bool Saw::init(EntityInfo* info)
     listener->onContactSeparate = CC_CALLBACK_1(Saw::callbackOnContactSeparate, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
-    auto enemyPhysicBody = PhysicsBody::createCircle(_model->getContentSize().width / 1.5, PhysicsMaterial(1.0f, 0.0f, 0.0f));
+    auto enemyPhysicBody = PhysicsBody::createCircle(_model->getContentSize().width / 2, PhysicsMaterial(1.0f, 0.0f, 0.0f));
+    enemyPhysicBody->setPositionOffset(Vec2(0, -_model->getContentSize().height * 0.4));
     enemyPhysicBody->setCategoryBitmask(DefineBitmask::ENEMY);
     enemyPhysicBody->setCollisionBitmask(DefineBitmask::NON);
     enemyPhysicBody->setContactTestBitmask(DefineBitmask::CHARACTER);
@@ -42,6 +43,7 @@ bool Saw::init(EntityInfo* info)
     enemyPhysicBody->setGravityEnable(false);
     this->setPhysicsBody(enemyPhysicBody);
 
+    this->setScale(0.8f);
 
     return true;
 }
@@ -71,9 +73,6 @@ bool Saw::callbackOnContactBegin(PhysicsContact& contact)
        
 
             _isContactCharacter = true;
-
-
-        
 
     }
 

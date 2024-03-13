@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="115" height="51" tilewidth="32" tileheight="32" infinite="0" nextlayerid="28" nextobjectid="253">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="115" height="51" tilewidth="32" tileheight="32" infinite="0" nextlayerid="28" nextobjectid="260">
  <tileset firstgid="1" source="TileSetHell.tsx"/>
  <tileset firstgid="46" source="Spike3.tsx"/>
  <tileset firstgid="47" source="Ladder3.tsx"/>
@@ -33,18 +33,18 @@
   </object>
  </objectgroup>
  <objectgroup id="14" name="TinySpawnPoint">
-  <object id="141" x="896" y="416">
+  <object id="141" x="480" y="384">
    <point/>
   </object>
  </objectgroup>
  <objectgroup id="27" name="Platform">
-  <object id="238" x="1824" y="960">
+  <object id="238" x="1760" y="956">
    <point/>
   </object>
   <object id="243" x="896" y="1440">
    <point/>
   </object>
-  <object id="244" x="1856" y="1440">
+  <object id="244" x="1984" y="1459.67">
    <point/>
   </object>
  </objectgroup>
@@ -143,6 +143,9 @@
   <object id="227" x="2208" y="960">
    <point/>
   </object>
+  <object id="253" x="928" y="448">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="17" name="SmallCoinSpawnPoint">
   <object id="153" x="736" y="448">
@@ -156,7 +159,7 @@
   </object>
  </objectgroup>
  <objectgroup id="13" name="CharacterSpawnPoint">
-  <object id="111" name="SpawnPoint" x="1871" y="995">
+  <object id="111" name="SpawnPoint" x="1376" y="1408">
    <point/>
   </object>
  </objectgroup>
@@ -294,22 +297,19 @@
   </object>
  </objectgroup>
  <objectgroup id="26" name="VoidSpawnPoint">
-  <object id="226" x="2176" y="832">
+  <object id="254" x="56" y="626">
    <point/>
   </object>
-  <object id="240" x="64" y="608">
+  <object id="255" x="1088" y="1280">
    <point/>
   </object>
-  <object id="245" x="1056" y="1280">
+  <object id="256" x="1824" y="1280">
    <point/>
   </object>
-  <object id="246" x="1824" y="1280">
+  <object id="258" x="2240" y="1120">
    <point/>
   </object>
-  <object id="247" x="2240" y="1184">
-   <point/>
-  </object>
-  <object id="248" x="2560" y="1184">
+  <object id="259" x="2560" y="1120">
    <point/>
   </object>
  </objectgroup>
@@ -323,16 +323,10 @@
   <object id="198" x="3360" y="128">
    <point/>
   </object>
-  <object id="234" x="1440" y="992">
+  <object id="234" x="1200" y="992">
    <point/>
   </object>
   <object id="235" x="960" y="1056">
-   <point/>
-  </object>
-  <object id="236" x="1056" y="1024">
-   <point/>
-  </object>
-  <object id="237" x="1536" y="1024">
    <point/>
   </object>
  </objectgroup>
