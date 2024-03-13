@@ -4,6 +4,10 @@
 #include "Maps/Map1.h"
 #include "ui/CocosGUI.h"
 #include "cocos2d.h"
+#include "Score/Score.h"
+#include "Character/Character.h"
+#include "Maps/Map2.h"
+#include "Maps/Map3.h"
 
 LayerColor* GameOverScene::create()
 {
@@ -24,6 +28,7 @@ bool GameOverScene::init()
 		return false;
 	}
 	auto visibleSize = Director::getInstance()->getVisibleSize();
+
 	auto gameOverWindow = Sprite::create("BackGround/GameOver.png");
 	gameOverWindow->setScale(2.0f);
 	this->addChild(gameOverWindow);
@@ -34,15 +39,38 @@ bool GameOverScene::init()
 	gameOverScene->setPosition(Vec2(windowSize.width / 2, windowSize.height / 8));
 	gameOverScene->alignItemsHorizontallyWithPadding(30);
 	gameOverWindow->addChild(gameOverScene);
+
+	auto score = Score::getInstance();
+	auto scoreLabel = Label::createWithTTF("Final Score: " + std::to_string(score->getScore()), "fonts/Planes_ValMore.ttf", 24);
+	scoreLabel->setPosition(Vec2(windowSize.width / 2, windowSize.height / 2));
+	this->addChild(scoreLabel);
+	score->reset();
+
 	this->scheduleUpdate();
 	return true;
 }
 
 void GameOverScene::goToMainMenuScene(Ref* sender)
 {
+	EntityInfo info("character");
+	auto character = Character::getInstance(&info);
+	auto _character = character->getCharacter(0);
 	Director::getInstance()->getRunningScene()->removeAllChildrenWithCleanup(true);
-	auto scene = Map1::create();
-	Director::getInstance()->replaceScene(scene);
+	auto map = _character->returnMap();
+	if (map == "Map_1") {
+		auto scene = Map1::create();
+		Director::getInstance()->replaceScene(scene);
+	}
+
+	if (map == "Map_2") {
+		auto scene = Map2::create();
+		Director::getInstance()->replaceScene(scene);
+	}
+
+	if (map == "Map_3") {
+		auto scene = Map3::create();
+		Director::getInstance()->replaceScene(scene);
+	}
 }
 
 void GameOverScene::onEnter()

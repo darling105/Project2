@@ -20,7 +20,7 @@ Score* Score::getInstance()
 
 bool Score::init()
 {
-    scoreLabel = Label::createWithTTF("Score: 0", "fonts/Planes_ValMore.ttf", 64);
+    scoreLabel = Label::createWithTTF("Score: 0", "fonts/Planes_ValMore.ttf", 24);
     this->addChild(scoreLabel);
     return true;
 }

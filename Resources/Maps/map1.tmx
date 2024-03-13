@@ -28,9 +28,9 @@
   </data>
  </layer>
  <objectgroup id="22" name="CheckPoint">
-  <object id="191" x="384" y="576" width="32" height="32"/>
+  <object id="191" x="1472" y="1088" width="32" height="32"/>
   <object id="192" x="192" y="576" width="32" height="32"/>
-  <object id="194" x="512" y="576" width="32" height="32"/>
+  <object id="194" x="1984" y="576" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="20" name="SmallCoinSpawnPoint">
   <object id="171" x="3584" y="1312">
@@ -219,7 +219,7 @@
   <object id="85" x="352" y="1408" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="8" name="CharacterSpawnPoint">
-  <object id="3" name="SpawnPoint" x="897.53" y="1208.54">
+  <object id="3" name="SpawnPoint" x="1485.53" y="1072.54">
    <point/>
   </object>
  </objectgroup>

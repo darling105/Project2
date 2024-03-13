@@ -6,6 +6,7 @@
 #include "HealthController/HealthBarEmpty.h"
 #include "HealthController/HealthController.h"
 #include "Score/Score.h"
+#include "Time/Time.h"
 
 USING_NS_CC;    
 
@@ -74,7 +75,8 @@ void Map2::onEnter()
 
     auto _healthEmpty = HealthBarEmpty::getInstance("/Character/Health/Healthbar_empty.png");
     auto _scoreLabel = Score::getInstance();
-    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel);
+    auto _timeLabel = Time::getInstance();
+    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel, _timeLabel);
     this->addChild(cam);
 }
 void Map2::callPauseScene(Ref* sender)

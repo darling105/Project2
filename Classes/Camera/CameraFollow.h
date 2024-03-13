@@ -8,9 +8,10 @@ USING_NS_CC;
 
 class CameraFollow : public cocos2d::Node {
 public:
-    static CameraFollow* create(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel);
+    static CameraFollow* create(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel
+    ,Label* timeLabel);
 
-    bool init(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel);
+    bool init(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel, Label* timeLabel);
 
     void update(float dt);
 
@@ -27,6 +28,7 @@ private:
     Sprite* _healthBar;
     Sprite* _healthEmpty;
     Label* _scoreLabel;
+    Label* _timeLabel;
 };
 
 #endif // !__CAMERA_FOLLOW_H__

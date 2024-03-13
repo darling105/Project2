@@ -26,6 +26,7 @@
 #include "Objects/Saw/Saw.h"
 #include "Enemy/Tiny/Tiny.h"
 #include "Objects/Platform/Platform.h"
+#include "Time/Time.h"
 
 USING_NS_CC;
 
@@ -114,6 +115,7 @@ void BaseMap::addCharacter2() {
     _characterInstance->resetInstance();
     _characterInstance->addCharacter(_characterInfo);
     auto _character1 = _characterInstance->getCharacter(0);
+    _character1->getMap("Map_2");
     TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("CharacterSpawnPoint");
     ValueMap charSpawnPoint = objectGroup->getObject("SpawnPoint");
     Vec2 _position;
@@ -130,6 +132,7 @@ void BaseMap::addCharacter3()
     _characterInstance->resetInstance();
     _characterInstance->addCharacter(_characterInfo);
     auto _character1 = _characterInstance->getCharacter(0);
+    _character1->getMap("Map_3");
     TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("CharacterSpawnPoint");
     ValueMap charSpawnPoint = objectGroup->getObject("SpawnPoint");
     Vec2 _position;
@@ -544,6 +547,12 @@ void BaseMap::addScore()
 {
     auto _score = Score::getInstance();
     this->addChild(_score, 2);
+}
+
+void BaseMap::addTime()
+{
+    auto _time = Time::getInstance();
+    this->addChild(_time, 2);
 }
 
 

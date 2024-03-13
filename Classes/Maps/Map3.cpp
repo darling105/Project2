@@ -6,6 +6,7 @@
 #include "HealthController/HealthBarEmpty.h"
 #include "HealthController/HealthController.h"
 #include "Score/Score.h"
+#include "Time/Time.h"
 
 USING_NS_CC;
 
@@ -33,7 +34,7 @@ bool Map3::init() {
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
     }
-    this->setTag(05);
+    this->setTag(06);
     createMenu();
     createPhysicsWorld();
     addCharacter3();
@@ -49,6 +50,7 @@ bool Map3::init() {
     addObjects();
     addObjectsMap3();
     createCheckPoint();
+    addSpike();
     this->scheduleUpdate();
     return true;
 }
@@ -76,7 +78,8 @@ void Map3::onEnter()
 
     auto _healthEmpty = HealthBarEmpty::getInstance("/Character/Health/Healthbar_empty.png");
     auto _scoreLabel = Score::getInstance();
-    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel);
+    auto _timeLabel = Time::getInstance();
+    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel, _timeLabel);
     this->addChild(cam);
 }
 void Map3::callPauseScene(Ref* sender)

@@ -13,6 +13,7 @@
 #include "HealthController/HealthController.h"
 #include "HealthController/HealthBarEmpty.h"
 #include "Score/Score.h"
+#include "Time/Time.h"
 
 
 Map1* Map1::create() {
@@ -53,6 +54,7 @@ bool Map1::init() {
     createHealthBar();
     createCheckPoint();
     addScore();
+    //addTime();
     this->scheduleUpdate();
     return true;
 }
@@ -71,7 +73,8 @@ void Map1::onEnter()
     
     auto _healthEmpty = HealthBarEmpty::getInstance( "/Character/Health/Healthbar_empty.png");
     auto _scoreLabel = Score::getInstance();
-    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel);
+    auto _timeLabel = Time::getInstance();
+    CameraFollow* cam = CameraFollow::create(_char, boundingBox, buttonInstace, _healthBar, _healthEmpty, _scoreLabel, _timeLabel);
     this->addChild(cam);
 }
 void Map1::callPauseScene(Ref* sender)

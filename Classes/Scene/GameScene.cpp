@@ -4,6 +4,7 @@
 #include "Maps/Map2.h"
 #include "ui/CocosGUI.h"
 #include "cocos2d.h"
+#include "Maps/Map3.h"
 
 
 USING_NS_CC;
@@ -78,6 +79,25 @@ bool GameScene::init()
 			}
 			});
 		this->addChild(button2);
+	}
+
+	if (Character::isMap1Completed()) {
+		auto button3 = ui::Button::create("Buttons/Button_Normal.png", "Buttons/Button_Press.png", "Buttons/Button_Disable.png");
+		button3->setTitleText("Map 3");
+		button3->setTitleColor(Color3B::BLACK);
+		button3->setPosition(Vec2(visibleSize.width / 2 + 200, visibleSize.height / 2 - 100));
+		button3->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+			switch (type) {
+			case ui::Widget::TouchEventType::BEGAN:
+				break;
+			case ui::Widget::TouchEventType::ENDED:
+				auto map3Scene = Map3::create();
+				Director::getInstance()->replaceScene(map3Scene);
+				log("Map3 Clicked");
+				break;
+			}
+			});
+		this->addChild(button3);
 	}
 	return true;
 }

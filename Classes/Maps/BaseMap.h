@@ -22,6 +22,7 @@ public:
     void addObjects();
     void addObjectsMap3();
     void addScore();
+    void addTime();
     GameMap* _gameMap;
 protected:
     cocos2d::PhysicsWorld* _physicsWorld;

@@ -1,9 +1,10 @@
 ﻿    #include "CameraFollow.h"
 
-    CameraFollow* CameraFollow::create(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel)
+    CameraFollow* CameraFollow::create(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel,
+        Label* timeLabel)
     {
         auto newObject = new CameraFollow();
-        if (newObject != nullptr && newObject->init(target, fieldOfView, buttonController, healthBar, healthEmpty, scoreLabel)) {
+        if (newObject != nullptr && newObject->init(target, fieldOfView, buttonController, healthBar, healthEmpty, scoreLabel, timeLabel)) {
             newObject->autorelease();
             return newObject;
         }
@@ -11,7 +12,7 @@
         return nullptr;
     }
 
-    bool CameraFollow::init(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel)
+    bool CameraFollow::init(Node* target, Rect fieldOfView, ButtonController* buttonController, Sprite* healthBar, Sprite* healthEmpty, Label* scoreLabel, Label* timeLabel)
     {
         if (!target) {
             return false;
@@ -24,6 +25,7 @@
         _healthBar = healthBar;
         _healthEmpty = healthEmpty;
         _scoreLabel = scoreLabel;
+        _timeLabel = timeLabel;
         Size size = Director::getInstance()->getOpenGLView()->getFrameSize();
         Size cameraSize = size / 2;
         _cameraSize = cameraSize;
@@ -97,6 +99,9 @@
         }
         if (_scoreLabel) {
             _scoreLabel->setPosition(camera->getPosition().x + 450, camera->getPosition().y + 300);
+        }
+        if (_timeLabel) {
+            _timeLabel->setPosition(camera->getPosition().x + 350, camera->getPosition().y + 300);
         }
     }
 

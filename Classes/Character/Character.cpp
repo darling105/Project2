@@ -275,7 +275,7 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 	}
 	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHECKPOINT) {
 		 int tag = target->getTag();
-		 if (tag >= 1 && tag <= 3) {
+		 if (tag >= 1 && tag <= 10) {
 			 int checkpointIndex = tag - 1; // Chuyển đổi từ tag thành chỉ số mảng
 			 if (!checkpointContacted[checkpointIndex]) {
 				 _isContactedCheckPoint = true;

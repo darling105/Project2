@@ -8,6 +8,7 @@
 #include "Maps/BaseMap.h"
 #include "Maps/Map1.h"
 #include "Maps/Map2.h"
+#include "Maps/Map3.h"
 
 USING_NS_CC;
 
@@ -50,6 +51,18 @@ void GameManager::endMap()
         }
     }
     else if (currentScene->getTag() == 05)
+    {
+        if (isMap1Completed())
+        {
+            Director::getInstance()->replaceScene(WinningScene::create());
+        }
+        else
+        {
+            auto winningScene = WinningScene::create();
+            Director::getInstance()->replaceScene(winningScene);
+        }
+    }
+    else if (currentScene->getTag() == 06)
     {
         auto winningScene = WinningScene::create();
         Director::getInstance()->replaceScene(winningScene);
