@@ -32,6 +32,8 @@ public:
     bool getDownButtonDown() const { return _isDownButtonDown; }
     bool getPauseButtonDown() const { return _isPauseButtonDown; }
     void reset();
+    static bool isMap1Completed() { return _isMap1Completed; }
+    static void setMap1Completed(bool completed) { _isMap1Completed = completed; }
     bool _isJumping = false;
     bool _isOnStair = false;
     bool _isOnGround = false;
@@ -57,6 +59,7 @@ private:
     bool _isPauseButtonDown = false;
     float _jumpCooldown;
     void onEnter() override;
+    static bool _isMap1Completed;
 protected:
     bool callbackOnContactBegin(PhysicsContact& contact);
     bool callbackOnContactSeparate(PhysicsContact& contact);

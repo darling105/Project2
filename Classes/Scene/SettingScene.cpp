@@ -1,117 +1,112 @@
 ﻿#include "SettingScene.h"
-#include "fstream"
-#include "iostream"
-#include "ui/CocosGUI.h"
-#include "Scene/MainMenuScene.h"
-#include "AudioManager/AudioManager.h"
-#include "audio/include/AudioEngine.h"
-
-
-Scene* SettingScene::create()
-{
-	auto newObject = new SettingScene();
-	if (newObject != nullptr && newObject->init())
-	{
-		newObject->autorelease();
-		return newObject;
-	}
-	CC_SAFE_DELETE(newObject);
-	return nullptr;
-}
-
+#include "Camera/CameraFollow.h"
 bool SettingScene::init()
 {
-	if (!Scene::initWithPhysics())
-	{
-		return false;
-	}
+    if (!LayerColor::initWithColor(cocos2d::Color4B(0, 0, 0, 0)))
+    {
+        return false;
+    }
+    auto overlayLayer = LayerColor::create(Color4B(0, 0, 0, 0));
+    overlayLayer->setContentSize(Director::getInstance()->getVisibleSize());
+    overlayLayer->setPosition(Vec2::ZERO);
+    this->addChild(overlayLayer, -1);
 
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    auto touchListener = EventListenerTouchOneByOne::create();
+    touchListener->setSwallowTouches(true);
+    touchListener->onTouchBegan = [](Touch* touch, Event* event) -> bool {
+        return true;
+        };
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, overlayLayer);
 
-	auto _background = Sprite::create("BackGround/Background1.png");
-	_background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-	_background->setScale(2.25f);
-	this->addChild(_background);
-	Vector<MenuItem*> MenuItems;
-	//create Back 
-	auto miFont = MenuItemFont::create("Back", [&](Ref* sender) {
-		auto mainMenuScene = MainMenu::create();
-		Director::getInstance()->replaceScene(mainMenuScene);
-		log("Main Menu Clicked");
-		});
-	miFont->setPosition(Vec2(visibleSize.width / 2 - 1100, visibleSize.height / 2 - 50));
-	MenuItems.pushBack(miFont);
-	auto menuA = Menu::createWithArray(MenuItems);
-	this->addChild(menuA, 1);
-	//create Slider Audio
+    auto settingWindow = Sprite::create("BackGround/Setting.png");
+    settingWindow->setScale(2.0f);
+    //settingWindow->setPosition(Director::getInstance()->getVisibleSize() *2);
+    this->addChild(settingWindow);
 
-	auto slider = ui::Slider::create();
-	slider->loadBarTexture("Buttons/SliderBar_ProgressBar.png");
-	slider->loadSlidBallTextures("Buttons/Slider02.png");
-	slider->loadProgressBarTexture("Buttons/Progress04.png");
-	slider->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-	float savedVolume = SettingScene::getSavedVolume(); // Thay thế bằng cách lấy giá trị từ cài đặt cố định của bạn
-	slider->setPercent(AudioManager::getInstance()->getMusicVolume() * 100);
-	slider->addEventListener(CC_CALLBACK_2(SettingScene::sliderValueChanged, this));
+    auto settingWindowSize = settingWindow->getContentSize();
 
-	/*auto slider2 = ui::Slider::create();
-	slider2->loadBarTexture("Slider_Back.png");
-	slider2->loadSlidBallTextures("SliderNode_Normal.png", "SliderNode_Press.png", "SliderNode_Disable.png");
-	slider2->loadProgressBarTexture("Slider_PressBar.png");
-	slider2->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2-50));
-	slider2->addEventListener(CC_CALLBACK_2(SettingScene::sliderValueChanged, this));
-	this->addChild(slider2);*/
-	this->addChild(slider);
-	AudioManager::getInstance()->playMusic("bgmusic.mp3");
-	return true;
+    auto backButton = MenuItemImage::create("Buttons/Icon02.png", "Buttons/Icon02.png", CC_CALLBACK_1(SettingScene::goBack, this));
+
+    auto menu = Menu::create(backButton, nullptr);
+    menu->setPosition(Vec2(settingWindowSize.width / 2, settingWindowSize.height / 8));
+    settingWindow->addChild(menu);
+
+    float musicVolume = UserDefault::getInstance()->getFloatForKey("MusicVolume", AudioManager::getInstance()->getMusicVolume());
+
+    auto slider = ui::Slider::create();
+    slider->loadBarTexture("Buttons/SliderBar_ProgressBar.png");
+    slider->loadSlidBallTextures("Buttons/Slider02.png");
+    slider->loadProgressBarTexture("Buttons/Progress04.png");
+    slider->setPosition(Vec2(settingWindowSize.width / 2, settingWindowSize.height / 1.6));
+    slider->setPercent(musicVolume * 100);
+    slider->addEventListener([&](Ref* sender, ui::Slider::EventType type) {
+        if (type == ui::Slider::EventType::ON_PERCENTAGE_CHANGED)
+        {
+            auto s = dynamic_cast<ui::Slider*> (sender);
+            if (s) {
+                float volume = (float)s->getPercent() / 100;
+                AudioManager::getInstance()->setMusicVolume(volume);
+
+                UserDefault::getInstance()->setFloatForKey("MusicVolume", volume);
+                UserDefault::getInstance()->flush();
+            }
+        }
+        });
+    settingWindow->addChild(slider);
+
+    float sfxVolume = UserDefault::getInstance()->getFloatForKey("SfxVolume", AudioManager::getInstance()->getSFXVolume());
+
+    auto sliderSFX = ui::Slider::create();
+    sliderSFX->loadBarTexture("Buttons/SliderBar_ProgressBar.png");
+    sliderSFX->loadSlidBallTextures("Buttons/Slider02.png");
+    sliderSFX->loadProgressBarTexture("Buttons/Progress04.png");
+    sliderSFX->setPosition(Vec2(settingWindowSize.width / 2, settingWindowSize.height / 2.5));
+    //sliderSFX->setScale(1.5);
+    sliderSFX->setPercent(sfxVolume * 100);
+    sliderSFX->addEventListener([&](Ref* sender, ui::Slider::EventType type) {
+        if (type == ui::Slider::EventType::ON_PERCENTAGE_CHANGED)
+        {
+            auto sfx = dynamic_cast<ui::Slider*> (sender);
+            if (sfx) {
+                float volumesfx = (float)sfx->getPercent() / 100;
+                AudioManager::getInstance()->setSFXVolume(volumesfx);
+
+                UserDefault::getInstance()->setFloatForKey("SfxVolume", volumesfx);
+                UserDefault::getInstance()->flush();
+            }
+        }
+        });
+    settingWindow->addChild(sliderSFX);
+
+    auto musicLabel = Label::createWithTTF("Music", "fonts/Planes_Valmore.ttf", 30);
+    musicLabel->setPosition(Vec2(settingWindowSize.width / 2, settingWindowSize.height / 1.4));
+    settingWindow->addChild(musicLabel);
+    auto sfxLabel = Label::createWithTTF("SFX", "fonts/Planes_Valmore.ttf", 30);
+    sfxLabel->setPosition(Vec2(settingWindowSize.width / 2, settingWindowSize.height / 2.0));
+    settingWindow->addChild(sfxLabel);
+    this->scheduleUpdate();
+    return true;
 }
 
-
-void SettingScene::goToMainMenuScene()
+void SettingScene::goBack(Ref* sender)
 {
-	Director::getInstance()->popScene();
+    this->removeFromParent();
 }
-
-void SettingScene::sliderValueChanged(Ref* sender, ui::Slider::EventType type)
+void SettingScene::onEnter()
 {
-	if (type == ui::Slider::EventType::ON_PERCENTAGE_CHANGED)
-	{
-		auto slider = dynamic_cast<ui::Slider*>(sender);
-		if (slider)
-		{
-			float volume = slider->getPercent() / 100.0f;
-			// Adjust audio volume based on the slider's value
-			AudioManager::getInstance()->setMusicVolume(volume);
-			SettingScene::saveVolume(volume);
-		}
-	}
-}
+    LayerColor::onEnter(); // Gọi phương thức onEnter của lớp cha
 
-void SettingScene::saveVolume(float volume)
-{
-	std::ofstream configFile("settings.cfg");
-	if (configFile.is_open()) {
-		configFile << volume;
-		configFile.close();
-		std::cout << "Volume saved: " << volume << std::endl;
-	}
-	else {
-		std::cerr << "Failed to open settings.cfg for writing!" << std::endl;
-	}
-}
+    // Lấy thông tin camera
+    auto camera = Director::getInstance()->getRunningScene()->getDefaultCamera();
 
-float SettingScene::getSavedVolume()
-{
-	float volume = 0.5f; // Giá trị mặc định nếu không tìm thấy tệp cấu hình
-	std::ifstream configFile("settings.cfg");
-	if (configFile.is_open()) {
-		configFile >> volume;
-		configFile.close();
-		std::cout << "Volume loaded: " << volume << std::endl;
-	}
-	else {
-		std::cerr << "Failed to open settings.cfg for reading!" << std::endl;
-	}
-	return volume;
+    // Lấy vị trí của camera
+    auto cameraPosition = camera->getPosition();
+
+    // Đặt vị trí mới cho PauseGame
+    this->setPosition(cameraPosition);
+
+    // Thêm PauseGame vào CameraFollow (nếu có)
+    if (auto cameraFollow = dynamic_cast<CameraFollow*>(camera->getParent())) {
+        cameraFollow->addChild(this);
+    }
 }

@@ -63,7 +63,8 @@ void PauseGame::callResume(Ref* sender)
 void PauseGame::goToSettingScene(Ref* sender)
 {
     auto settingScene = SettingScene::create();
-    addChild(settingScene, INT_MAX);
+    auto currentScene = Director::getInstance()->getRunningScene();
+    currentScene->addChild(settingScene, INT_MAX);
 }
 
 void PauseGame::onEnter()

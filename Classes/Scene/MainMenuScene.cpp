@@ -18,10 +18,10 @@ bool MainMenu::init()
     }
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto _background = Sprite::create("BackGround/Background1.png");
+    AudioManager::getInstance()->playMusic("bgmusic.mp3");
+    auto _background = Sprite::create("BackGround/BackgroundGameMenu.png");
     _background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    _background->setScale(2.25f);
+    _background->setScale(0.45f);
     this->addChild(_background);
     auto buttonExit = ui::Button::create("Buttons/Icon42.png");
     buttonExit->setPosition(Vec2(visibleSize.width / 2-150, visibleSize.height / 2 ));
@@ -63,8 +63,7 @@ bool MainMenu::init()
             break;
         case ui::Widget::TouchEventType::ENDED:
             auto settingScene = SettingScene::create();
-            Director::getInstance()->replaceScene(settingScene);
-            log("Exit");
+            this->addChild(settingScene, INT_MAX);
             break;
         }
         });

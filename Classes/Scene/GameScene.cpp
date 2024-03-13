@@ -61,25 +61,24 @@ bool GameScene::init()
 		});
 
 	this->addChild(button1);
-	auto button2 = ui::Button::create("Buttons/Button_Normal.png", "Buttons/Button_Press.png", "Buttons/Button_Disable.png");
-	button2->setTitleText("Map 2");
-	button2->setTitleColor(Color3B::BLACK);
-	button2->setPosition(Vec2(visibleSize.width / 2 + 50, visibleSize.height / 2 - 100));
-	button2->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
-		switch (type)
-		{
-		case ui::Widget::TouchEventType::BEGAN:
-			break;
-		case ui::Widget::TouchEventType::ENDED:
-			auto map2Scene = Map2::create();
-			Director::getInstance()->replaceScene(map2Scene);
-			log("Map2 Cliked");
-			break;
-
-		}
-		});
-
-	this->addChild(button2);
+	if (Character::isMap1Completed()) {
+		auto button2 = ui::Button::create("Buttons/Button_Normal.png", "Buttons/Button_Press.png", "Buttons/Button_Disable.png");
+		button2->setTitleText("Map 2");
+		button2->setTitleColor(Color3B::BLACK);
+		button2->setPosition(Vec2(visibleSize.width / 2 + 50, visibleSize.height / 2 - 100));
+		button2->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type) {
+			switch (type) {
+			case ui::Widget::TouchEventType::BEGAN:
+				break;
+			case ui::Widget::TouchEventType::ENDED:
+				auto map2Scene = Map2::create();
+				Director::getInstance()->replaceScene(map2Scene);
+				log("Map2 Clicked");
+				break;
+			}
+			});
+		this->addChild(button2);
+	}
 	return true;
 }
 

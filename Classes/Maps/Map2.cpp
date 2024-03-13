@@ -28,11 +28,12 @@ bool Map2::init() {
         return false;
     }
 
-    addBackground("BackGround/Background2.png");
+    addBackground("BackGround/CaveBG.jpg");
     addGameMap("Maps/map2.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
     }
+    this->setTag(05);
     createMenu();
     createPhysicsWorld();
     addCharacter2();

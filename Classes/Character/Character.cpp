@@ -347,7 +347,8 @@ void Character::update(float dt) {
 		physicBodyCharacter->setGravityEnable(true);
 	}
 	if (_isOnFinish) {
-		GameManager::getInstance()->endGame();
+		_isMap1Completed = true;
+		GameManager::getInstance()->endMap();
 	}
 
 
@@ -374,7 +375,7 @@ void Character::update(float dt) {
 	auto _healBar = HealthController::getInstance();
 	_healBar->setCurrentHealth(_retryCount);
 }
-
+bool Character::_isMap1Completed = false;
 void Character::reset()
 {
 	_retryCount = 3;

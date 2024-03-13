@@ -12,6 +12,17 @@ AudioManager* AudioManager::getInstance()
     return _instance;
 }
 
+AudioManager::AudioManager()
+{
+    _musicVolume = UserDefault::getInstance()->getFloatForKey("MusicVolume", 0.0f);
+    _sfxVolume = UserDefault::getInstance()->getFloatForKey("SfxVolume", 0.0f);
+}
+
+void AudioManager::init()
+{
+    _musicVolume = UserDefault::getInstance()->getFloatForKey("MusicVolume", 0.0f);
+    _sfxVolume = UserDefault::getInstance()->getFloatForKey("SfxVolume", 0.0f);
+}
 void AudioManager::playMusic(std::string fileName)
 {
     AudioEngine::stop(_bgmID);
@@ -20,8 +31,8 @@ void AudioManager::playMusic(std::string fileName)
 
 void AudioManager::playSFX(std::string fileName)
 {
-    std::string filePath = "Audio/SFX/" + fileName;
-    AudioEngine::play2d(filePath, false);
+    AudioEngine::stop(_sfxID);
+    _sfxID = AudioEngine::play2d("Audio/SFX/" + fileName, false, _sfxVolume);
 }
 
 void AudioManager::setMusicVolume(float newVolume)
@@ -34,14 +45,15 @@ void AudioManager::setMusicVolume(float newVolume)
 void AudioManager::setSFXVolume(float newVolume)
 {
     _sfxVolume = newVolume;
+
+    AudioEngine::setVolume(_sfxID, _sfxVolume);
 }
 
-float AudioManager::getMusicVolume() const
+float AudioManager::getMusicVolume()
 {
     return _musicVolume;
 }
-
-float AudioManager::getSFXVolume() const
+float AudioManager::getSFXVolume()
 {
     return _sfxVolume;
 }

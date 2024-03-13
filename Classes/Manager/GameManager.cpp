@@ -7,6 +7,7 @@
 #include "ButtonController/ButtonController.h"
 #include "Maps/BaseMap.h"
 #include "Maps/Map1.h"
+#include "Maps/Map2.h"
 
 USING_NS_CC;
 
@@ -26,17 +27,33 @@ GameManager::GameManager()
     // Constructor
 }
 
-void GameManager::endGame()
+bool GameManager::isMap1Completed()
 {
-    // Kết thúc trò chơi
-    // Ví dụ: Dừng update, dừng âm thanh, hiển thị màn hình kết thúc, ...
+    return false;
+}
+
+void GameManager::endMap()
+{
     Director::getInstance()->getScheduler()->pauseTarget(Director::getInstance()->getRunningScene());
-    AudioEngine::pauseAll();
-    // Hiển thị màn hình kết thúc hoặc thực hiện hành động khác tùy thuộc vào yêu cầu của bạn
-    auto scene = Director::getInstance()->getRunningScene();
+   // AudioEngine::pauseAll();
+    Scene* currentScene = Director::getInstance()->getRunningScene();
+    if (currentScene->getTag() == 10)
+    {
+        if (isMap1Completed())
+        {
+            Director::getInstance()->replaceScene(WinningScene::create());
+        }
+        else
+        {
+            auto winningScene = WinningScene::create();
+            Director::getInstance()->replaceScene(winningScene);
+        }
+    }
+    else if (currentScene->getTag() == 05)
+    {
         auto winningScene = WinningScene::create();
-        Director::getInstance()->replaceScene(Map1::create());
-        log("Game Clicked");
+        Director::getInstance()->replaceScene(winningScene);
+    }
     
 }
 
@@ -45,7 +62,7 @@ void GameManager::pauseGame()
     _isPaused = true;
     // Pause game ở đây, ví dụ:
     Director::getInstance()->pause();
-    AudioEngine::pauseAll();
+   // AudioEngine::pauseAll();
     showPauseMenu(true);
 }
 
@@ -53,18 +70,19 @@ void GameManager::resumeGame()
 {
     _isPaused = false;
     Director::getInstance()->resume();
-    AudioEngine::resumeAll();
+   // AudioEngine::resumeAll();
     showPauseMenu(false);
 }
 
 void GameManager::gameOver()
 {  
-   // Director::getInstance()->getScheduler()->pauseTarget(Director::getInstance()->getRunningScene());
-    AudioEngine::pauseAll();
+    //Director::getInstance()->getScheduler()->pauseTarget(Director::getInstance()->getRunningScene());
+    //AudioEngine::pauseAll();
     // Hiển thị màn hình kết thúc hoặc thực hiện hành động khác tùy thuộc vào yêu cầu của bạn
     //Director::getInstance()->pause();
     auto gameOverScene = GameOverScene::create();
-    Director::getInstance()->getRunningScene()->addChild(gameOverScene, INT_MAX);;
+    auto currentScene = Director::getInstance()->getRunningScene();
+    currentScene->addChild(gameOverScene, INT_MAX);
     log("Game Over!");
 }
 

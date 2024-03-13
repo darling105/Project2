@@ -33,11 +33,12 @@ bool Map1::init() {
         return false;
     }
 
-    addBackground("BackGround/hell.png");
+    addBackground("BackGround/DeltaBG.jpg");
     addGameMap("Maps/map1.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
     }
+    this->setTag(10);
     createMenu();
     createPhysicsWorld();
     addCharacter1();
