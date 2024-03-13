@@ -78,10 +78,10 @@ bool SettingScene::init()
         });
     settingWindow->addChild(sliderSFX);
 
-    auto musicLabel = Label::createWithTTF("Music", "fonts/Planes_Valmore.ttf", 30);
+    auto musicLabel = Label::createWithTTF("Music", "fonts/Planes_ValMore.ttf", 30);
     musicLabel->setPosition(Vec2(settingWindowSize.width / 2, settingWindowSize.height / 1.4));
     settingWindow->addChild(musicLabel);
-    auto sfxLabel = Label::createWithTTF("SFX", "fonts/Planes_Valmore.ttf", 30);
+    auto sfxLabel = Label::createWithTTF("SFX", "fonts/Planes_ValMore.ttf", 30);
     sfxLabel->setPosition(Vec2(settingWindowSize.width / 2, settingWindowSize.height / 2.0));
     settingWindow->addChild(sfxLabel);
     this->scheduleUpdate();

@@ -24,7 +24,7 @@ bool WinningScene::init()
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	_background = Sprite::create("Background/Win.jpg");
+	_background = Sprite::create("BackGround/Win.jpg");
 	_background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 	_background->setScale(0.8f);
 	this->addChild(_background);

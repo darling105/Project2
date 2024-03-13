@@ -327,7 +327,8 @@ void Character::update(float dt) {
 			jump();
 		}
 	}
-	if (_isOnStair) {
+	if (_isOnStair) 
+	{
 		physicBodyCharacter->setGravityEnable(false);
 		physicBodyCharacter->setVelocity(Vec2::ZERO);
 		if (_isUpButtonDown) {
@@ -346,12 +347,11 @@ void Character::update(float dt) {
 	else {
 		physicBodyCharacter->setGravityEnable(true);
 	}
-	if (_isOnFinish) {
+	if (_isOnFinish) 
+	{
 		_isMap1Completed = true;
 		GameManager::getInstance()->endMap();
 	}
-
-
 
 	if (_isOnSpike || _isContactedSkills || _isContactedEnemy)
 	{
@@ -361,16 +361,18 @@ void Character::update(float dt) {
 		}
 
 	}
-	if (_retryCount == 0) {
+	if (_retryCount == 0)
+	{
 		this->unscheduleUpdate();
 		this->getPhysicsBody()->setVelocity(Vec2::ZERO);
 		GameManager::getInstance()->gameOver();
 		reset();
 	}
 	
-	if (_isContactedCheckPoint) {
+	if (_isContactedCheckPoint)
+	{
 		log("check");
-		}
+	}
 
 	auto _healBar = HealthController::getInstance();
 	_healBar->setCurrentHealth(_retryCount);
