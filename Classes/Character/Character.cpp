@@ -13,6 +13,7 @@
 #include "ButtonController/ButtonController.h"
 #include "Maps/Map1.h"
 #include "Score/Score.h"
+#include "Objects/Platform/Platform.h"
 
 
 
@@ -34,6 +35,11 @@ Character* Character::getInstance(EntityInfo* info)
 }
 
 
+void Character::getMap(std::string mapLevel)
+{
+	this->mapLevel = mapLevel;
+}
+
 bool Character::init(EntityInfo* info)
 {
 	if (!Entity::init(info))
@@ -53,9 +59,9 @@ bool Character::init(EntityInfo* info)
 	physicBodyCharacter = PhysicsBody::createBox(newSize, PhysicsMaterial(1, 0, 0));
 	physicBodyCharacter->setMass(0.3f);
 	physicBodyCharacter->setCategoryBitmask(DefineBitmask::CHARACTER);
-	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND);
+	physicBodyCharacter->setCollisionBitmask(DefineBitmask::GROUND | DefineBitmask::PLATFORM);
 	physicBodyCharacter->setContactTestBitmask(DefineBitmask::GROUND | DefineBitmask::STAIR | DefineBitmask::FINISH |
-		DefineBitmask::SPIKE | DefineBitmask::COIN | DefineBitmask::ENEMY | DefineBitmask::BULLET | DefineBitmask::CHECKPOINT);
+		DefineBitmask::SPIKE | DefineBitmask::COIN | DefineBitmask::ENEMY | DefineBitmask::BULLET | DefineBitmask::CHECKPOINT | DefineBitmask::PLATFORM);
 	physicBodyCharacter->setRotationEnable(false);
 	physicBodyCharacter->setTag(CHARACTER_TAG);
 	this->setPhysicsBody(physicBodyCharacter);
@@ -240,6 +246,17 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 			_physicsBody->setVelocity(Vec2::ZERO);
 		}
 	}
+	if (
+		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::PLATFORM) {
+		if (target->getPositionY() < this->getPositionY())
+		{
+			_isOnPlatform = true;
+			_isJumping = false;
+		}
+		else {
+			_physicsBody->setVelocity(Vec2::ZERO);
+		}
+	}
 	 if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
 	{
 		_isOnStair = true;
@@ -290,6 +307,13 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 			_isJumping = true;
 		}
 	}
+	if (
+		target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::PLATFORM) {
+		 
+			_isOnPlatform = false;
+			_isJumping = true;
+		
+	}
 	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::STAIR) 
 	{
 		_isOnStair = false;
@@ -315,6 +339,7 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 void Character::update(float dt) {
 	_jumpCooldown -= dt;
 	if (_isOnGround || _isJumping) {
+		log("onGround");
 		physicBodyCharacter->setVelocity(Vec2(0, physicBodyCharacter->getVelocity().y));
 
 		if (_isLeftButtonDown ) {
@@ -356,13 +381,18 @@ void Character::update(float dt) {
 	if (_isOnSpike || _isContactedSkills || _isContactedEnemy)
 	{
 		_retryCount--;
+		if (_retryCount > 0) {
 		if (indexCheckPoint >= 0) {
 			this->setPosition(check);
+		}
 		}
 
 	}
 	if (_retryCount == 0)
 	{
+		auto _score = Score::getInstance();
+		auto _highScore = _score->getScore();
+		_score->saveToFile(mapLevel, _highScore);
 		this->unscheduleUpdate();
 		this->getPhysicsBody()->setVelocity(Vec2::ZERO);
 		GameManager::getInstance()->gameOver();

@@ -34,15 +34,15 @@ bool Map1::init() {
     }
 
     addBackground("BackGround/DeltaBG.jpg");
-    addGameMap("Maps/map1.tmx");
+    addGameMap("Maps/map3.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");
     }
     this->setTag(10);
     createMenu();
     createPhysicsWorld();
-    addCharacter1();
-    addMap1Enemies();
+    addCharacter3();
+    addMap3Enemies();
     createGroundPhysics();
     createButtonController();
     addLadder();

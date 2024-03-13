@@ -8,6 +8,7 @@
 #include "State/CharacterRunState.h"
 #include "State/CharacterClimbState.h"
 #include "HealthController/HealthController.h"
+#include "Objects/Platform/Platform.h"
 
 class Character : public Entity
 {
@@ -44,6 +45,11 @@ public:
     bool _isContactedCheckPoint = false;
     bool isFirstCheckpointContacted = false;
     bool isFirstCheckpointContacted1 = false;
+    bool _isLeftButtonDown = false;
+    bool _isUpButtonDown = false;
+    bool _isRightButtonDown = false;
+    void getMap(std::string mapLevel);
+    std::string returnMap() { return mapLevel; };
 private:
     static Character* _instance;
     static std::vector<Character*> _characters;
@@ -51,9 +57,7 @@ private:
     bool loadAnimations() override;
     PhysicsBody* physicBodyCharacter;
     StateMachine* _stateMachine;
-    bool _isLeftButtonDown = false;
-    bool _isUpButtonDown = false;
-    bool _isRightButtonDown = false;
+    
     bool _isDownButtonDown = false;
     bool _isPickedCoin = false;
     bool _isPauseButtonDown = false;
@@ -72,6 +76,10 @@ protected:
     int indexCheckPoint = 0;
     Vec2 check;
     Vec2 check1;
+
+    std::string mapLevel;
+    bool _isOnPlatform = false;
+ 
 };
 
 #endif // !__CHARACTER_H__

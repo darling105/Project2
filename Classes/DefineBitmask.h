@@ -9,6 +9,7 @@ public:
 	static const int ENEMY = 0x03;
 	static const int TRAMPOLINE = 0x04;
 	static const int CHECKPOINT = 0x05;
+	static const int PLATFORM = 0x67;
 	static const int CHARACTER = 0x08;
 	static const int BULLET = 0x10;
 	static const int STAIR = 0x09;

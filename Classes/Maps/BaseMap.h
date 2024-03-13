@@ -10,8 +10,10 @@ public:
     void addBackground(const std::string& backgroundImagePath);
     void addCharacter1();
     void addCharacter2();
+    void addCharacter3();
     void addMap1Enemies();
     void addMap2Enemies();
+    void addMap3Enemies();
     void addGameMap(const std::string& gameMapPath);
     void addLadder();
     void addFinish();

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+ <dict>
+  <key>frames</key>
+  <dict>
+   <key>./owlet-climb (1)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-1,-1}</string>
+    <key>spriteSize</key>
+    <string>{22,29}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{0,0},{22,29}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./owlet-climb (2)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{0,-1}</string>
+    <key>spriteSize</key>
+    <string>{22,29}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{24,0},{22,29}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./owlet-climb (3)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-1,-1}</string>
+    <key>spriteSize</key>
+    <string>{22,29}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{0,31},{22,29}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+   <key>./owlet-climb (4)</key>
+   <dict>
+    <key>aliases</key>
+    <array/>
+    <key>spriteOffset</key>
+    <string>{-2,-1}</string>
+    <key>spriteSize</key>
+    <string>{22,29}</string>
+    <key>spriteSourceSize</key>
+    <string>{32,32}</string>
+    <key>textureRect</key>
+    <string>{{24,31},{22,29}}</string>
+    <key>textureRotated</key>
+    <false/>
+   </dict>
+  </dict>
+  <key>metadata</key>
+  <dict>
+   <key>format</key>
+   <integer>3</integer>
+   <key>size</key>
+   <string>{48,62}</string>
+   <key>textureFileName</key>
+   <string>owlet-climb.png</string>
+  </dict>
+ </dict>
+</plist>

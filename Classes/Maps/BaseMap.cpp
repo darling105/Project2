@@ -23,6 +23,9 @@
 #include "PhysicRender/CheckPoint.h"
 #include "Score/Score.h"
 #include "Enemy/Ghost/Ghost.h"
+#include "Objects/Saw/Saw.h"
+#include "Enemy/Tiny/Tiny.h"
+#include "Objects/Platform/Platform.h"
 
 USING_NS_CC;
 
@@ -52,7 +55,7 @@ void BaseMap::createMenu() {
 void BaseMap::createButtonController() {
 
     auto _buttonController1 = ButtonController::getInstance();
-    this->addChild(_buttonController1);
+    this->addChild(_buttonController1, 2);
 }
 
 void BaseMap::createGroundPhysics() {
@@ -95,13 +98,14 @@ void BaseMap::addCharacter1() {
     _characterInstance->resetInstance();
     _characterInstance->addCharacter(_characterInfo);
     auto _character = _characterInstance->getCharacter(0);
+    _character->getMap("Map_1");
     TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("CharacterSpawnPoint");
     ValueMap charSpawnPoint = objectGroup->getObject("SpawnPoint");
     Vec2 _position;
     _position.x = charSpawnPoint["x"].asFloat();
     _position.y = charSpawnPoint["y"].asFloat();
     _character->setPosition(_position);
-    this->addChild(_character, 1);
+    this->addChild(_character, 0);
 }
 
 void BaseMap::addCharacter2() {
@@ -116,7 +120,23 @@ void BaseMap::addCharacter2() {
     _position.x = charSpawnPoint["x"].asFloat();
     _position.y = charSpawnPoint["y"].asFloat();
     _character1->setPosition(_position);
-    this->addChild(_character1, 1);
+    this->addChild(_character1, 0);
+}
+
+void BaseMap::addCharacter3()
+{
+    EntityInfo* _characterInfo = new EntityInfo("owlet");
+    auto _characterInstance = Character::getInstance(_characterInfo);
+    _characterInstance->resetInstance();
+    _characterInstance->addCharacter(_characterInfo);
+    auto _character1 = _characterInstance->getCharacter(0);
+    TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("CharacterSpawnPoint");
+    ValueMap charSpawnPoint = objectGroup->getObject("SpawnPoint");
+    Vec2 _position;
+    _position.x = charSpawnPoint["x"].asFloat();
+    _position.y = charSpawnPoint["y"].asFloat();
+    _character1->setPosition(_position);
+    this->addChild(_character1, 0);
 }
 
 void BaseMap::addBackground(const std::string& backgroundImagePath) {
@@ -300,14 +320,62 @@ void BaseMap::addMap2Enemies()
         this->addChild(bat, 2);
         batIndex++;
     }
+}
 
+void BaseMap::addMap3Enemies()
+{
+    TMXObjectGroup* tinyObjectGroup = _gameMap->getObjectGroup("TinySpawnPoint");
+    auto tinyObjects = tinyObjectGroup->getObjects();
+    for (const auto& object : tinyObjects) {
+        ValueMap tinySpawnPoint = object.asValueMap();
+        Vec2 _position;
+        _position.x = tinySpawnPoint["x"].asFloat();
+        _position.y = tinySpawnPoint["y"].asFloat();
+        auto tiny = Tiny::create(new EntityInfo("tiny"));
+        tiny->setPosition(_position);
+        tiny->setSpeed(30);
+        this->addChild(tiny, 2);
+    }
 
+    TMXObjectGroup* ghostObjectGroup = _gameMap->getObjectGroup("GhostSpawnPoint");
+    auto ghostObjects = ghostObjectGroup->getObjects();
+    for (const auto& object : ghostObjects) {
+        ValueMap ghostSpawnPoint = object.asValueMap();
+        Vec2 _position;
+        _position.x = ghostSpawnPoint["x"].asFloat();
+        _position.y = ghostSpawnPoint["y"].asFloat();
+        auto ghost = Ghost::create(new EntityInfo("ghost"));
+        ghost->setPosition(_position);
+        ghost->setSpeed(20);
+        ghost->movingRightFirst();
+        this->addChild(ghost, 2);
+    }
+
+    TMXObjectGroup* puppleObjectGroup = _gameMap->getObjectGroup("PuppleSpawnPoint");
+    auto puppleObjects = puppleObjectGroup->getObjects();
+    int puppleIndex = 0;
+    for (const auto& object : puppleObjects) {
+        ValueMap puppleSpawnPoint = object.asValueMap();
+        Vec2 _position;
+        _position.x = puppleSpawnPoint["x"].asFloat();
+        _position.y = puppleSpawnPoint["y"].asFloat();
+        auto pupple = Pupple::create(new EntityInfo("pupple"));
+        pupple->setPosition(_position);
+        if (puppleIndex <= 3) {
+            pupple->setupPupple(200, Vec2(-1, 0));
+        }
+        else {
+            pupple->setupPupple(200, Vec2(1, 0));
+        }
+        this->addChild(pupple, 2);
+        puppleIndex++;
+    }
 }
 
 void BaseMap::addGameMap(const std::string& gameMapPath)
 {
     _gameMap = GameMap::create(gameMapPath);
-    this->addChild(_gameMap);
+    this->addChild(_gameMap, 1);
 }
 
 void BaseMap::addLadder()
@@ -376,6 +444,7 @@ void BaseMap::addCoin()
 }
 void BaseMap::addObjects()
 {
+    int index = 0;
     TMXObjectGroup* objectGroup = _gameMap->getObjectGroup("Trampoline");
     auto objects = objectGroup->getObjects();
     for (const auto& object : objects) {
@@ -386,6 +455,63 @@ void BaseMap::addObjects()
         auto trampoline = Trampoline::create(new EntityInfo("trampoline"));
         trampoline->setPosition(_position);
         this->addChild(trampoline, 2);
+    }
+
+    TMXObjectGroup* sawGroup = _gameMap->getObjectGroup("Saw");
+    auto sawObjects = sawGroup->getObjects();
+    for (const auto& object : sawObjects) {
+        ValueMap sawSpawnPoint = object.asValueMap();
+        Vec2 _position;
+        _position.x = sawSpawnPoint["x"].asFloat();
+        _position.y = sawSpawnPoint["y"].asFloat();
+        auto saw = Saw::create(new EntityInfo("saw"));
+        if (index == 0) {
+            saw->setSpeed(35.0f);
+            saw->movingRightFirst();
+        }
+        else if (index == 1) {
+            saw->setSpeed(10.0f);
+            saw->movingLeftFirst();
+        }
+        else if (index == 2) {
+            saw->setSpeed(20.0f);
+            saw->movingRightFirst();
+        }
+        else if (index == 3) {
+            saw->setSpeed(20.0f);
+            saw->movingLeftFirst();
+        }
+        
+        saw->setPosition(_position);
+        this->addChild(saw, 0);
+        index++;
+    }
+
+    TMXObjectGroup* platformGroup = _gameMap->getObjectGroup("Platform");
+    auto platformObjects = platformGroup->getObjects();
+    for (const auto& object : platformObjects) {
+        ValueMap platformSpawnPoint = object.asValueMap();
+        Vec2 _position;
+        _position.x = platformSpawnPoint["x"].asFloat();
+        _position.y = platformSpawnPoint["y"].asFloat();
+        auto platform = Platform::create(new EntityInfo("platform"));
+        /*if (index == 0) {
+            saw->setSpeed(35.0f);
+            saw->movingRightFirst();
+        }
+        else if (index == 1) {
+            saw->setSpeed(10.0f);
+            saw->movingLeftFirst();
+        }
+        else {
+            saw->setSpeed(20.0f);
+            saw->movingRightFirst();
+        }*/
+        platform->setSpeed(20.0f);
+        platform->movingLeftFirst();
+        platform->setPosition(_position);
+        this->addChild(platform);
+        index++;
     }
 }
 

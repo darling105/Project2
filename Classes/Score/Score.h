@@ -11,6 +11,8 @@ public:
 	static Score* getInstance();
 	void update(int value);
 	void reset();
+	void saveToFile(std::string mapLevel, int score);
+	int getScore() const { return score; }
 	Label* scoreLabel;
 protected:
 	bool init() override;
