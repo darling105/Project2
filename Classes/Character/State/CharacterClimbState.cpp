@@ -19,6 +19,9 @@ std::string CharacterClimbState::updateState()
 	if (!_character->_isOnStair) {
 		return "idle";
 	}
+	if (_character->_isContactedEnemy) {
+		return "hurt";
+	}
 	return "climb";
 }
 

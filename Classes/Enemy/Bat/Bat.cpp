@@ -82,7 +82,7 @@ bool Bat::callbackOnContactBegin(PhysicsContact& contact)
         if (_character->getPosition().y >= this->getPosition().y + 18) {
             _isContactCharacter = true;
             _character->_isContactedEnemy = false;
-            _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 240);
+            _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 40);
         }
         else {
             _character->_isContactedEnemy = true;

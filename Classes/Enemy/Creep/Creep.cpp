@@ -83,7 +83,7 @@ bool Creep::callbackOnContactBegin(PhysicsContact& contact)
     if (nodeA != this && nodeB != this) return false;
     auto target = (nodeA == this) ? nodeA : nodeB;
     if (target) {
-        if (_character->getPosition().y > this->getPosition().y ) {
+        if (_character->getPosition().y > this->getPosition().y + 28) {
             _isContactCharacter = true;
             AnimationUtils::loadSpriteFrameCache("Enemy/Creep/", "creep-death");
             AnimationUtils::createAnimation("creep-death", 1.25f);
@@ -102,6 +102,10 @@ bool Creep::callbackOnContactBegin(PhysicsContact& contact)
 
             auto sequence = Sequence::create(animate, removeExplosion, nullptr);
             explosion->runAction(sequence);
+            _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 40);
+        }
+        else {
+            _character->_isContactedEnemy = true;
         }
     }
 
@@ -110,33 +114,41 @@ bool Creep::callbackOnContactBegin(PhysicsContact& contact)
 
 bool Creep::callbackOnContactSeparate(PhysicsContact& contact)
 {
+    EntityInfo info("character");
+    auto character = Character::getInstance(&info);
+    auto _character = character->getCharacter(0);
     nodeA = contact.getShapeA()->getBody()->getNode();
     nodeB = contact.getShapeB()->getBody()->getNode();
     if (nodeA != this && nodeB != this) return false;
     auto target = (nodeA == this) ? nodeA : nodeB;
-    if (target){
-        _isContactCharacter = false;
+    if (target) {
+        if (_character->getPosition().y >= this->getPosition().y + 28) {
+            _character->_isContactedEnemy = false;
+        }
+        else {
+            _character->_isContactedEnemy = false;
+        }
     }
     return true;
 }
 
 
 void Creep::update(float dt) {
-    EntityInfo info("character");
+    EntityInfo info("dude");
     Vec2 characterPosition = Character::getInstance(&info)->getCharacter(0)->getPosition();
     float creepPositionX = this->getPositionX();
     float creepPositionY = this->getPositionY();
     float creepHeight = 32.0f;
 
-    if (characterPosition.x > creepPositionX + 20 && characterPosition.x < creepPositionX + 20 + 100
-        && characterPosition.y < creepPositionY + creepHeight && characterPosition.y + 2 > creepPositionY ) {
+    if (characterPosition.x > creepPositionX + 20 && characterPosition.x < creepPositionX + 20 + 350
+        && characterPosition.y < creepPositionY + creepHeight && characterPosition.y + 20 > creepPositionY ) {
         _rightRange = true;
         _leftRange = false;
         log("right");
         shoot(dt);
     }
-    else if (characterPosition.x < creepPositionX - 20 && characterPosition.x > creepPositionX - 20 - 100
-        && characterPosition.y < creepPositionY + creepHeight && characterPosition.y + 2 > creepPositionY) {
+    else if (characterPosition.x < creepPositionX - 20 && characterPosition.x > creepPositionX - 20 - 350
+        && characterPosition.y < creepPositionY + creepHeight && characterPosition.y + 20 > creepPositionY) {
         _rightRange = false;
         _leftRange = true;
         log("left");
@@ -196,5 +208,6 @@ void Creep::shoot(float dt)
 void Creep::onEnter()
 {
     Entity::onEnter();
-    bulletInterval = 0.5f;
+    bulletInterval = 0.8f;
+    bulletTimer = 0.0f;
 }

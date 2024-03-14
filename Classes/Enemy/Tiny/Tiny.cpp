@@ -141,7 +141,7 @@ void Tiny::update(float dt)
             auto body = this->getPhysicsBody();
             body->removeFromWorld();
             _model->setScale(1.5f);
-            auto circleBody = PhysicsBody::createCircle(_model->getContentSize().width);
+            auto circleBody = PhysicsBody::createCircle(_model->getContentSize().width / 2);
             circleBody->setCategoryBitmask(DefineBitmask::ENEMY);
             circleBody->setCollisionBitmask(DefineBitmask::GROUND);
             circleBody->setContactTestBitmask(DefineBitmask::CHARACTER);

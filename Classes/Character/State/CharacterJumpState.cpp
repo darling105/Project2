@@ -36,6 +36,9 @@ std::string CharacterJumpState::updateState()
     if (_character->_isOnStair) {
         return "climb";
     }
+    if (_character->_isContactedEnemy) {
+        return "hurt";
+    }
     return "jump";
 }
 

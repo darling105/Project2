@@ -51,6 +51,7 @@ bool Map3::init() {
     addObjectsMap3();
     createCheckPoint();
     addSpike();
+    addTime();
     this->scheduleUpdate();
     return true;
 }

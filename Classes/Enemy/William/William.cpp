@@ -97,8 +97,9 @@ bool William::callbackOnContactBegin(PhysicsContact& contact)
 
             auto sequence = Sequence::create(animate, removeExplosion, nullptr);
             explosion->runAction(sequence);
-            _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 240);
-            }
+            _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 40);
+            _character->_isContactedEnemy = false;
+        }
         else {
             _character->_isContactedEnemy = true;
         }

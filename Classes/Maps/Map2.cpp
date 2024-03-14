@@ -47,6 +47,7 @@ bool Map2::init() {
     addCoin();
     addScore();
     addObjects();
+    addTime();
     createCheckPoint();
     this->scheduleUpdate();
     return true;

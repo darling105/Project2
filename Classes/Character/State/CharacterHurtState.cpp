@@ -1,19 +1,19 @@
-#include "CharacterIdleState.h"
+#include "CharacterHurtState.h"
 #include "StateMachine/StateMachine.h"
 #include "Character/Character.h"
 
-void CharacterIdleState::enterState(Entity* owner)
+void CharacterHurtState::enterState(Entity* owner)
 {
 	State::enterState(owner);
 	auto ani = AnimationCache::getInstance()
-		->getAnimation(_owner->getEntityInfo()->_entityName + "-idle");
+		->getAnimation(_owner->getEntityInfo()->_entityName + "-hurt");
 	auto animate = RepeatForever::create(Animate::create(ani));
 	_owner->getModel()->runAction(animate);
 }
 
-std::string CharacterIdleState::updateState()
+std::string CharacterHurtState::updateState()
 {
-	EntityInfo info( "character");
+	EntityInfo info("character");
 	auto character = Character::getInstance(&info);
 	auto _character = character->getCharacter(0);
 	if (_character->getLeftButtonDown() || _character->getRightButtonDown()) {
@@ -25,14 +25,11 @@ std::string CharacterIdleState::updateState()
 	if (_character->_isOnStair) {
 		return "climb";
 	}
-	if (_character->_isContactedEnemy) {
-		return "hurt";
-	}
 
-	return "idle";
+	return "hurt";
 }
 
-void CharacterIdleState::exitState()
+void CharacterHurtState::exitState()
 {
 	State::exitState();
 }

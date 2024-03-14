@@ -54,7 +54,7 @@ bool Map1::init() {
     createHealthBar();
     createCheckPoint();
     addScore();
-    //addTime();
+    addTime();
     this->scheduleUpdate();
     return true;
 }

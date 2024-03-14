@@ -17,7 +17,7 @@ Time* Time::getInstance()
 
 bool Time::init()
 {
-	timeLabel = Label::createWithTTF("Time: 5", "fonts/Planes_ValMore.ttf", 24);
+	timeLabel = Label::createWithTTF("Time: 500", "fonts/Planes_ValMore.ttf", 24);
 	this->addChild(timeLabel);
 	return true;
 }
@@ -25,7 +25,7 @@ bool Time::init()
 void Time::onEnter()
 {
 	Label::onEnter();
-	time = 5;
+	time = 500;
 	this->scheduleUpdate();
 }
 
@@ -41,12 +41,17 @@ void Time::update(float dt) {
 	if (time <= 0) {
 		GameManager::getInstance()->gameOver();
 		this->unscheduleUpdate();
+		EntityInfo info("character");
+		auto character = Character::getInstance(&info);
+		auto _character = character->getCharacter(0);
+		_character->getPhysicsBody()->setVelocity(Vec2::ZERO);
+		_character->unscheduleUpdate();
 		reset();
 	}
 }
 
 void Time::reset()
 {
-	time = 5; 
+	time = 500; 
 	timeLabel->setString("Time: " + std::to_string(time));
 }

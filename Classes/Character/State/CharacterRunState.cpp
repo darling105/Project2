@@ -27,6 +27,9 @@ std::string CharacterRunState::updateState()
 	if (_character->_isJumping) {
 		return "jump";
 	}
+	if (_character->_isContactedEnemy) {
+		return "hurt";
+	}
 	if (_character->getLeftButtonDown()) {
 		_owner->getModel()->setFlippedX(true);
 	}

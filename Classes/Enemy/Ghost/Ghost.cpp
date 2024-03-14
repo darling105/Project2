@@ -89,12 +89,12 @@ bool Ghost::callbackOnContactBegin(PhysicsContact& contact)
 
             _isContactCharacter = true;
 
-            AnimationUtils::loadSpriteFrameCache("Enemy/Ghost/", "pupple-death");
-            AnimationUtils::createAnimation("pupple-death", 1.25f);
-            auto explosion = Sprite::createWithSpriteFrameName("./pupple-death (1)");
+            AnimationUtils::loadSpriteFrameCache("Enemy/Ghost/", "ghost-death");
+            AnimationUtils::createAnimation("ghost-death", 1.25f);
+            auto explosion = Sprite::createWithSpriteFrameName("./ghost-death (1)");
             explosion->setPosition(this->getPosition());
             this->getParent()->addChild(explosion, this->getLocalZOrder());
-            auto animation = AnimationCache::getInstance()->getAnimation("pupple-death");
+            auto animation = AnimationCache::getInstance()->getAnimation("ghost-death");
             auto animate = Animate::create(animation);
             auto removeExplosion = CallFunc::create([explosion]() {
                 explosion->removeFromParentAndCleanup(true);
@@ -102,7 +102,7 @@ bool Ghost::callbackOnContactBegin(PhysicsContact& contact)
             auto sequence = Sequence::create(animate, removeExplosion, nullptr);
             explosion->runAction(sequence);
 
-            _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 240);
+            _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 40);
         }
         else {
             _character->_isContactedEnemy = true;

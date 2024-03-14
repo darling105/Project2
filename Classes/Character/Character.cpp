@@ -77,6 +77,7 @@ bool Character::init(EntityInfo* info)
 	_stateMachine->addState("run", new CharacterRunState());
 	_stateMachine->addState("jump", new CharacterJumpState());
 	_stateMachine->addState("climb", new CharacterClimbState());
+	_stateMachine->addState("hurt", new CharacterHurtState());
 	_stateMachine->setCurrentState("idle");
 	this->addChild(_stateMachine);
 
@@ -94,6 +95,7 @@ bool Character::loadAnimations()
 	aniNames.push_back(_info->_entityName + "-run");
 	aniNames.push_back(_info->_entityName + "-jump");
 	aniNames.push_back(_info->_entityName + "-climb");
+	aniNames.push_back(_info->_entityName + "-hurt");
 
 	for (auto name : aniNames)
 	{
@@ -265,6 +267,10 @@ bool Character::callbackOnContactBegin(PhysicsContact& contact)
 	{
 		_isOnFinish = true;
 	}
+	/*else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::ENEMY)
+	 {
+		 _isContactedEnemy = true;
+	 }*/
 	else if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::SPIKE)
 	{
 		_isOnSpike = true;
@@ -318,6 +324,10 @@ bool Character::callbackOnContactSeparate(PhysicsContact& contact) {
 	{
 		_isOnStair = false;
 	}
+	 /*if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::ENEMY)
+	{
+		_isContactedEnemy = false;
+	}*/
 	if (target->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::FINISH)
 	{
 		_isOnFinish = false;

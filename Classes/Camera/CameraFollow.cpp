@@ -101,7 +101,7 @@
             _scoreLabel->setPosition(camera->getPosition().x + 450, camera->getPosition().y + 300);
         }
         if (_timeLabel) {
-            _timeLabel->setPosition(camera->getPosition().x + 350, camera->getPosition().y + 300);
+            _timeLabel->setPosition(camera->getPosition().x + 250, camera->getPosition().y + 300);
         }
     }
 

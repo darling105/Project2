@@ -80,7 +80,7 @@ bool Pupple::callbackOnContactBegin(PhysicsContact& contact)
     if (nodeA->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER ||
         nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
     {
-        if (_character->getPosition().y >= this->getPosition().y + 22) {
+        if (_character->getPosition().y >= this->getPosition().y + 20) {
 
         _isContactCharacter = true;
 
@@ -97,7 +97,7 @@ bool Pupple::callbackOnContactBegin(PhysicsContact& contact)
         auto sequence = Sequence::create(animate, removeExplosion, nullptr);
         explosion->runAction(sequence);
 
-        _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 240);
+        _character->getPhysicsBody()->setVelocity(Vec2(0, 1) * 40);
         }
         else {
             _character->_isContactedEnemy = true;
@@ -117,7 +117,7 @@ bool Pupple::callbackOnContactSeparate(PhysicsContact& contact)
     if (nodeA != this && nodeB != this) return false;
     auto target = (nodeA == this) ? nodeA : nodeB;
     if (target) {
-        if (_character->getPosition().y >= this->getPosition().y + 22) {
+        if (_character->getPosition().y >= this->getPosition().y + 20) {
             _character->_isContactedEnemy = false;
         }
         else {

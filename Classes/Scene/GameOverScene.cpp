@@ -41,8 +41,8 @@ bool GameOverScene::init()
 	gameOverWindow->addChild(gameOverScene);
 
 	auto score = Score::getInstance();
-	auto scoreLabel = Label::createWithTTF("Final Score: " + std::to_string(score->getScore()), "fonts/Planes_ValMore.ttf", 24);
-	scoreLabel->setPosition(Vec2(windowSize.width / 2, windowSize.height / 2));
+	auto scoreLabel = Label::createWithTTF("Final Score: " + std::to_string(score->getScore()), "fonts/Planes_ValMore.ttf", 32);
+	scoreLabel->setPosition(Vec2((windowSize.width / 10) - 30, windowSize.height / 4));
 	this->addChild(scoreLabel);
 	score->reset();
 

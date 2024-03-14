@@ -106,7 +106,7 @@ void BaseMap::addCharacter1() {
     _position.x = charSpawnPoint["x"].asFloat();
     _position.y = charSpawnPoint["y"].asFloat();
     _character->setPosition(_position);
-    this->addChild(_character, 0);
+    this->addChild(_character, 1);
 }
 
 void BaseMap::addCharacter2() {
@@ -122,7 +122,7 @@ void BaseMap::addCharacter2() {
     _position.x = charSpawnPoint["x"].asFloat();
     _position.y = charSpawnPoint["y"].asFloat();
     _character1->setPosition(_position);
-    this->addChild(_character1, 0);
+    this->addChild(_character1, 1);
 }
 
 void BaseMap::addCharacter3()

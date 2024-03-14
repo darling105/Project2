@@ -7,6 +7,7 @@
 #include "State/CharacterIdleState.h"
 #include "State/CharacterRunState.h"
 #include "State/CharacterClimbState.h"
+#include "State/CharacterHurtState.h"
 #include "HealthController/HealthController.h"
 #include "Objects/Platform/Platform.h"
 
