@@ -2,6 +2,8 @@
 #include "AnimationUtilities/AnimationUtils.h"
 #include "Character/Character.h"
 #include "DefineBitmask.h"
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 
 Trampoline* Trampoline::create(EntityInfo* info)
 {
@@ -100,6 +102,7 @@ void Trampoline::update(float dt)
 	auto _charInstance = Character::getInstance(&info);
 	auto _char = _charInstance->getCharacter(0);
 	if (_isPicked) {
+		AudioManager::getInstance()->playSFX("trampoline.mp3");
 		log("contact");
 		_model->setVisible(false);
 		_char->getPhysicsBody()->setVelocity(Vec2::ZERO);

@@ -3,7 +3,8 @@
 #include "DefineBitmask.h"
 #include "Character/Character.h"
 #include "State/PupplePatrolState.h"
-
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 Pupple* Pupple::create(EntityInfo* info)
 {
     auto newObject = new Pupple();
@@ -133,6 +134,7 @@ void Pupple::update(float dt)
     auto character = Character::getInstance(&info);
     auto _character = character->getCharacter(0);
     if (_isContactCharacter) {
+        AudioManager::getInstance()->playSFX("touch_enemy.mp3");
         this->removeFromParentAndCleanup(true);
     }
 }

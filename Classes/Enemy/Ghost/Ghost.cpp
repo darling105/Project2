@@ -7,6 +7,8 @@
 #include "State/GhostDesappearState.h"
 #include "State/GhostDeathState.h"
 #include "State/GhostFootstepState.h"
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 
 Ghost* Ghost::create(EntityInfo* info)
 {
@@ -138,6 +140,7 @@ void Ghost::update(float dt)
     auto character = Character::getInstance(&info);
     auto _character = character->getCharacter(0);
     if (_isContactCharacter) {
+        AudioManager::getInstance()->playSFX("touch_enemy.mp3");
         this->removeFromParentAndCleanup(true);
     }
     _countTime += dt;

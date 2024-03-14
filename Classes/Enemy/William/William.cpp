@@ -4,7 +4,8 @@
 #include "Skill/Bullet.h"
 #include "Character/Character.h"
 #include "State/WilliamIdleState.h"
-
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 William* William::create(EntityInfo* info)
 {
     auto newObject = new William();
@@ -154,6 +155,7 @@ void William::update(float dt) {
     }
 
     if (_isContactCharacter) {
+        AudioManager::getInstance()->playSFX("touch_enemy.mp3");
         this->removeFromParentAndCleanup(true);
     }
 }

@@ -45,6 +45,7 @@ bool Map2::init() {
     createPolygonPhysics();
     createHealthBar();
     addCoin();
+    addSpike();
     addScore();
     addObjects();
     addTime();

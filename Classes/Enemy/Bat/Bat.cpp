@@ -5,6 +5,8 @@
 #include "State/BatPatrolState.h"
 #include "State/BatDeathState.h"
 #include "PhysicRender/PhysicGround.h"
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 #include <algorithm>;
 
 Bat* Bat::create(EntityInfo* info)
@@ -118,6 +120,7 @@ void Bat::update(float dt)
     auto character = Character::getInstance(&info);
     auto _character = character->getCharacter(0);
     if (_isContactCharacter) {
+        AudioManager::getInstance()->playSFX("touch_enemy.mp3");
         this->getPhysicsBody()->setGravityEnable(true);
             timeDeath += dt;  
     }

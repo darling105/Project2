@@ -5,6 +5,8 @@
 #include "Character/Character.h"
 #include "State/CreepAttackState.h"
 #include "State/CreepPatrolState.h"
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 
 Creep* Creep::create(EntityInfo* info)
 {
@@ -161,6 +163,7 @@ void Creep::update(float dt) {
     }
 
     if (_isContactCharacter) {
+        AudioManager::getInstance()->playSFX("touch_enemy.mp3");
         this->removeFromParentAndCleanup(true);
     }
 }

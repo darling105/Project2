@@ -21,15 +21,12 @@ Map3* Map3::create() {
     CC_SAFE_DELETE(newObject);
     return nullptr;
 }
-
-
-
 bool Map3::init() {
     if (!BaseMap::initWithPhysics()) {
         return false;
     }
 
-    addBackground("BackGround/CaveBG.jpg");
+    addBackground("BackGround/HellBG.jpg");
     addGameMap("Maps/map3.tmx");
     if (_gameMap == nullptr) {
         CCLOG("Error: _gameMap is nullptr after calling addGameMap!");

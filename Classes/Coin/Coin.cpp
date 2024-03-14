@@ -3,6 +3,8 @@
 #include "Character/Character.h"
 #include "DefineBitmask.h"
 #include "Score/Score.h"
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 
 Coin* Coin::create(EntityInfo* info)
 {
@@ -91,6 +93,7 @@ bool Coin::callbackOnContactBegin(PhysicsContact& contact)
 void Coin::update(float dt)
 {
 	if (_isPicked) {
+		AudioManager::getInstance()->playSFX("coin.mp3");
 		this->removeFromParentAndCleanup(true);
 	}
 }

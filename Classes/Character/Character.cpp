@@ -14,6 +14,8 @@
 #include "Maps/Map1.h"
 #include "Score/Score.h"
 #include "Objects/Platform/Platform.h"
+#include "AudioManager/AudioManager.h"
+#include "AudioEngine.h"
 
 
 
@@ -390,6 +392,7 @@ void Character::update(float dt) {
 
 	if (_isOnSpike || _isContactedSkills || _isContactedEnemy)
 	{
+		AudioManager::getInstance()->playSFX("c_death.mp3");
 		_retryCount--;
 		if (_retryCount > 0) {
 		if (indexCheckPoint >= 0) {
