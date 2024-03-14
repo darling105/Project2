@@ -130,6 +130,7 @@ Character* Character::getCharacter(int index) {
 
 void Character::jump()
 {
+	AudioManager::getInstance()->playSFX("jump.mp3");
 	if (_jumpCooldown <= 0.0f) {
 		_isOnGround = false;
 		if (!_isJumping) {

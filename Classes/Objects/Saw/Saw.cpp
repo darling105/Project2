@@ -71,8 +71,8 @@ bool Saw::callbackOnContactBegin(PhysicsContact& contact)
         nodeB->getPhysicsBody()->getCategoryBitmask() == DefineBitmask::CHARACTER)
     {
        
-
-            _isContactCharacter = true;
+            
+        _character->_isContactedEnemy = true;
 
     }
 

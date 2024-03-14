@@ -41,9 +41,10 @@ bool BaseMap::init() {
     return true;
 }
 
+
 void BaseMap::createPhysicsWorld() {
     auto _physicsWorld = this->getPhysicsWorld();
-    _physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //_physicsWorld->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     _physicsWorld->setGravity(Vec2(0, -60));
     _physicsWorld->setFixedUpdateRate(600.0f);
     _physicsWorld->setSpeed(5.0);
@@ -164,7 +165,7 @@ void BaseMap::addMap1Enemies() {
         _position.y = puppleSpawnPoint["y"].asFloat();
         auto pupple = Pupple::create(new EntityInfo("pupple"));
         pupple->setPosition(_position);
-        if (puppleIndex <= 3) {
+        if (puppleIndex = 1) {
             pupple->setupPupple(200, Vec2(-1, 0));
         }
         else {
